@@ -54,20 +54,20 @@
       margin-top: 10px;
       font-size: clamp(22px, 5vw, 40px);
       font-weight: bold;
-      
-      color: #00ffff; /* xanh */
-      -webkit-text-stroke: 0px;/* viền trắng */
+  
+      color: #00ffff;
+
       text-shadow:
-        
       0 0 3px white,
       0 0 6px rgba(255,255,255,0.6);
+
       
       //*animation: colorBlink 3s infinite;
       text-shadow: 0 0 10px rgba(255,255,255,0.7);*/
     }
 
     .btn-container {
-      flex: 1;
+      margin-top: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -286,7 +286,49 @@
     font-weight: bold;
     color: #ffeb3b; /* nổi bật */
   }
-    
+  /*UI Mobile*/
+  @media (max-width: 768px) {
+    body {
+      padding: 10px;
+      gap: 10px;
+    }
+
+    .logo {
+      width: 90px;
+      margin-top: 10px;
+    }
+
+    .title {
+      font-size: 24px;
+    }
+
+    .rule-box {
+      width: 95%;
+      padding: 10px;
+
+      max-height: 35vh;
+      overflow-y: auto;
+    }
+
+    .rule-box ul {
+      font-size: 14px;
+    }
+
+    .note-text {
+      font-size: 13px;
+    }
+
+    .circle-btn {
+      width: 110px;
+      height: 110px;
+      font-size: 16px;
+    }
+
+    .img-wrapper img {
+      max-width: 95vw;
+      max-height: 60vh;
+    }
+  }
   </style>
 </head>
 
@@ -306,10 +348,10 @@
       <li>Lưu lại ảnh gợi ý và tìm vị trí gợi ý dựa trên bức ảnh đó</li>
       <li>Vị trí của ảnh gợi ý nằm ở các khu vực trưng bày tại tầng 1, tầng 2 và tầng 3</li>
       <li>Sau khi tìm được vị trí được gợi ý hãy chụp lại và nói tên chủ đề trưng bày mà bạn đã chụp cho quản trò để nhận thưởng</li>
-      <p class="note-text">
-        <span class="note-label">⚠️ Lưu ý:</span> Mỗi bức ảnh gợi ý có 2 gợi ý, bạn phải tìm đủ cả 2 thì mới được xem là hoàn thành
-      </p>
     </ul>
+    <p class="note-text">
+      <span class="note-label">⚠️ Lưu ý:</span> Mỗi bức ảnh gợi ý có 2 gợi ý, bạn phải tìm đủ cả 2 thì mới được xem là hoàn thành
+    </p>
   </div>
   <!-- Button -->
   
