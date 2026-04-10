@@ -154,66 +154,43 @@
       font-weight: bold;
       margin-bottom: 10px;
     }
-    .rule-box {
-      /*margin-top: 15px;
-      padding: 15px;
-      width: 85%;
-      max-width: 400px;
-
-      background: rgba(0, 0, 0, 0.5);
-      border-radius: 15px;
-
-      backdrop-filter: blur(5px);*/
-
+    
+   .rule-box {
       position: relative;
       margin-top: 15px;
       padding: 15px;
       width: 85%;
       max-width: 400px;
-  
-      background: transparent;
-      border-radius: 15px;
 
+      border-radius: 15px;
       color: white;
-      overflow: hidden;
+
+  /* nền xanh */
+      background: linear-gradient(135deg, #0a3d62, #145da0);
+
+  /* tạo viền */
+      border: 3px solid transparent;
+
+  /* 2 lớp nền: trong + viền */
+      background-image:
+        linear-gradient(135deg, #0a3d62, #145da0),
+        linear-gradient(45deg, red, orange, yellow, green, cyan, blue, violet, red);
+
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+
+      background-size: 100% 100%, 300% 300%;
+
+      animation: ledBorder 6s linear infinite;
     }
-
-    /*Viền Rule box*/
-    .rule-box::before {
-      content: "";
-      position: absolute;
-      inset: -2px;
-      border-radius: 15px;
-
-      background: linear-gradient(
-        45deg,
-        red,
-        orange,
-        yellow,
-        green,
-        cyan,
-        blue,
-        violet,
-        red
-      );
-
-      background-size: 400%;
-      animation: ledRun 6s linear infinite;
-
-      z-index: -1;
-    }
-    @keyframes ledRun {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 400% 50%; }
-    }
-
-    .rule-box::after {
-      content: "";
-      position: absolute;
-      inset: 2px;
-      border-radius: 13px;
-      background: rgba(0, 40, 80, 0.7);
-      z-index: -1;
+    
+    @keyframes ledBorder {
+      0% {
+        background-position: 0% 0%, 0% 50%;
+      }
+      100% {
+        background-position: 0% 0%, 300% 50%;
+      }
     }
     
     .rule-title {
@@ -265,10 +242,10 @@
     .img-wrapper img {
       display: block;
       max-width: 90vw;  
-      max-height: 70vh;
+      max-: 70vh;
 
       width: auto;
-      height: auto;
+      : auto;
       border-radius: 12px;
     }
 
@@ -276,7 +253,7 @@
   .note-text {
     margin-top: 10px;
     font-size: clamp(13px, 3.5vw, 17px);
-    line-height: 1.5;
+    line-: 1.5;
     color: #ff3333;
   }
 
@@ -306,7 +283,7 @@
       width: 95%;
       padding: 10px;
 
-      max-height: ;
+      max-height: none;
       overflow: visible;
     }
 
