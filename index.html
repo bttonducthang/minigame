@@ -154,7 +154,7 @@
       font-weight: bold;
       margin-bottom: 10px;
     }
-    .rule-box {
+    /*.rule-box {
       /*margin-top: 15px;
       padding: 15px;
       width: 85%;
@@ -165,7 +165,7 @@
 
       backdrop-filter: blur(5px);*/
 
-      position: relative;
+      /*position: relative;
       margin-top: 15px;
       padding: 15px;
       width: 85%;
@@ -175,47 +175,47 @@
       border-radius: 15px;
 
       color: white;
-      overflow: hidden;
-    }
+      overflow: hidden;*/
 
-    /*Viền Rule box*/
-    .rule-box::before {
-      content: "";
-      position: absolute;
-      inset: -2px;
+      
+    }*/ Cũ
+
+    .rule-box {
+      position: relative;
+      margin-top: 15px;
+      padding: 15px;
+      width: 85%;
+      max-width: 400px;
+
       border-radius: 15px;
 
-      background: linear-gradient(
+    /* nền chính */
+      background: linear-gradient(135deg, #0a3d62, #145da0);
+
+    /* tạo viền */
+      border: 3px solid transparent;
+
+    /* QUAN TRỌNG: 2 layer background */
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+
+    background-image:
+      linear-gradient(135deg, #0a3d62, #145da0), /* nền xanh */
+      linear-gradient(
         45deg,
-        red,
-        orange,
-        yellow,
-        green,
-        cyan,
-        blue,
-        violet,
-        red
-      );
+        red, orange, yellow, green, cyan, blue, violet, red
+      ); /* LED */
 
-      background-size: 400%;
-      animation: ledRun 6s linear infinite;
+    background-size: 100% 100%, 400% 400%;
 
-      z-index: -1;
-    }
+    animation: ledBorder 6s linear infinite;
+  }
+    
     @keyframes ledRun {
       0% { background-position: 0% 50%; }
       100% { background-position: 400% 50%; }
     }
-
-    .rule-box::after {
-      content: "";
-      position: absolute;
-      inset: 2px;
-      border-radius: 13px;
-      background: rgba(0, 40, 80, 0.7);
-      z-index: -1;
-    }
-    
+ 
     .rule-title {
       font-size: clamp(18px, 4vw, 24px);
       font-weight: bold;
