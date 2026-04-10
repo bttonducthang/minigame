@@ -189,31 +189,32 @@
 
       border-radius: 15px;
 
-    /* nền chính */
+  /* nền xanh */
       background: linear-gradient(135deg, #0a3d62, #145da0);
 
-    /* tạo viền */
+  /* viền giả */
       border: 3px solid transparent;
 
-    /* QUAN TRỌNG: 2 layer background */
-    background-clip: padding-box, border-box;
-    background-origin: padding-box, border-box;
+  /* trick để hiện LED ở border */
+      background-image:
+        linear-gradient(135deg, #0a3d62, #145da0), /* nền */
+        linear-gradient(45deg, red, orange, yellow, green, cyan, blue, violet, red); /* LED */
 
-    background-image:
-      linear-gradient(135deg, #0a3d62, #145da0), /* nền xanh */
-      linear-gradient(
-        45deg,
-        red, orange, yellow, green, cyan, blue, violet, red
-      ); /* LED */
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
 
-    background-size: 100% 100%, 400% 400%;
+      background-size: 100% 100%, 300% 300%;
 
-    animation: ledBorder 6s linear infinite;
-  }
+      animation: ledBorder 5s linear infinite;
+    }
     
-    @keyframes ledRun {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 400% 50%; }
+    @keyframes ledBorder {
+      0% {
+        background-position: 0% 0%, 0% 50%;
+      }
+      100% {
+        background-position: 0% 0%, 300% 50%;
+      }
     }
  
     .rule-title {
@@ -306,7 +307,7 @@
       width: 95%;
       padding: 10px;
 
-      max-height: ;
+      max-height: none;
       overflow: visible;
     }
 
