@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Game</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+
+      background-image: url("assets/bg1.jpg"); /* 👉 đổi tên ảnh của bạn */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+      color: white;
+    }
+
+    /* Overlay mờ */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: -1;
+    }
+
+    .logo {
+      margin-top: 20px;
+      width: 120px;
+    }
+    /*Hiệu ứng chữ nhấp nháy title*/
+    @keyframes colorBlink {
+      0%   { color: #ffeb3b; }
+      25%  { color: #ff5722; }
+      50%  { color: #00e5ff; }
+      75%  { color: #4caf50; }
+      100% { color: #ffeb3b; }
+    }
+    .title {
+      margin-top: 10px;
+      font-size: clamp(22px, 5vw, 40px);
+      font-weight: bold;
+      
+      color: #2196f3; /* xanh */
+      -webkit-text-stroke: 1px white;/* viền trắng */
+      text-shadow:
+        -1px -1px 0 white,
+         1px -1px 0 white,
+        -1px  1px 0 white,
+         1px  1px 0 white;
+      
+      //*animation: colorBlink 3s infinite;
+      text-shadow: 0 0 10px rgba(255,255,255,0.7);*/
+    }
+
+    .btn-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .circle-btn {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: none;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #ff5722;
+      color: white;
+      transition: 0.3s;
+    }
+    
+    /* Hiệu ứng nhấp nháy sáng cho nút*/
+    @keyframes glowPulse {
+      0% {
+        box-shadow: 0 0 5px rgba(255, 87, 34, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 25px rgba(255, 87, 34, 0.9);
+      }
+      100% {
+        box-shadow: 0 0 5px rgba(255, 87, 34, 0.4);
+      }
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    /* Áp dụng animation */
+    .circle-btn {
+      animation: glowPulse 2.0s infinite, pulse 1.5s infinite;
+      }
+
+    .circle-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* Popup */
+    .popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 10;
+    }
+
+    .popup img {
+      max-width: 90%;
+      max-height: 70%;
+    }
+
+    .popup button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .close-btn {
+      background: red;
+      color: white;
+    }
+
+    .download-btn {
+      background: green;
+      color: white;
+    }
+    .hint-text {
+      color: #ffeb3b;
+      text-shadow: 0 0 10px rgba(0,0,0,0.7);
+      font-size: clamp(18px, 4vw, 28px);
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .rule-box {
+      /*margin-top: 15px;
+      padding: 15px;
+      width: 85%;
+      max-width: 400px;
+
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 15px;
+
+      backdrop-filter: blur(5px);*/
+
+      position: relative;
+      margin-top: 15px;
+      padding: 15px;
+      width: 85%;
+      max-width: 400px;
+  
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 15px;
+
+      color: white;
+      overflow: hidden;
+    }
+
+    /*Viền Rule box*/
+    .rule-box::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 15px;
+
+      background: linear-gradient(
+        45deg,
+        red,
+        orange,
+        yellow,
+        green,
+        cyan,
+        blue,
+        violet,
+        red
+      );
+
+      background-size: 400%;
+      animation: ledRun 6s linear infinite;
+
+      z-index: -1;
+    }
+    @keyframes ledRun {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 400% 50%; }
+    }
+
+    .rule-box::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: 13px;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: -1;
+    }
+    
+    .rule-title {
+      font-size: clamp(18px, 4vw, 24px);
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #ffeb3b;
+    }
+
+    .rule-box ul {
+      text-align: left;
+      font-size: clamp(14px, 3.5vw, 18px);
+      line-height: 1.5;
+      padding-left: 18px;
+    }
+
+    /*Khung RGB*/
+    .img-wrapper {
+      position: relative;
+      display: inline-block;
+
+      width: fit-content;   /* giới hạn theo màn hình */
+      height: fit-content;  /* giới hạn chiều cao */
+
+      line-height: 0;
+      border-radius: 15px;
+      padding: 4px;
+      background: linear-gradient(
+        45deg,
+        red,
+        orange,
+        yellow,
+        green,
+        cyan,
+        blue,
+        violet,
+        red
+        );
+      
+    background-size: 400%;
+    animation: ledBorder 10s linear infinite;
+    overflow: hidden;
+    }
+
+    @keyframes ledBorder {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 400% 50%; }
+    }
+    .img-wrapper img {
+      display: block;
+      max-width: 90vw;  
+      max-height: 70vh;
+
+      width: auto;
+      height: auto;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Logo -->
+  <img src="assets/logo.png" class="logo">
+
+  <!-- Title -->
+  <div class="title">Mini game tìm vị trí</div>
+  
+  <!-- Rule -->
+  <div class="rule-box">
+  <div class="rule-title">📜 Luật chơi</div>
+    <ul>
+      <li>Bấm "HIỆN ẢNH" để nhận gợi ý</li>
+      <li>Đoán vị trí dựa trên hình ảnh gợi ý</li>
+      <li>Vị trí của hình ảnh gợi ý nằm ở các khu vực trưng bày tại tầng 2, tầng 3</li>
+      <li>Sau khi tìm được vị trí được gợi ý hãy chụp lại và nói tên chủ đề trưng bày mà bạn đã chụp cho quản trò để nhận thưởng</li>
+    </ul>
+  </div>
+  <!-- Button -->
+  
+  <div class="btn-container">
+    <button class="circle-btn" onclick="showImage()">HIỆN ẢNH</button>
+  </div>
+
+  <!-- Popup -->
+  <div class="popup" id="popup">
+    <div class="hint-text">Đây là gợi ý của bạn</div>
+    <div class="img-wrapper">
+      <img id="popupImg">
+    </div>
+    <div>
+      <button class="download-btn" onclick="downloadImage()">Lưu ảnh</button>
+      <button class="close-btn" onclick="closePopup()">Đóng</button>
+    </div>
+  </div>
+
+  <script>
+    
+    // Danh sách ảnh game
+    const images = [];
+    
+    const totalImages = 10;
+    for (let i = 1; i <= totalImages; i++) {
+      images.push(`images/img${i}.jpg`);
+    }
+
+    let shuffledImages = shuffleArray(images);
+    let currentIndex = 0;
+    let currentImage = "";
+
+    // Shuffle random
+    function shuffleArray(arr) {
+      const newArr = [...arr];
+      for (let i = newArr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+      }
+  return newArr;
+}
+    // Hiện ảnh
+    function showImage() {
+      //Shuffle
+      const img = shuffledImages[currentIndex];
+
+      currentIndex++;
+
+      // Hết vòng → shuffle lại
+      if (currentIndex >= shuffledImages.length) {
+      shuffledImages = shuffleArray(images);
+      currentIndex = 0;
+      }
+      
+      currentImage = img;
+
+      document.getElementById("popupImg").src = img;
+      document.getElementById("popup").style.display = "flex";
+    }
+
+    function closePopup() {
+      document.getElementById("popup").style.display = "none";
+    }
+
+    function downloadImage() {
+      const link = document.createElement("a");
+      link.href = currentImage;
+      link.download = "image.jpg";
+      link.click();
+    }
+  </script>
+
+</body>
+</html>
