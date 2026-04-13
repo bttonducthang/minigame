@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mini Game</title>
-
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Great+Vibes&display=swap" rel="stylesheet">
+  
   <style>
     * {
       margin: 0;
@@ -50,20 +51,22 @@
       75%  { color: #4caf50; }
       100% { color: #ffeb3b; }
     }
+    /*Tiêu đề*/
     .title {
       margin-top: 9px;
       font-size: clamp(20px, 5vw, 38px);
       font-weight: bold;
-  
-      color: #00ffff;
+      color: #b0050d;
+      text-shadow: 0 0 10px rgba(255,255,255,0.7);
+    }
 
-      text-shadow:
-      0 0 3px white,
-      0 0 6px rgba(255,255,255,0.6);
+    .title .line1 {
+    font-family: 'Playfair Display', serif;
+    }
 
-      
-      //*animation: colorBlink 3s infinite;
-      text-shadow: 0 0 10px rgba(255,255,255,0.7);*/
+    .title .line2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.2em;
     }
 
     .btn-container {
@@ -315,8 +318,10 @@
   <img src="assets/logo.png" class="logo">
 
   <!-- Title -->
-  <div class="title">Mini game <br>
-                    "DẤU ẤN THỜI GIAN"</div>
+  <div class="title">
+    <div class="line1">Mini game</div>
+    <div class="line2">DẤU ẤN THỜI GIAN</div>
+  </div>
   
   <!-- Rule -->
   <div class="rule-box">
