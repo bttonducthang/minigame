@@ -133,11 +133,19 @@
    
   /* 🎯 Nút chính nổi bật */
     .main-btn {
+      color: #1a1a1a;
       animation: pulseMain 1.5s infinite;
       background: linear-gradient(145deg, #66ffcc, #00ffcc);
       box-shadow:
-      0 6px 0 #00b3b3,
-      0 10px 25px rgba(255, 87, 34, 0.5); /* đổ bóng mềm */
+        0 6px 0 #00b3b3,
+        0 10px 25px rgba(33, 150, 243, 0.5); /* đổ bóng mềm */
+      animation: glowMain 2s infinite;
+    }
+  /*Glow main*/
+    @keyframes glowMain {
+      0% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+      50% { box-shadow: 0 0 35px rgba(0, 255, 255, 1); }
+      100% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
     }
 
   /* 💓 hiệu ứng đập nhẹ */
