@@ -139,44 +139,42 @@
       box-shadow: 0 5px 0 rgba(0,0,0,0.4); /* giữ đổ bóng nhẹ */
     }
 
-    .circle-btn {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      border: none;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      background: #ff5722;
-      color: white;
-      transition: 0.3s;
+   
+  /* 🎯 Nút chính nổi bật */
+    .main-btn {
+      animation: pulseMain 1.5s infinite;
+      box-shadow:
+      0 6px 0 #a62800,
+      0 10px 25px rgba(255, 87, 34, 0.5); /* đổ bóng mềm */
     }
-    
-    /* Hiệu ứng nhấp nháy sáng cho nút*/
-    @keyframes glowPulse {
+
+  /* 💓 hiệu ứng đập nhẹ */
+    @keyframes pulseMain {
       0% {
-        box-shadow: 0 0 5px rgba(255, 87, 34, 0.4);
+        transform: scale(1);
       }
       50% {
-        box-shadow: 0 0 25px rgba(255, 87, 34, 0.9);
+        transform: scale(1.08);
       }
       100% {
-        box-shadow: 0 0 5px rgba(255, 87, 34, 0.4);
+        transform: scale(1);
       }
     }
-    
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    /* Áp dụng animation */
-    .circle-btn {
-      animation: glowPulse 2.0s infinite, pulse 1.5s infinite;
-      }
 
-    .circle-btn:hover {
-      transform: scale(1.1);
+  /* 🖱 hover mạnh hơn */
+    .main-btn:hover {
+      transform: scale(1.12);
+      box-shadow:
+      0 8px 0 #a62800,
+      0 15px 35px rgba(255, 87, 34, 0.8);
+    }
+
+  /* 👇 click */
+    .main-btn:active {
+      transform: scale(0.95);
+      box-shadow:
+      0 3px 0 #a62800,
+      0 5px 15px rgba(255, 87, 34, 0.6);
     }
 
     /* Popup */
@@ -398,7 +396,7 @@
   <!-- Button -->
   
   <div class="btn-container">
-    <button class="game-btn" onclick="showImage()">HIỆN ẢNH<br>
+    <button class="game-btn main-btn" onclick="showImage()">HIỆN ẢNH<br>
     ▶️</button>
   </div>
 
