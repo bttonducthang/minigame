@@ -350,6 +350,67 @@
       max-height: 60vh;
     }
   }
+
+    .menu-btn {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  width: 52px;
+  height: 52px;
+  border: none;
+  border-radius: 50%;
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+  z-index: 20;
+
+  box-shadow: 0 0 12px rgba(255,255,255,0.6);
+  background: white;
+}
+
+.menu-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.menu-btn:hover {
+  transform: scale(1.08);
+}
+
+/* ===== Popup menu ===== */
+#menuPopup {
+  flex-direction: column;
+}
+
+.menu-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+.menu-item {
+  cursor: pointer;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+}
+
+.menu-item img {
+  width: 140px;
+  height: auto;
+}
+
+.menu-item p {
+  margin-top: 8px;
+  font-size: 16px;
+}
+
+.menu-item:hover {
+  transform: scale(1.05);
+}
   </style>
 </head>
 
@@ -398,6 +459,37 @@
       <button class="download-btn game-btn" onclick="downloadImage()">Lưu ảnh 💾</button>
       <button class="close-btn game-btn" onclick="closePopup()">Đóng ❌</button>
     </div>
+  </div>
+
+  <!-- Nút menu góc phải -->
+  <button class="menu-btn" onclick="openMenuPopup()">
+    <img src="assets/menu_img.png" alt="Menu">
+  </button>
+
+  <!-- Popup Menu -->
+  <div class="popup" id="menuPopup">
+    <div class="hint-text">🎮 Chọn Mini Game</div>
+  <div class="menu-grid">
+
+  <!-- Mini game 1 -->
+  <div class="menu-item" onclick="window.open('LINK_1', '_blank')">
+  <div class="img-wrapper">
+    <img src="assets/minigame_1.png">
+  </div>
+      <p>[Mini game 1]</p>
+  </div>
+
+  <!-- Mini game 2 -->
+  <div class="menu-item" onclick="window.open('LINK_2', '_blank')">
+    <div class="img-wrapper">
+      <img src="assets/minigame_2.png">
+    </div>
+      <p>[Mini game 2]</p>
+  </div>
+
+  </div>
+
+  <button class="close-btn game-btn" onclick="closeMenuPopup()">Đóng ❌</button>
   </div>
 
   <script>
@@ -451,6 +543,14 @@
       link.href = currentImage;
       link.download = "image.jpg";
       link.click();
+    }
+    
+    function openMenuPopup() {
+      document.getElementById("menuPopup").style.display = "flex";
+    }
+
+    function closeMenuPopup() {
+      document.getElementById("menuPopup").style.display = "none";
     }
   </script>
 
