@@ -1,11 +1,11 @@
 [
   {
-    "q": "Giải thưởng cao quý nhất mà Bác Tôn dược trao tặng là?",
+    "q": "Giải thưởng cao quý nhất mà Bác Tôn được trao tặng là?",
     "answers": ["Huân chương kháng chiến","Huân chương độc lập","Huân chương sao vàng","Huân chương lao động"],
-    "correct": 3
+    "correct": 2
   },
   {
-    "q": "Người thầy đầu tiên dạy cho bác Tôn chữ Nho là ai?",
+    "q": "Người thầy đầu tiên dạy cho Bác Tôn chữ Nho là ai?",
     "answers": ["Nguyễn Trung Trực","Thủ Khoa Huân","Nguyễn Thượng Khách","Trương Định"],
     "correct": 2
   },
@@ -13,6 +13,11 @@
     "q": "Bác Tôn quê ở đâu?",
     "answers": ["An Giang","Huế","Hà Nội","Đà Nẵng"],
     "correct": 0
+  },
+  {
+    "q": "Song thân của Bác Tôn tên là gì?",
+    "answers": ["Tôn Gia Hưng — Nguyễn Lan Chi","Tôn Thất Hiệp - Nguyễn Thị Lộ","Tôn Thất Thuyết - Nguyễn Thị Minh Khai","Tôn Văn Đề và Nguyễn Thị Vị"],
+    "correct": 3
   },
   {
     "q": "Bác Tôn từng giữ chức vụ gì?",
