@@ -117,10 +117,32 @@ body::before{
   width:320px;
   height:320px;
   border-radius:50%;
-  border:8px solid white;
-  box-shadow:0 0 25px rgba(255,255,255,.5);
-  transition:transform 4s cubic-bezier(.17,.67,.15,1);
+  display:block;
 }
+ .wheel-border{
+  width:320px;
+  height:320px;
+  padding:8px;
+  border-radius:50%;
+
+  background:linear-gradient(
+    45deg,
+    red,orange,yellow,green,cyan,blue,violet,red
+  );
+
+  background-size:400% 400%;
+
+  animation:spinLED 6s linear infinite;
+
+  box-shadow:
+    0 0 12px rgba(255,255,255,.8),
+    0 0 25px rgba(255,255,255,.5);
+}
+
+@keyframes spinLED{
+  0%{background-position:0% 50%;}
+  100%{background-position:400% 50%;}
+} 
 
 /* center button */
 .center-spin{
@@ -306,6 +328,11 @@ body::before{
   .wheel-wrap{width:280px;height:280px;}
   #wheel{width:280px;height:280px;}
   .line1,.line2{font-size:28px;}
+  
+  .wheel-border{
+  width:280px;
+  height:280px;
+  }
 }
 </style>
 </head>
@@ -327,8 +354,9 @@ body::before{
 
 <div class="wheel-wrap">
 <div class="pointer"></div>
-<canvas id="wheel" width="320" height="320"></canvas>
-
+<div class="wheel-border">
+  <canvas id="wheel" width="320" height="320"></canvas>
+</div>
 <button id="spinBtn" class="center-spin" onclick="spinWheel()">
 QUAY<br>🎡
 </button>
