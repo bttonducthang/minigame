@@ -517,7 +517,8 @@ document.getElementById("timeBox").classList.add("warning");
 
 function drawWheel(){
 
-  let total = questions.length;
+  let activeQuestions = questions.filter(q => !q.used);
+  let total = activeQuestions.length;
 
   ctx.setTransform(1,0,0,1,0,0);
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -526,7 +527,8 @@ function drawWheel(){
   let radius = 155;
   let size = (Math.PI*2)/total;
 
-  for(let i=0;i<total;i++){
+  for(let i=0;i<activeQuestions.length;i++){
+    let q = activeQuestions[i];
     let start = i*size;
     let end = start + size;
 
@@ -585,6 +587,8 @@ spinning = true;
 let available = questions
   .map((q, i) => ({...q, index:i}))
   .filter(q => !q.used);
+
+
   
 // ⭐ AUTO MODE: chỉ còn 1 câu thì tự xử lý luôn
 if(available.length === 1){
@@ -665,9 +669,21 @@ drawWheel();
 updateRemain();
 let activeQuestions = questions.filter(q => !q.used);
 
-if(questions.every(q => q.used)){
+setTimeout(()=>{
+
+document.getElementById("popup").style.display="none";
+
+questions[currentIndex].used = true;
+
+drawWheel();
+updateRemain();
+
+// ⭐ FIX NGAY
+if(questions.filter(q => !q.used).length === 0){
   finishGame();
 }
+
+},1000);
 
 },1000);
 }
@@ -719,6 +735,7 @@ timerStarted = false;
 document.getElementById("score").innerText = 0;
 document.getElementById("timeBox").classList.remove("warning");
 
+// reset questions
 questions = JSON.parse(JSON.stringify(questionsCache))
   .slice(0,5)
   .map(q => ({
@@ -726,11 +743,16 @@ questions = JSON.parse(JSON.stringify(questionsCache))
     used: false
   }));
 
+// reset UI
+document.getElementById("spinBtn").disabled = false;
+document.getElementById("popup").style.display = "none";
+document.getElementById("finishPopup").style.display = "none";
+
+// vẽ lại
 drawWheel();
 updateRemain();
-
-document.getElementById("finishPopup").style.display = "none";
 }
+  
 window.addEventListener("DOMContentLoaded", loadQuestions);
 </script>
 
