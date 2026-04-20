@@ -34,14 +34,9 @@ body::before{
   z-index:-1;
 }
 
-.logo{
-  width:95px;
-  margin-top:10px;
-}
+.logo{width:95px;margin-top:10px;}
 
-.title{
-  margin-top:8px;
-}
+.title{margin-top:8px;}
 
 .line1{
   font-family:'Playfair Display',serif;
@@ -98,17 +93,34 @@ body::before{
   transition:transform 4s cubic-bezier(.17,.67,.15,1);
 }
 
+.btn-group{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
 .btn{
-  margin-top:20px;
-  padding:14px 26px;
+  margin-top:18px;
+  padding:14px 24px;
   border:none;
   border-radius:12px;
-  font-size:18px;
+  font-size:17px;
   font-weight:bold;
   color:white;
   cursor:pointer;
   background:linear-gradient(145deg,#ff7b00,#ff3d00);
   box-shadow:0 5px 0 #a92b00;
+}
+
+.green{
+  background:linear-gradient(145deg,#00c853,#00a63f);
+  box-shadow:0 5px 0 #00792d;
+}
+
+.blue{
+  background:linear-gradient(145deg,#42a5f5,#1565c0);
+  box-shadow:0 5px 0 #0d47a1;
 }
 
 .btn:disabled{
@@ -124,7 +136,7 @@ body::before{
   justify-content:center;
   align-items:center;
   padding:15px;
-  z-index:20;
+  z-index:30;
 }
 
 .box{
@@ -158,6 +170,40 @@ body::before{
 .correct{background:#00c853;color:white;}
 .wrong{background:#d50000;color:white;}
 
+/* luật chơi giống index */
+.rule-box{
+  padding:15px;
+  width:100%;
+  max-width:420px;
+  border-radius:15px;
+  color:white;
+  background-image:
+  linear-gradient(135deg,#0a3d62,#145da0),
+  linear-gradient(45deg,red,orange,yellow,green,cyan,blue,violet,red);
+  background-origin:border-box;
+  background-clip:padding-box,border-box;
+  border:3px solid transparent;
+}
+
+.rule-title{
+  font-size:22px;
+  font-weight:bold;
+  color:#ffeb3b;
+  margin-bottom:10px;
+}
+
+.rule-box ul{
+  text-align:left;
+  padding-left:20px;
+  line-height:1.6;
+}
+
+.note{
+  margin-top:10px;
+  color:#ff5252;
+  font-weight:bold;
+}
+
 @media(max-width:768px){
   .wheel-wrap{width:280px;height:280px;}
   #wheel{width:280px;height:280px;}
@@ -168,9 +214,7 @@ body::before{
 
 <body>
 
-<a href="index.html">
 <img src="assets/logo.png" class="logo">
-</a>
 
 <div class="title">
 <div class="line1">Mini Game 1</div>
@@ -188,9 +232,13 @@ body::before{
 <canvas id="wheel" width="320" height="320"></canvas>
 </div>
 
+<div class="btn-group">
 <button class="btn" id="spinBtn" onclick="spinWheel()">QUAY NGAY 🎡</button>
+<button class="btn blue" onclick="openRule()">LUẬT CHƠI 📜</button>
+<button class="btn green" onclick="closeGame()">VỀ MENU ❌</button>
+</div>
 
-<!-- Popup câu hỏi -->
+<!-- popup câu hỏi -->
 <div class="popup" id="popup">
 <div class="box">
 <h2>CÂU HỎI</h2>
@@ -203,42 +251,43 @@ body::before{
 </div>
 </div>
 
-<!-- Popup tổng kết -->
+<!-- popup luật chơi -->
+<div class="popup" id="rulePopup">
+<div class="rule-box">
+<div class="rule-title">📜 Luật chơi</div>
+
+<ul>
+<li>Bấm QUAY NGAY để bắt đầu.</li>
+<li>Đồng hồ sẽ chạy 60 giây từ lần quay đầu tiên.</li>
+<li>Quay trúng ô nào sẽ xuất hiện câu hỏi.</li>
+<li>Chọn đáp án A B C D.</li>
+<li>Trả lời đúng được 1 điểm.</li>
+<li>Câu hỏi đã trả lời sẽ bị xóa khỏi vòng quay.</li>
+<li>Hết 5 câu hoặc hết giờ sẽ tổng kết điểm.</li>
+</ul>
+
+<div class="note">✨ Chúc bạn may mắn ✨</div>
+
+<button class="btn" onclick="closeRule()">ĐÓNG</button>
+</div>
+</div>
+
+<!-- popup tổng kết -->
 <div class="popup" id="finishPopup">
 <div class="box">
 <h2>🎉 Hoàn Thành</h2>
 <p id="finalText"></p>
-<button class="btn" onclick="location.href='index.html'">VỀ MENU</button>
+<button class="btn" onclick="closeGame()">ĐÓNG</button>
 </div>
 </div>
 
 <script>
 let questions = [
-{
-q:"Câu hỏi 1: Nội dung câu hỏi?",
-answers:["A","B","C","D"],
-correct:0
-},
-{
-q:"Câu hỏi 2: Nội dung câu hỏi?",
-answers:["A","B","C","D"],
-correct:1
-},
-{
-q:"Câu hỏi 3: Nội dung câu hỏi?",
-answers:["A","B","C","D"],
-correct:2
-},
-{
-q:"Câu hỏi 4: Nội dung câu hỏi?",
-answers:["A","B","C","D"],
-correct:3
-},
-{
-q:"Câu hỏi 5: Nội dung câu hỏi?",
-answers:["A","B","C","D"],
-correct:0
-}
+{q:"Câu hỏi 1?",answers:["A","B","C","D"],correct:0},
+{q:"Câu hỏi 2?",answers:["A","B","C","D"],correct:1},
+{q:"Câu hỏi 3?",answers:["A","B","C","D"],correct:2},
+{q:"Câu hỏi 4?",answers:["A","B","C","D"],correct:3},
+{q:"Câu hỏi 5?",answers:["A","B","C","D"],correct:0}
 ];
 
 const colors = ["#ff5252","#42a5f5","#ffeb3b","#ab47bc","#ff9800"];
@@ -248,6 +297,8 @@ let rotate = 0;
 let spinning = false;
 let currentIndex = -1;
 let timeLeft = 60;
+let timerStarted = false;
+let timer = null;
 
 const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
@@ -255,17 +306,17 @@ const ctx = canvas.getContext("2d");
 function drawWheel(){
 ctx.clearRect(0,0,320,320);
 
-let total = questions.length;
-if(total == 0) return;
+if(questions.length==0) return;
 
+let total = questions.length;
 let center = 160;
 let radius = 155;
-let angleSize = (Math.PI*2)/total;
+let size = (Math.PI*2)/total;
 
 for(let i=0;i<total;i++){
 
-let start = i*angleSize;
-let end = start + angleSize;
+let start = i*size;
+let end = start + size;
 
 ctx.beginPath();
 ctx.moveTo(center,center);
@@ -275,42 +326,49 @@ ctx.fill();
 
 ctx.save();
 ctx.translate(center,center);
-ctx.rotate(start + angleSize/2);
+ctx.rotate(start + size/2);
 ctx.fillStyle = "white";
 ctx.font = "bold 18px Arial";
 ctx.textAlign = "right";
-ctx.fillText("Câu " + (i+1), radius-20, 8);
+ctx.fillText("Câu " + (i+1), radius-18, 6);
 ctx.restore();
 }
 
 ctx.beginPath();
-ctx.arc(center,center,25,0,Math.PI*2);
+ctx.arc(center,center,24,0,Math.PI*2);
 ctx.fillStyle = "white";
 ctx.fill();
 }
 
 drawWheel();
-
 document.getElementById("remain").innerText = questions.length;
 
-const timer = setInterval(()=>{
+function startTimer(){
+if(timerStarted) return;
+
+timerStarted = true;
+
+timer = setInterval(()=>{
 timeLeft--;
 document.getElementById("time").innerText = timeLeft;
 
-if(timeLeft <= 0){
+if(timeLeft<=0){
 finishGame();
 }
 },1000);
+}
 
 function spinWheel(){
 
 if(spinning || questions.length==0) return;
 
+startTimer();
+
 spinning = true;
 
 currentIndex = Math.floor(Math.random()*questions.length);
 
-let each = 360 / questions.length;
+let each = 360/questions.length;
 let stopDeg = 360 - (currentIndex*each) - each/2;
 
 rotate += 360*5 + stopDeg;
@@ -384,6 +442,22 @@ document.getElementById("finishPopup").style.display="flex";
 
 document.getElementById("finalText").innerHTML =
 `Bạn đạt <b>${score}/5</b> điểm.<br>Chúc mừng bạn đã hoàn thành!`;
+}
+
+function openRule(){
+document.getElementById("rulePopup").style.display="flex";
+}
+
+function closeRule(){
+document.getElementById("rulePopup").style.display="none";
+}
+
+function closeGame(){
+window.close();
+
+setTimeout(()=>{
+history.back();
+},200);
 }
 </script>
 
