@@ -30,7 +30,7 @@ body::before{
   content:"";
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.35);
+  background:rgba(0,0,0,0.15);
   z-index:-1;
 }
 
@@ -46,12 +46,25 @@ body::before{
 .line1{
   font-family:'Playfair Display',serif;
   font-size:34px;
-  color:#ffcc00;
+  color:#ffd700;
+
+  text-shadow:
+    0 0 5px white,
+    0 0 10px rgba(255,255,255,.9),
+    0 0 18px rgba(255,215,0,.9),
+    0 0 28px rgba(255,215,0,.8);
 }
 
 .line2{
   font-family:'Great Vibes',cursive;
   font-size:34px;
+  color:#ffd700;
+
+  text-shadow:
+    0 0 5px white,
+    0 0 10px rgba(255,255,255,.9),
+    0 0 18px rgba(255,215,0,.9),
+    0 0 28px rgba(255,215,0,.8);
 }
 
 .top-info{
@@ -302,7 +315,7 @@ body::before{
 <img src="assets/logo.png" class="logo">
 
 <div class="title">
-<div class="line1">Mini Game 1</div>
+<div class="line1">Mini Game</div>
 <div class="line2">Vòng Quay Lịch Sử</div>
 </div>
 
