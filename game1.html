@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Game 1 - Vòng Quay Câu Hỏi</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:url("assets/bg1.png") center/cover no-repeat;
+  color:white;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:15px;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  z-index:-1;
+}
+
+.logo{
+  width:95px;
+  margin-top:10px;
+}
+
+.title{
+  margin-top:8px;
+}
+
+.line1{
+  font-family:'Playfair Display',serif;
+  font-size:34px;
+  color:#ffcc00;
+}
+
+.line2{
+  font-family:'Great Vibes',cursive;
+  font-size:34px;
+}
+
+.top-info{
+  margin-top:10px;
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+.info-box{
+  background:#0a3d62;
+  padding:10px 16px;
+  border-radius:12px;
+  font-weight:bold;
+}
+
+.wheel-wrap{
+  margin-top:20px;
+  position:relative;
+  width:310px;
+  height:310px;
+}
+
+.pointer{
+  position:absolute;
+  top:-10px;
+  left:50%;
+  transform:translateX(-50%);
+  width:0;
+  height:0;
+  border-left:18px solid transparent;
+  border-right:18px solid transparent;
+  border-top:38px solid #ff3333;
+  z-index:5;
+}
+
+#wheel{
+  width:310px;
+  height:310px;
+  border-radius:50%;
+  border:7px solid white;
+  transition:transform 4s cubic-bezier(.17,.67,.15,1);
+  box-shadow:0 0 25px rgba(255,255,255,.5);
+}
+
+.btn{
+  margin-top:20px;
+  padding:14px 26px;
+  border:none;
+  border-radius:12px;
+  font-size:18px;
+  font-weight:bold;
+  color:white;
+  cursor:pointer;
+  background:linear-gradient(145deg,#ff7b00,#ff3d00);
+  box-shadow:0 5px 0 #a92b00;
+}
+
+.btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+.popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  padding:15px;
+}
+
+.box{
+  background:#0a3d62;
+  width:100%;
+  max-width:420px;
+  border-radius:18px;
+  padding:20px;
+}
+
+.box h2{
+  color:#ffeb3b;
+  margin-bottom:15px;
+}
+
+.question{
+  margin-bottom:15px;
+  line-height:1.5;
+}
+
+.answer{
+  width:100%;
+  margin:6px 0;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.correct{background:#00c853;color:white;}
+.wrong{background:#d50000;color:white;}
+
+@media(max-width:768px){
+  .wheel-wrap{width:280px;height:280px;}
+  #wheel{width:280px;height:280px;}
+  .line1,.line2{font-size:28px;}
+}
+</style>
+</head>
+
+<body>
+
+<a href="index.html">
+<img src="assets/logo.png" class="logo">
+</a>
+
+<div class="title">
+<div class="line1">Mini Game 1</div>
+<div class="line2">Vòng Quay Câu Hỏi</div>
+</div>
+
+<div class="top-info">
+<div class="info-box">⭐ Điểm: <span id="score">0</span></div>
+<div class="info-box">⏰ Thời gian: <span id="time">60</span>s</div>
+<div class="info-box">📚 Còn lại: <span id="remain">5</span></div>
+</div>
+
+<div class="wheel-wrap">
+<div class="pointer"></div>
+<img src="images/game1/wheel.png" id="wheel">
+</div>
+
+<button class="btn" id="spinBtn" onclick="spinWheel()">QUAY NGAY 🎡</button>
+
+<!-- popup câu hỏi -->
+<div class="popup" id="popup">
+<div class="box">
+<h2>CÂU HỎI</h2>
+<div class="question" id="questionText"></div>
+
+<button class="answer" onclick="chooseAnswer(0)" id="a0"></button>
+<button class="answer" onclick="chooseAnswer(1)" id="a1"></button>
+<button class="answer" onclick="chooseAnswer(2)" id="a2"></button>
+<button class="answer" onclick="chooseAnswer(3)" id="a3"></button>
+</div>
+</div>
+
+<!-- popup tổng kết -->
+<div class="popup" id="finishPopup">
+<div class="box">
+<h2>🎉 Hoàn Thành</h2>
+<p id="finalText"></p>
+<button class="btn" onclick="location.href='index.html'">VỀ MENU</button>
+</div>
+</div>
+
+<script>
+let questions = [
+{
+q:"Câu hỏi 1: Nội dung câu hỏi tại đây?",
+answers:["Đáp án A","Đáp án B","Đáp án C","Đáp án D"],
+correct:0
+},
+{
+q:"Câu hỏi 2: Nội dung câu hỏi tại đây?",
+answers:["Đáp án A","Đáp án B","Đáp án C","Đáp án D"],
+correct:1
+},
+{
+q:"Câu hỏi 3: Nội dung câu hỏi tại đây?",
+answers:["Đáp án A","Đáp án B","Đáp án C","Đáp án D"],
+correct:2
+},
+{
+q:"Câu hỏi 4: Nội dung câu hỏi tại đây?",
+answers:["Đáp án A","Đáp án B","Đáp án C","Đáp án D"],
+correct:3
+},
+{
+q:"Câu hỏi 5: Nội dung câu hỏi tại đây?",
+answers:["Đáp án A","Đáp án B","Đáp án C","Đáp án D"],
+correct:0
+}
+];
+
+let score = 0;
+let currentIndex = -1;
+let spinning = false;
+let rotate = 0;
+let timeLeft = 60;
+
+document.getElementById("remain").innerText = questions.length;
+
+const timer = setInterval(()=>{
+timeLeft--;
+document.getElementById("time").innerText = timeLeft;
+
+if(timeLeft <= 0){
+clearInterval(timer);
+finishGame();
+}
+},1000);
+
+function spinWheel(){
+if(spinning || questions.length==0) return;
+
+spinning = true;
+
+currentIndex = Math.floor(Math.random()*questions.length);
+
+let each = 360 / questions.length;
+let stopDeg = 360 - (currentIndex * each) - each/2;
+
+rotate += 360*5 + stopDeg;
+
+document.getElementById("wheel").style.transform =
+`rotate(${rotate}deg)`;
+
+setTimeout(()=>{
+showQuestion();
+spinning = false;
+},4200);
+}
+
+function showQuestion(){
+let item = questions[currentIndex];
+
+document.getElementById("popup").style.display="flex";
+document.getElementById("questionText").innerText=item.q;
+
+for(let i=0;i<4;i++){
+let btn = document.getElementById("a"+i);
+btn.innerText = item.answers[i];
+btn.className = "answer";
+btn.disabled = false;
+}
+}
+
+function chooseAnswer(index){
+let q = questions[currentIndex];
+
+for(let i=0;i<4;i++){
+document.getElementById("a"+i).disabled = true;
+}
+
+if(index == q.correct){
+score++;
+document.getElementById("score").innerText = score;
+document.getElementById("a"+index).classList.add("correct");
+}else{
+document.getElementById("a"+index).classList.add("wrong");
+document.getElementById("a"+q.correct).classList.add("correct");
+}
+
+setTimeout(()=>{
+document.getElementById("popup").style.display="none";
+
+questions.splice(currentIndex,1);
+document.getElementById("remain").innerText = questions.length;
+
+if(questions.length == 0){
+finishGame();
+}
+},1200);
+}
+
+function finishGame(){
+clearInterval(timer);
+document.getElementById("spinBtn").disabled = true;
+document.getElementById("popup").style.display="none";
+
+document.getElementById("finishPopup").style.display="flex";
+document.getElementById("finalText").innerHTML =
+`Bạn đạt được <b>${score}/5</b> điểm. <br> Cảm ơn bạn đã tham gia!`;
+}
+</script>
+
+</body>
+</html>
