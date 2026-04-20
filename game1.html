@@ -568,10 +568,16 @@ finishGame();
 }
 
 /* ===================== SPIN ===================== */
+
+  
 function spinWheel(){
 
 if(spinning || questions.length===0) return;
-
+  
+if(questions.every(q => q.used)){
+  finishGame();
+  return;
+}
 startTimer();
 
 spinning = true;
@@ -579,7 +585,26 @@ spinning = true;
 let available = questions
   .map((q, i) => ({...q, index:i}))
   .filter(q => !q.used);
+  
+// ⭐ AUTO MODE: chỉ còn 1 câu thì tự xử lý luôn
+if(available.length === 1){
+  currentIndex = available[0].index;
 
+  spinning = true;
+
+  document.getElementById("spinBtn").disabled = true;
+
+  // hiệu ứng quay nhẹ cho đẹp
+  canvas.style.transform = `rotate(${rotate + 720}deg)`;
+
+  setTimeout(()=>{
+    showQuestion();
+    spinning = false;
+  },1000);
+
+  return;
+}
+  
 let picked = available[Math.floor(Math.random()*available.length)];
 currentIndex = picked.index;
   
