@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Mini Game 1 - Vòng quay lịch sử</title>
+<title>Mini Game - Vòng quay lịch sử</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Great+Vibes&display=swap" rel="stylesheet">
 
@@ -447,7 +447,6 @@ correct:2
 }
 ];
 
-let questions = JSON.parse(JSON.stringify(originalQuestions));
 
 const colors = ["#ff5252","#42a5f5","#ffeb3b","#ab47bc","#ff9800"];
 
@@ -464,10 +463,35 @@ const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
 
 /* ===================== INIT ===================== */
-drawWheel();
+/*drawWheel();
 updateRemain();
-updateTime();
+updateTime();*/
+loadQuestions(); // Load lại 
+/* ===================== Load JSON ===================== */
+let questions = [];
 
+async function loadQuestions(){
+  try {
+    const res = await fetch("assets/question_game1/questions.json");
+
+    if(!res.ok) throw new Error("HTTP error");
+
+    const data = await res.json();
+
+    if(!Array.isArray(data) || data.length === 0){
+      throw new Error("JSON rỗng");
+    }
+
+    questions = data;
+
+  } catch (err) {
+    console.warn("Fallback câu hỏi:", err);
+    questions = JSON.parse(JSON.stringify(originalQuestions));
+  }
+
+  drawWheel();
+  updateRemain();
+}
 /* ===================== UI ===================== */
 function updateRemain(){
 document.getElementById("remain").innerText = questions.length;
