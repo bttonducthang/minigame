@@ -661,10 +661,12 @@ setTimeout(()=>{
 document.getElementById("popup").style.display="none";
 
 questions[currentIndex].used = true;
+drawWheel();
+updateRemain();
 let activeQuestions = questions.filter(q => !q.used);
 
-if(questions.length===0){
-finishGame();
+if(questions.every(q => q.used)){
+  finishGame();
 }
 
 },1000);
@@ -717,10 +719,12 @@ timerStarted = false;
 document.getElementById("score").innerText = 0;
 document.getElementById("timeBox").classList.remove("warning");
 
-questions = JSON.parse(JSON.stringify(questionsCache)).map(q => ({
-  ...q,
-  used: false
-}));
+questions = JSON.parse(JSON.stringify(questionsCache))
+  .slice(0,5)
+  .map(q => ({
+    ...q,
+    used: false
+  }));
 
 drawWheel();
 updateRemain();
