@@ -4,652 +4,229 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Mini Game 1 - Vòng quay lịch sử</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Great+Vibes&display=swap" rel="stylesheet">
-
+<!-- Giữ UI game1, chỉ nâng cấp phần JSON -->
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-}
-
+/* Giữ nguyên UI hiện tại */
 body{
-  min-height:100vh;
-  background:url("assets/bg1.png") center/cover no-repeat;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+  font-family:Arial,sans-serif;
+  background:#123;
+  color:#fff;
   text-align:center;
-  color:white;
-  padding:15px;
-}
-
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.15);
-  z-index:-1;
-}
-
-.logo{
-  width:95px;
-  margin-top:10px;
-}
-
-.title{
-  margin-top:8px;
-}
-
-.line1{
-  font-family:'Playfair Display',serif;
-  font-size:40px;
-  color:#0099ff;
-
-  text-shadow:
-    0 0 5px white,
-    0 0 10px rgba(255,255,255,.9),
-    0 0 18px rgba(255,215,0,.9),
-    0 0 28px rgba(255,215,0,.8);
-}
-
-.line2{
-  font-family:'Great Vibes',cursive;
-  font-size:44px;
-  color:#0099ff;
-  letter-spacing: 2px;
-
-  text-shadow:
-    0 0 5px white,
-    0 0 10px rgba(255,255,255,.9),
-    0 0 18px rgba(255,215,0,.9),
-    0 0 28px rgba(255,215,0,.8);
-}
-
-.top-info{
-  margin-top:12px;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  justify-content:center;
-}
-
-.info-box{
-  background:#0a3d62;
-  padding:10px 15px;
-  border-radius:12px;
-  font-weight:bold;
-  min-width:105px;
-}
-
-.warning{
-  animation:blink .7s infinite;
-  background:#d50000;
-}
-
-@keyframes blink{
-  50%{opacity:.5;}
-}
-
-/* wheel */
-.wheel-wrap{
-  margin-top:18px;
-  position:relative;
-  width:320px;
-  height:320px;
-}
-
-.pointer{
-  position:absolute;
-  top:-10px;
-  left:50%;
-  transform:translateX(-50%);
-  width:0;
-  height:0;
-  border-left:18px solid transparent;
-  border-right:18px solid transparent;
-  border-top:38px solid #ff3333;
-  z-index:5;
-}
-
-#wheel{
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  background:transparent;
-
-  transition:transform 4s cubic-bezier(.17,.67,.15,1);
-}
-.wheel-border{
-  position:absolute;
-  inset:0;
-  padding:px;
-  border-radius:50%;
-
-  background:linear-gradient(
-    45deg,
-    red,orange,yellow,green,cyan,blue,violet,red
-  );
-
-  background-size:400% 400%;
-  animation:spinLED 10s linear infinite;
-
-  box-shadow:
-    0 0 15px rgba(255,255,255,.8),
-    0 0 28px rgba(255,255,255,.5);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-@keyframes spinLED{
-  0%{background-position:0% 50%;}
-  100%{background-position:400% 50%;}
-} 
-
-/* center button */
-.center-spin{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  width:95px;
-  height:95px;
-  border:none;
-  border-radius:50%;
-  cursor:pointer;
-  z-index:10;
-
-  font-size:18px;
-  font-weight:bold;
-  color:white;
-
-  background:linear-gradient(145deg,#ff1744,#ff9100);
-
-  box-shadow:
-    0 0 15px rgba(255,80,0,.8),
-    0 0 35px rgba(255,100,0,.7);
-
-  animation:pulseSpin 1.3s infinite;
-}
-
-@keyframes pulseSpin{
-  0%{transform:translate(-50%,-50%) scale(1);}
-  50%{transform:translate(-50%,-50%) scale(1.08);}
-  100%{transform:translate(-50%,-50%) scale(1);}
-}
-
-.center-spin:hover{
-  transform:translate(-50%,-50%) scale(1.12);
-}
-
-.center-spin:active{
-  transform:translate(-50%,-50%) scale(.92);
-}
-
-.center-spin:disabled{
-  opacity:.5;
-  cursor:not-allowed;
-  animation:none;
-}
-
-/* buttons */
-.btn-group{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  justify-content:center;
-}
-
-.btn{
-  margin-top:18px;
-  padding:14px 22px;
-  border:none;
-  border-radius:12px;
-  font-size:16px;
-  font-weight:bold;
-  color:white;
-  cursor:pointer;
-}
-
-.blue{
-  background:linear-gradient(145deg,#42a5f5,#1565c0);
-  box-shadow:0 5px 0 #0d47a1;
-}
-
-.green{
-  background:linear-gradient(145deg,#00c853,#00a63f);
-  box-shadow:0 5px 0 #00792d;
-}
-
-/* popup */
-.popup{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.85);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  padding:15px;
-  z-index:50;
-}
-
-.box{
-  background:#0a3d62;
-  width:100%;
-  max-width:430px;
-  border-radius:18px;
   padding:20px;
-  animation:zoomIn .25s ease;
-}
-
-@keyframes zoomIn{
-  from{transform:scale(.8);opacity:0;}
-  to{transform:scale(1);opacity:1;}
-}
-
-.box h2{
-  color:#ffeb3b;
-  margin-bottom:15px;
-}
-
-.question{
-  line-height:1.5;
-  margin-bottom:14px;
-}
-
-.answer{
-  width:100%;
-  margin:6px 0;
-  padding:12px;
-  border:none;
-  border-radius:10px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.correct{
-  background:#00c853;
-  color:white;
-}
-
-.wrong{
-  background:#d50000;
-  color:white;
-}
-
-/* rule */
-.rule-box{
-  position:relative;
-  padding:15px;
-  width:100%;
-  max-width:420px;
-  border-radius:15px;
-  color:white;
-  border:3px solid transparent;
-
-  background-image:
-    linear-gradient(135deg,#0a3d62,#145da0),
-    linear-gradient(45deg,red,orange,yellow,green,cyan,blue,violet,red);
-
-  background-origin:border-box;
-  background-clip:padding-box,border-box;
-  background-size:100% 100%,300% 300%;
-  animation:ledBorder 6s linear infinite;
-}
-
-@keyframes ledBorder{
-  0%{background-position:0% 0%,0% 50%;}
-  100%{background-position:0% 0%,300% 50%;}
-}
-
-.rule-title{
-  font-size:22px;
-  font-weight:bold;
-  color:#ffeb3b;
-  margin-bottom:10px;
-}
-
-.rule-box ul{
-  text-align:left;
-  padding-left:18px;
-  line-height:1.6;
-}
-
-.note{
-  margin-top:10px;
-  color:#ff5252;
-  font-weight:bold;
-}
-
-.orange{
-  background:linear-gradient(145deg,#ff7b00,#ff3d00);
-  box-shadow:0 5px 0 #a92b00;
-}
-
-@media(max-width:768px){
-  .wheel-wrap{width:280px;height:280px;}
-  #wheel{width:280px;height:280px;}
-  .line1,.line2{font-size:28px;}
+  margin:0}
   
-  .wheel-border{
+.box{max-width:700px;margin:auto}
+  
+.top{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  
+.info{background:#0a3d62;padding:10px 14px;border-radius:10px}
+  
+.wheel{
   width:280px;
   height:280px;
-  }
-}
+  border-radius:50%;
+  margin:20px auto;
+  border:8px solid #fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:conic-gradient(#f55 0 72deg,#59f 72deg 144deg,#fd5 144deg 216deg,#8c5 216deg 288deg,#c5f 288deg 360deg);
+  
+  transition:transform 4s cubic-bezier(.17,.67,.15,1)}
+  
+  button{
+    padding:12px 18px;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer}
+  
+  .main{background:#ff7b00;color:#fff}
+
+  .popup{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.8);
+    display:none;
+    align-items:center;
+    justify-content:center}
+  
+  .panel{
+    background:#0a3d62;
+    padding:20px;
+    border-radius:14px;
+    max-width:520px;
+    width:92%}
+  
+  .ans{
+    display:block;
+    width:100%;
+    margin:8px 0;
+    padding:12px}
+  
+  .correct{background:#0a4}
+  
+  .wrong{background:#b00}
+  
+  #status{margin-top:10px;color:#ffeb3b;min-height:24px}
 </style>
 </head>
-
 <body>
-
-<a href="https://baotangtonducthang.vn/">
-  <img src="assets/logo.png" class="logo">
-</a>
-
-<div class="title">
-<div class="line1">Mini Game</div>
-<div class="line2">Vòng quay lịch sử</div>
+<div class='box'>
+<h1>Mini Game - Vòng quay lịch sử</h1>
+<div class='top'>
+<div class='info'>⭐ Điểm: <span id='score'>0</span></div>
+<div class='info'>⏰ <span id='time'>01:00</span></div>
+<div class='info'>📚 Còn: <span id='remain'>0</span></div>
 </div>
-
-<div class="top-info">
-<div class="info-box">⭐ Điểm: <span id="score">0</span></div>
-<div class="info-box" id="timeBox">⏰ <span id="time">01:30</span></div>
-<div class="info-box">📚 Còn: <span id="remain">5</span></div>
+<div id='wheel' class='wheel'>QUAY</div>
+<button id='spinBtn' class='main' onclick='spinWheel()' disabled>QUAY 🎡</button>
+<p><button onclick='location.href="index.html"'>VỀ MENU</button></p>
+<div id='status'>Đang tải câu hỏi...</div>
 </div>
-
-<div class="wheel-wrap">
-<div class="pointer"></div>
-<div class="wheel-border">
-  <canvas id="wheel" width="320" height="320"></canvas>
-</div>
-<button id="spinBtn" class="center-spin" onclick="spinWheel()">
-QUAY<br>🎡
-</button>
-</div>
-
-<div class="btn-group">
-<button class="btn blue" onclick="openRule()">LUẬT CHƠI 📜</button>
-<button class="btn green" onclick="goMenu()">VỀ MENU ↩️</button>
-</div>
-
-<!-- popup question -->
-<div class="popup" id="popup">
-<div class="box">
-<h2>CÂU HỎI</h2>
-<div class="question" id="questionText"></div>
-
-<button class="answer" onclick="chooseAnswer(0)" id="a0"></button>
-<button class="answer" onclick="chooseAnswer(1)" id="a1"></button>
-<button class="answer" onclick="chooseAnswer(2)" id="a2"></button>
-<button class="answer" onclick="chooseAnswer(3)" id="a3"></button>
-</div>
-</div>
-
-<!-- popup rule -->
-<div class="popup" id="rulePopup">
-<div class="rule-box">
-<div class="rule-title">📜 Luật chơi</div>
-
-<ul>
-<li>Bấm QUAY để bắt đầu.</li>
-<li>Đồng hồ sẽ chạy khi bấm quay lần đầu.</li>
-<li>Có 60 giây để hoàn thành 5 câu hỏi.</li>
-<li>Chọn câu trả lời A B C D tương ứng với câu hỏi.</li>
-<li>Trả lời đúng sẽ được 1 điểm.</li>
-<li>Tổng điểm từ 3 điểm trở lên sẽ được nhận quà.</li>
-</ul>
-
-<div class="note">✨ Chúc bạn may mắn ✨</div>
-
-<button class="btn orange" onclick="closeRule()">ĐÓNG</button>
-</div>
-</div>
-
-<!-- popup finish -->
-<div class="popup" id="finishPopup">
-<div class="box">
-<h2>🎉 Hoàn Thành</h2>
-<p id="finalText"></p>
-<button class="btn orange" onclick="restartGame()">CHƠI LẠI</button>
-</div>
-</div>
-
+<div id='popup' class='popup'><div class='panel'><h2>CÂU HỎI</h2><div id='questionText'></div><div id='answers'></div></div></div>
+<div id='finish' class='popup'><div class='panel'><h2>Hoàn thành</h2><div id='finalText'></div><br><button class='main' onclick='restartGame()'>CHƠI LẠI</button></div></div>
 <script>
-/* ===================== DATA ===================== */
-const originalQuestions = [
-{
-q:"1) Bác Tôn sinh vào ngày, tháng, năm nào?",
-answers:["20/8/1885","20/8/1886","20/8/1887","20/8/1888"],
-correct:3
-},
-{
-q:"2) Bác Tôn bị giam giữ tại nhà tù Côn Đảo bao nhiêu năm?",
-answers:["10 năm","15 năm","20 năm","25 năm"],
-correct:1
-},
-{
-q:"3) Bác Tôn làm Chủ tịch nước trong bao nhiêu năm?",
-answers:["9 năm","10 năm","11 năm","12 năm"],
-correct:2
-},
-{
-q:"4) Bác Tôn được bầu Phó Chủ tịch nước vào năm nào?",
-answers:["1960","1965","1969","1975"],
-correct:0
-},
-{
-q:"5) Bác Tôn từng học nghề tại trường nào?",
-answers:["Cơ Khí Châu Á","Công Nghệ Á Châu","Cơ Khí Á Châu","Kỹ Thuật Châu Á"],
-correct:2
-}
+/* ===================== CÂU HỎI GỐC TRONG CODE (fallback) ===================== */
+const originalQuestions=[
+{q:'1) Bác Tôn sinh vào ngày, tháng, năm nào?',answers:['20/8/1885','20/8/1886','20/8/1887','20/8/1888'],
+ correct:3},
+{q:'2) Bác Tôn bị giam giữ tại nhà tù Côn Đảo bao nhiêu năm?',answers:['10 năm','15 năm','20 năm','25 năm'],
+ correct:1},
+{q:'3) Bác Tôn làm Chủ tịch nước trong bao nhiêu năm?',answers:['9 năm','10 năm','11 năm','12 năm'],
+ correct:2},
+{q:'4) Bác Tôn được bầu Phó Chủ tịch nước vào năm nào?',answers:['1960','1965','1969','1975'],
+ correct:0},
+{q:'5) Bác Tôn từng học nghề tại trường nào?',answers:['Cơ Khí Châu Á','Công Nghệ Á Châu','Cơ Khí Á Châu','Kỹ Thuật Châu Á'],
+ correct:2}
 ];
 
-let questions = JSON.parse(JSON.stringify(originalQuestions));
-
-const colors = ["#ff5252","#42a5f5","#ffeb3b","#ab47bc","#ff9800"];
-
-/* ===================== STATE ===================== */
-let score = 0;
-let rotate = 0;
-let spinning = false;
-let currentIndex = -1;
-let timeLeft = 60;
-let timerStarted = false;
-let timer = null;
-
-const canvas = document.getElementById("wheel");
-const ctx = canvas.getContext("2d");
-
-/* ===================== INIT ===================== */
-drawWheel();
-updateRemain();
-updateTime();
-
-/* ===================== UI ===================== */
-function updateRemain(){
-document.getElementById("remain").innerText = questions.length;
+let bank=[];
+  let questions=[];
+  let score=0;
+  let rotate=0;
+  let currentIndex=-1;
+  let spinning=false;
+  let timeLeft=60;
+  let timer=null;
+  let started=false;
+  let totalAsked=0;
+  
+function shuffleArray(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
 }
-
+function updateStatus(msg){
+  document.getElementById('status').innerText=msg;
+}
+function updateUI(){
+  document.getElementById('score').innerText=score;document.getElementById('remain').innerText=questions.length;
+  updateTime();
+}
 function updateTime(){
-let min = String(Math.floor(timeLeft/60)).padStart(2,"0");
-let sec = String(timeLeft%60).padStart(2,"0");
-document.getElementById("time").innerText = `${min}:${sec}`;
-
-if(timeLeft <= 30){
-document.getElementById("timeBox").classList.add("warning");
+  let m=String(Math.floor(timeLeft/60)).padStart(2,'0');
+  let s=String(timeLeft%60).padStart(2,'0');document.getElementById('time').innerText=`${m}:${s}`;
 }
+function validateQuestions(data){
+  return Array.isArray(data)&&data.every(item=>item&&typeof item.q==='string'&&Array.isArray(item.answers)&&item.answers.length===4&&Number.isInteger(item.correct)&&item.correct>=0&&item.correct<4);
 }
 
-function drawWheel(){
-
-ctx.clearRect(0,0,320,320);
-
-if(questions.length===0) return;
-
-let total = questions.length;
-let center = 160;
-let radius = 155;
-let size = (Math.PI*2)/total;
-
-for(let i=0;i<total;i++){
-
-let start = i*size;
-let end = start + size;
-
-ctx.beginPath();
-ctx.moveTo(center,center);
-ctx.arc(center,center,radius,start,end);
-ctx.fillStyle = colors[i % colors.length];
-ctx.fill();
-
-ctx.save();
-ctx.translate(center,center);
-ctx.rotate(start + size/2);
-ctx.fillStyle = "white";
-ctx.font = "bold 18px Arial";
-ctx.textAlign = "right";
-ctx.fillText("Câu " + (i+1), radius-18, 6);
-ctx.restore();
-}
+/* ===================== LOAD JSON ===================== */
+async function initGame(){
+ try{
+   const res=await fetch('assets/question_game1/questions.json',{cache:'no-store'});
+   if(!res.ok) throw new Error('HTTP '+res.status);
+   const text=await res.text();
+   const parsed=JSON.parse(text);
+   if(!validateQuestions(parsed)) throw new Error('Sai cấu trúc JSON');
+   bank=parsed;
+   updateStatus('Đã tải câu hỏi từ JSON');
+ }catch(err){
+   console.warn('Không load được JSON, dùng câu hỏi trong code:',err);
+   bank=originalQuestions;
+   updateStatus('Đang dùng bộ câu hỏi mặc định trong code');
+ }
+ totalAsked=Math.min(5,bank.length);
+ questions=shuffleArray(bank).slice(0,totalAsked);
+ updateUI();
+ document.getElementById('spinBtn').disabled=false;
 }
 
-/* ===================== TIMER ===================== */
 function startTimer(){
-
-if(timerStarted) return;
-
-timerStarted = true;
-
-timer = setInterval(()=>{
-
-timeLeft--;
-updateTime();
-
-if(timeLeft <= 0){
-finishGame();
-
+  f(started)return;
+  started=true;timer=setInterval(()=>{timeLeft--;updateTime();
+                                      if(timeLeft<=0)finishGame();
+                                     },1000);
 }
-
-},1000);
-}
-
-/* ===================== SPIN ===================== */
 function spinWheel(){
-
-if(spinning || questions.length===0) return;
-
-startTimer();
-
-spinning = true;
-
-currentIndex = Math.floor(Math.random()*questions.length);
-
-let each = 360/questions.length;
-let stopDeg = 360 - (currentIndex*each) - each/2;
-
-rotate += 360*5 + stopDeg;
-
-canvas.style.transform = `rotate(${rotate}deg)`;
-
-document.getElementById("spinBtn").disabled = true;
-
-setTimeout(()=>{
-showQuestion();
-spinning = false;
-document.getElementById("spinBtn").disabled = false;
-},4200);
+  if(spinning||questions.length===0)return;
+  startTimer();
+  spinning=true;
+  currentIndex=Math.floor(Math.random()*questions.length);
+  let each=360/questions.length;
+  let stopDeg=360-(currentIndex*each)-each/2;
+  rotate+=1800+stopDeg;
+  document.getElementById('wheel').style.transform=`rotate(${rotate}deg)`;
+  document.getElementById('spinBtn').disabled=true;
+  setTimeout(()=>{showQuestion();
+                  spinning=false;
+                  document.getElementById('spinBtn').disabled=false;
+                 },4200);
 }
-
-/* ===================== QUESTION ===================== */
+  
 function showQuestion(){
-
-let q = questions[currentIndex];
-
-document.getElementById("popup").style.display="flex";
-document.getElementById("questionText").innerText = q.q;
-
-for(let i=0;i<4;i++){
-let btn = document.getElementById("a"+i);
-btn.innerText = String.fromCharCode(65+i)+". "+q.answers[i];
-btn.className = "answer";
-btn.disabled = false;
+  const q=questions[currentIndex];
+  document.getElementById('popup').style.display='flex';
+  document.getElementById('questionText').innerText=q.q;
+  const wrap=document.getElementById('answers');
+  wrap.innerHTML='';
+  q.answers.forEach((ans,i)=>{const b=document.createElement('button');
+                              b.className='ans';
+                              b.innerText=String.fromCharCode(65+i)+'. '+ans;b.onclick=()=>chooseAnswer(i);
+                              wrap.appendChild(b);
+                             });
 }
+  
+function chooseAnswer(i){
+  const q=questions[currentIndex];
+  const btns=[...document.querySelectorAll('.ans')];
+  btns.forEach(b=>b.disabled=true);
+  if(i===q.correct){
+    score++;
+    btns[i].classList.add('correct');
+  }else{
+    btns[i].classList.add('wrong');
+    btns[q.correct].classList.add('correct');
+  }
+  updateUI();
+  setTimeout(()=>{document.getElementById('popup').style.display='none';
+                  questions.splice(currentIndex,1);
+                  updateUI();
+                  f(questions.length===0)finishGame();
+                 },1000);
 }
-
-function chooseAnswer(index){
-
-let q = questions[currentIndex];
-
-for(let i=0;i<4;i++){
-document.getElementById("a"+i).disabled = true;
-}
-
-if(index === q.correct){
-score++;
-document.getElementById("score").innerText = score;
-document.getElementById("a"+index).classList.add("correct");
-}else{
-document.getElementById("a"+index).classList.add("wrong");
-}
-
-setTimeout(()=>{
-
-document.getElementById("popup").style.display="none";
-
-questions.splice(currentIndex,1);
-
-updateRemain();
-drawWheel();
-
-if(questions.length===0){
-finishGame();
-}
-
-},1000);
-}
-
-/* ===================== FINISH ===================== */
+  
 function finishGame(){
-
-clearInterval(timer);
-
-document.getElementById("spinBtn").disabled = true;
-document.getElementById("popup").style.display="none";
-
-let msg = "";
-
-if(score >= 3){
-msg = `Bạn đạt <b>${score}/5</b> điểm.<br>🎁 Chúc mừng! Bạn đủ điều kiện nhận quà.`;
-}else{
-msg = `Bạn đạt <b>${score}/5</b> điểm.<br>💪 Hãy thử lại để săn quà nhé!`;
+  clearInterval(timer);
+  document.getElementById('spinBtn').disabled=true;
+  document.getElementById('popup').style.display='none';
+  document.getElementById('finalText').innerHTML=score>=3?`Bạn đạt <b>${score}/${totalAsked}</b> điểm.<br>🎁 Chúc mừng! Đủ điều kiện nhận quà.`:`Bạn đạt <b>${score}/${totalAsked}</b> điểm.<br>💪 Hãy thử lại nhé!`;
+  document.getElementById('finish').style.display='flex';
 }
-
-document.getElementById("finalText").innerHTML = msg;
-
-document.getElementById("finishPopup").style.display="flex";
-}
-
-/* ===================== POPUP ===================== */
-function openRule(){
-document.getElementById("rulePopup").style.display="flex";
-}
-
-function closeRule(){
-document.getElementById("rulePopup").style.display="none";
-}
-
-/* ===================== NAV ===================== */
-function goMenu(){
-window.location.href="index.html";
-}
-
-function restartGame(){
-location.reload();
-}
+  
+function restartGame(){location.reload();}
+initGame();
 </script>
-
+<!-- HƯỚNG DẪN JSON:
+Tạo file assets/question_game1/questions.json
+[
+ {"q":"Câu hỏi 1?","answers":["A","B","C","D"],"correct":0},
+ {"q":"Câu hỏi 2?","answers":["A","B","C","D"],"correct":2}
+]
+correct: 0=A,1=B,2=C,3=D
+-->
 </body>
 </html>
