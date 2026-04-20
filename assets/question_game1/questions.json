@@ -31,8 +31,8 @@
   },
   {
     "q":"Bác Tôn bị giam giữ tại nhà tù Côn Đảo bao nhiêu năm?",
-    answers:["10 năm","15 năm","20 năm","25 năm"],
-    correct:1
+    "answers":["10 năm","15 năm","20 năm","25 năm"],
+    "correct":1
   },
   {
     "q":"Bác Tôn làm Chủ tịch nước trong bao nhiêu năm?",
