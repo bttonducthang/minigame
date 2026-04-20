@@ -23,5 +23,30 @@
     "q": "Bác Tôn từng giữ chức vụ gì?",
     "answers": ["Chủ tịch nước","Thủ tướng","Bộ trưởng","Tổ trưởng"],
     "correct": 0
+  },
+  {
+    "q":"Bác Tôn sinh vào ngày, tháng, năm nào?",
+    "answers":["20/8/1885","20/8/1886","20/8/1887","20/8/1888"],
+    "correct":3
+  },
+  {
+    "q":"Bác Tôn bị giam giữ tại nhà tù Côn Đảo bao nhiêu năm?",
+    answers:["10 năm","15 năm","20 năm","25 năm"],
+    correct:1
+  },
+  {
+    "q":"Bác Tôn làm Chủ tịch nước trong bao nhiêu năm?",
+    "answers":["9 năm","10 năm","11 năm","12 năm"],
+    "correct":2
+  },
+  {
+    "q":"Bác Tôn được bầu Phó Chủ tịch nước vào năm nào?",
+    "answers":["1960","1965","1969","1975"],
+    "correct":0
+  },
+  {
+    "q":"Bác Tôn từng học nghề tại trường nào?",
+    "answers":["Cơ Khí Châu Á","Công Nghệ Á Châu","Cơ Khí Á Châu","Kỹ Thuật Châu Á"],
+    "correct":2
   }
 ]
