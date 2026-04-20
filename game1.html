@@ -485,13 +485,13 @@ async function loadQuestions(){
     const data = await res.json();
 
     questionsCache = JSON.parse(JSON.stringify(data));
-    questions = JSON.parse(JSON.stringify(data));
+    questions = JSON.parse(JSON.stringify(data)).slice(0,5);
 
   } catch (err) {
     console.warn("Fallback:", err);
 
-    questionsCache = JSON.parse(JSON.stringify(originalQuestions));
-    questions = JSON.parse(JSON.stringify(originalQuestions));
+    questionsCache = JSON.parse(JSON.stringify(originalQuestions.slice(0,5)));
+    questions = JSON.parse(JSON.stringify(originalQuestions.slice(0,5)));
   }
 
   updateRemain();
@@ -514,8 +514,9 @@ document.getElementById("timeBox").classList.add("warning");
 
 function drawWheel(){
 
-  let activeQuestions = questions.filter(q => !q.used);
-  if(activeQuestions.length === 0) return;
+  /*let activeQuestions = questions.filter(q => !q.used);
+  if(activeQuestions.length === 0) return;*/
+  let total = questions.length;
 
   ctx.setTransform(1,0,0,1,0,0);
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -575,9 +576,13 @@ startTimer();
 
 spinning = true;
 
-let activeQuestions = questions.filter(q => !q.used);
-currentIndex = Math.floor(Math.random()*activeQuestions.length);
+let available = questions
+  .map((q, i) => ({...q, index:i}))
+  .filter(q => !q.used);
 
+let picked = available[Math.floor(Math.random()*available.length)];
+currentIndex = picked.index;
+  
 let each = 360/questions.length;
 let stopDeg = 360 - (currentIndex*each) - each/2;
 
@@ -612,9 +617,8 @@ btn.disabled = false;
 
 function chooseAnswer(index){
 
-let activeQuestions = questions.filter(q => !q.used);
-let q = activeQuestions[currentIndex];
-
+let q = questions[currentIndex];
+  
 for(let i=0;i<4;i++){
 document.getElementById("a"+i).disabled = true;
 }
