@@ -276,12 +276,12 @@ body::before{
 
 <ul>
 <li>Bấm QUAY NGAY để bắt đầu.</li>
-<li>Đồng hồ sẽ chạy 60 giây từ lần quay đầu tiên.</li>
-<li>Quay trúng ô nào sẽ xuất hiện câu hỏi.</li>
-<li>Chọn đáp án A B C D.</li>
+<li>Bạn có 90 giây để trả lời 5 câu hỏi.</li>
+<li>Thời gian sẽ bắt đầu chạy khi bạn bấm quay.</li>
+<li>Chọn đáp án A B C D cho câu hỏi.</li>
 <li>Trả lời đúng được 1 điểm.</li>
-<li>Câu hỏi đã trả lời sẽ bị xóa khỏi vòng quay.</li>
-<li>Hết 5 câu hoặc hết giờ sẽ tổng kết điểm.</li>
+<li>Trả lời sai sẽ không mất điểm mà sẽ qua câu hỏi tiếp theo</li>
+<li>Trả lời đúng 3/5 câu hỏi sẽ được nhận quà.</li>
 </ul>
 
 <div class="note">✨ Chúc bạn may mắn ✨</div>
@@ -301,11 +301,21 @@ body::before{
 
 <script>
 let questions = [
-{q:"Câu hỏi 1?",answers:["A","B","C","D"],correct:0},
-{q:"Câu hỏi 2?",answers:["A","B","C","D"],correct:1},
-{q:"Câu hỏi 3?",answers:["A","B","C","D"],correct:2},
-{q:"Câu hỏi 4?",answers:["A","B","C","D"],correct:3},
-{q:"Câu hỏi 5?",answers:["A","B","C","D"],correct:0}
+{q:"1) Bác Tôn sinh vào ngày, tháng, năm nào?"
+ ,answers:["A. 20/8/1885","B. 20/8/1886","C. 20/8/1887","D. 20/8/1888"],
+ correct:3},
+{q:"2) Bác Tôn bị giam giữ tại nhà tù Côn Đảo bao nhiêu năm?",
+ answers:["A. 10 năm","B. 15 năm","C. 20 năm","D. 25 năm"],
+ correct:1},
+{q:"3) Bác Tôn làm chủ tịch nước trong bao nhiêu năm?",
+ answers:["A. 9 năm","B. 10 năm","C. 11 năm","D. 12 năm"],
+ correct:2},
+{q:"4) Bác Tôn được bầu làm Phó Chủ tịch nước Việt Nam dân chủ cộng hòa vào năm nào?",
+ answers:["A. 1960","B. 1965","C. 1969","D. 1975"],
+ correct:0},
+{q:"Ở Sài Gòn, Bác Tôn đã có khoảng thời gian theo học nghề tại trường nào?",
+ answers:["A. Trường Cơ Khí Châu Á","B. Trường Công Nghệ Á Châu","C. Trường Cơ Khí Á Châu","D. Trường Kỹ Thuật Châu Á"],
+ correct:2}
 ];
 
 const colors = ["#ff5252","#42a5f5","#ffeb3b","#ab47bc","#ff9800"];
@@ -314,7 +324,7 @@ let score = 0;
 let rotate = 0;
 let spinning = false;
 let currentIndex = -1;
-let timeLeft = 60;
+let timeLeft = 90;
 let timerStarted = false;
 let timer = null;
 
@@ -422,13 +432,23 @@ for(let i=0;i<4;i++){
 document.getElementById("a"+i).disabled = true;
 }
 
-if(index == q.correct){
+/*if(index == q.correct){
 score++;
 document.getElementById("score").innerText = score;
 document.getElementById("a"+index).classList.add("correct");
 }else{
 document.getElementById("a"+index).classList.add("wrong");
 document.getElementById("a"+q.correct).classList.add("correct");
+}*/
+  
+if(index == q.correct){
+
+  score++;
+  document.getElementById("score").innerText = score;
+  document.getElementById("a"+index).classList.add("correct");
+
+}else{
+  document.getElementById("a"+index).classList.add("wrong");
 }
 
 setTimeout(()=>{
