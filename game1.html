@@ -18,11 +18,11 @@
 body{
   min-height:100vh;
   background:url("assets/bg1.png") center/cover no-repeat;
-  color:white;
-  text-align:center;
   display:flex;
   flex-direction:column;
   align-items:center;
+  color:white;
+  text-align:center;
   padding:15px;
 }
 
@@ -55,16 +55,16 @@ body::before{
 }
 
 .top-info{
-  margin-top:10px;
+  margin-top:12px;
   display:flex;
-  gap:15px;
+  gap:12px;
   flex-wrap:wrap;
   justify-content:center;
 }
 
 .info-box{
   background:#0a3d62;
-  padding:10px 16px;
+  padding:10px 15px;
   border-radius:12px;
   font-weight:bold;
 }
@@ -72,8 +72,8 @@ body::before{
 .wheel-wrap{
   margin-top:20px;
   position:relative;
-  width:310px;
-  height:310px;
+  width:320px;
+  height:320px;
 }
 
 .pointer{
@@ -90,12 +90,12 @@ body::before{
 }
 
 #wheel{
-  width:310px;
-  height:310px;
+  width:320px;
+  height:320px;
   border-radius:50%;
-  border:7px solid white;
-  transition:transform 4s cubic-bezier(.17,.67,.15,1);
+  border:8px solid white;
   box-shadow:0 0 25px rgba(255,255,255,.5);
+  transition:transform 4s cubic-bezier(.17,.67,.15,1);
 }
 
 .btn{
@@ -124,12 +124,13 @@ body::before{
   justify-content:center;
   align-items:center;
   padding:15px;
+  z-index:20;
 }
 
 .box{
   background:#0a3d62;
   width:100%;
-  max-width:420px;
+  max-width:430px;
   border-radius:18px;
   padding:20px;
 }
@@ -184,12 +185,12 @@ body::before{
 
 <div class="wheel-wrap">
 <div class="pointer"></div>
-<img src="images/game1/wheel.png" id="wheel">
+<canvas id="wheel" width="320" height="320"></canvas>
 </div>
 
 <button class="btn" id="spinBtn" onclick="spinWheel()">QUAY NGAY 🎡</button>
 
-<!-- popup câu hỏi -->
+<!-- Popup câu hỏi -->
 <div class="popup" id="popup">
 <div class="box">
 <h2>CÂU HỎI</h2>
@@ -202,7 +203,7 @@ body::before{
 </div>
 </div>
 
-<!-- popup tổng kết -->
+<!-- Popup tổng kết -->
 <div class="popup" id="finishPopup">
 <div class="box">
 <h2>🎉 Hoàn Thành</h2>
@@ -214,37 +215,81 @@ body::before{
 <script>
 let questions = [
 {
-q:"Câu hỏi 1: Nội dung câu hỏi tại đây?",
-answers:["Đáp án A","Đáp án B","Đáp án C","Đáp án D"],
+q:"Câu hỏi 1: Nội dung câu hỏi?",
+answers:["A","B","C","D"],
 correct:0
 },
 {
-q:"Câu hỏi 2: Nội dung câu hỏi tại đây?",
-answers:["Đáp án A","Đáp án B","Đáp án C","Đáp án D"],
+q:"Câu hỏi 2: Nội dung câu hỏi?",
+answers:["A","B","C","D"],
 correct:1
 },
 {
-q:"Câu hỏi 3: Nội dung câu hỏi tại đây?",
-answers:["Đáp án A","Đáp án B","Đáp án C","Đáp án D"],
+q:"Câu hỏi 3: Nội dung câu hỏi?",
+answers:["A","B","C","D"],
 correct:2
 },
 {
-q:"Câu hỏi 4: Nội dung câu hỏi tại đây?",
-answers:["Đáp án A","Đáp án B","Đáp án C","Đáp án D"],
+q:"Câu hỏi 4: Nội dung câu hỏi?",
+answers:["A","B","C","D"],
 correct:3
 },
 {
-q:"Câu hỏi 5: Nội dung câu hỏi tại đây?",
-answers:["Đáp án A","Đáp án B","Đáp án C","Đáp án D"],
+q:"Câu hỏi 5: Nội dung câu hỏi?",
+answers:["A","B","C","D"],
 correct:0
 }
 ];
 
+const colors = ["#ff5252","#42a5f5","#ffeb3b","#ab47bc","#ff9800"];
+
 let score = 0;
-let currentIndex = -1;
-let spinning = false;
 let rotate = 0;
+let spinning = false;
+let currentIndex = -1;
 let timeLeft = 60;
+
+const canvas = document.getElementById("wheel");
+const ctx = canvas.getContext("2d");
+
+function drawWheel(){
+ctx.clearRect(0,0,320,320);
+
+let total = questions.length;
+if(total == 0) return;
+
+let center = 160;
+let radius = 155;
+let angleSize = (Math.PI*2)/total;
+
+for(let i=0;i<total;i++){
+
+let start = i*angleSize;
+let end = start + angleSize;
+
+ctx.beginPath();
+ctx.moveTo(center,center);
+ctx.arc(center,center,radius,start,end);
+ctx.fillStyle = colors[i % colors.length];
+ctx.fill();
+
+ctx.save();
+ctx.translate(center,center);
+ctx.rotate(start + angleSize/2);
+ctx.fillStyle = "white";
+ctx.font = "bold 18px Arial";
+ctx.textAlign = "right";
+ctx.fillText("Câu " + (i+1), radius-20, 8);
+ctx.restore();
+}
+
+ctx.beginPath();
+ctx.arc(center,center,25,0,Math.PI*2);
+ctx.fillStyle = "white";
+ctx.fill();
+}
+
+drawWheel();
 
 document.getElementById("remain").innerText = questions.length;
 
@@ -253,12 +298,12 @@ timeLeft--;
 document.getElementById("time").innerText = timeLeft;
 
 if(timeLeft <= 0){
-clearInterval(timer);
 finishGame();
 }
 },1000);
 
 function spinWheel(){
+
 if(spinning || questions.length==0) return;
 
 spinning = true;
@@ -266,12 +311,11 @@ spinning = true;
 currentIndex = Math.floor(Math.random()*questions.length);
 
 let each = 360 / questions.length;
-let stopDeg = 360 - (currentIndex * each) - each/2;
+let stopDeg = 360 - (currentIndex*each) - each/2;
 
 rotate += 360*5 + stopDeg;
 
-document.getElementById("wheel").style.transform =
-`rotate(${rotate}deg)`;
+canvas.style.transform = `rotate(${rotate}deg)`;
 
 setTimeout(()=>{
 showQuestion();
@@ -280,20 +324,22 @@ spinning = false;
 }
 
 function showQuestion(){
-let item = questions[currentIndex];
+
+let q = questions[currentIndex];
 
 document.getElementById("popup").style.display="flex";
-document.getElementById("questionText").innerText=item.q;
+document.getElementById("questionText").innerText = q.q;
 
 for(let i=0;i<4;i++){
 let btn = document.getElementById("a"+i);
-btn.innerText = item.answers[i];
+btn.innerText = q.answers[i];
 btn.className = "answer";
 btn.disabled = false;
 }
 }
 
 function chooseAnswer(index){
+
 let q = questions[currentIndex];
 
 for(let i=0;i<4;i++){
@@ -310,25 +356,34 @@ document.getElementById("a"+q.correct).classList.add("correct");
 }
 
 setTimeout(()=>{
+
 document.getElementById("popup").style.display="none";
 
 questions.splice(currentIndex,1);
+
 document.getElementById("remain").innerText = questions.length;
 
-if(questions.length == 0){
+drawWheel();
+
+if(questions.length==0){
 finishGame();
 }
+
 },1200);
 }
 
 function finishGame(){
+
 clearInterval(timer);
+
 document.getElementById("spinBtn").disabled = true;
+
 document.getElementById("popup").style.display="none";
 
 document.getElementById("finishPopup").style.display="flex";
+
 document.getElementById("finalText").innerHTML =
-`Bạn đạt được <b>${score}/5</b> điểm. <br> Cảm ơn bạn đã tham gia!`;
+`Bạn đạt <b>${score}/5</b> điểm.<br>Chúc mừng bạn đã hoàn thành!`;
 }
 </script>
 
