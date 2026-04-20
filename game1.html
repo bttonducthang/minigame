@@ -466,28 +466,34 @@ const ctx = canvas.getContext("2d");
 /*drawWheel();
 updateRemain();
 updateTime();*/
-loadQuestions(); // Load lại 
+
 /* ===================== Load JSON ===================== */
 let questions = [];
+let questionsCache = null;   // ⭐ cache JSON
 
 async function loadQuestions(){
+
+  if(questionsCache){
+    questions = JSON.parse(JSON.stringify(questionsCache));
+    updateRemain();
+    drawWheel();
+    return;
+  }
+
   try {
     const res = await fetch("assets/question_game1/questions.json");
-
     const data = await res.json();
 
-    if(!Array.isArray(data) || data.length === 0){
-      throw new Error("JSON rỗng");
-    }
-
-    questions = data;
+    questionsCache = JSON.parse(JSON.stringify(data));
+    questions = JSON.parse(JSON.stringify(data));
 
   } catch (err) {
-    console.warn("Fallback câu hỏi:", err);
+    console.warn("Fallback:", err);
+
+    questionsCache = JSON.parse(JSON.stringify(originalQuestions));
     questions = JSON.parse(JSON.stringify(originalQuestions));
   }
 
-  // 🔥 CHỈ gọi khi chắc chắn có data
   updateRemain();
   drawWheel();
 }
@@ -561,6 +567,7 @@ finishGame();
 
 /* ===================== SPIN ===================== */
 function spinWheel(){
+  
 
 if(spinning || questions.length===0) return;
 
@@ -681,12 +688,14 @@ timerStarted = false;
 document.getElementById("score").innerText = 0;
 document.getElementById("timeBox").classList.remove("warning");
 
-document.getElementById("finishPopup").style.display = "none";
+questions = JSON.parse(JSON.stringify(questionsCache));
 
-// 🔥 QUAN TRỌNG: reload lại JSON thay vì copy tay
-loadQuestions();
+drawWheel();
+updateRemain();
+
+document.getElementById("finishPopup").style.display = "none";
 }
-  
+window.addEventListener("DOMContentLoaded", loadQuestions);
 </script>
 
 </body>
