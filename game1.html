@@ -610,7 +610,24 @@ function spinWheel(){
     .filter(q => !q.used);
 
   if(available.length === 0) return;
+  
+  // ⭐ AUTO CÂU CUỐI
+  if(available.length === 1){
+    currentIndex = available[0].index;
 
+    document.getElementById("spinBtn").disabled = true;
+
+    canvas.style.transform = `rotate(${rotate + 720}deg)`;
+
+    setTimeout(()=>{
+      showQuestion();
+      spinning = false;
+      document.getElementById("spinBtn").disabled = false;
+    }, 1000);
+
+    return;
+  }
+  
   // ⭐ RANDOM CÂU HỎI (KHÔNG LIÊN QUAN WHEEL)
   let picked = available[Math.floor(Math.random() * available.length)];
   currentIndex = picked.index;
