@@ -493,25 +493,29 @@ updateTime();
 }
 
 function renderBoard(){
-let board=document.getElementById("board");
-board.innerHTML="";
 
-images.forEach(src=>{
-let card=document.createElement("div");
-card.className="card";
-card.dataset.img=src;
+let board = document.getElementById("board");
+board.innerHTML = "";
 
-card.innerHTML=`
+images.forEach((src,index)=>{
+
+let card = document.createElement("div");
+card.className = "card";
+card.dataset.img = src;
+
+card.innerHTML = `
 <div class="inner">
-<div class="front">❓</div>
-<div class="back"><img src="${src}"></div>
+    <div class="front">${index + 1}</div>
+    <div class="back"><img src="${src}"></div>
 </div>
 `;
 
-card.onclick=()=>flipCard(card);
+card.onclick = ()=>flipCard(card);
 
 board.appendChild(card);
+
 });
+
 }
 
 function flipCard(card){
