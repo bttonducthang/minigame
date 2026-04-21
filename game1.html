@@ -483,9 +483,10 @@ async function loadQuestions(){
 
   if(questionsCache){
     questions = JSON.parse(JSON.stringify(questionsCache)).map(q => ({
-    ...q,
-    used: false
+      ...q,
+      used: false
     }));
+
     updateRemain();
     drawWheel();
     return;
@@ -496,10 +497,11 @@ async function loadQuestions(){
     const data = await res.json();
 
     questionsCache = JSON.parse(JSON.stringify(data));
-    let dataCopy = JSON.parse(JSON.stringify(data));
-    dataCopy = shuffle(dataCopy);
 
-    questions = dataCopy.slice(0,5).map(q => ({
+    // ⭐ SHUFFLE 1 LẦN DUY NHẤT
+    let shuffled = shuffle([...data]);
+
+    questions = shuffled.map(q => ({
       ...q,
       used: false
     }));
@@ -507,8 +509,11 @@ async function loadQuestions(){
   } catch (err) {
     console.warn("Fallback:", err);
 
-    questionsCache = JSON.parse(JSON.stringify(originalQuestions.slice(0,5)));
-    questions = JSON.parse(JSON.stringify(originalQuestions.slice(0,5)));
+    questionsCache = JSON.parse(JSON.stringify(originalQuestions));
+    questions = shuffle([...originalQuestions]).map(q => ({
+      ...q,
+      used: false
+    }));
   }
 
   updateRemain();
@@ -587,7 +592,7 @@ finishGame();
 /* ===================== SPIN ===================== */
 function spinWheel(){
 
-  if(spinning || questions.length===0) return;
+  if(spinning || questions.length === 0) return;
 
   if(questions.every(q => q.used)){
     finishGame();
@@ -595,7 +600,6 @@ function spinWheel(){
   }
 
   startTimer();
-
   spinning = true;
 
   let available = questions
@@ -604,28 +608,12 @@ function spinWheel(){
 
   if(available.length === 0) return;
 
-  // AUTO MODE
-  if(available.length === 1){
-    currentIndex = available[0].index;
-
-    document.getElementById("spinBtn").disabled = true;
-    canvas.style.transform = `rotate(${rotate + 720}deg)`;
-
-    setTimeout(()=>{
-      showQuestion();
-      spinning = false;
-    },1000);
-
-    return;
-  }
-
-  let picked = available[Math.floor(Math.random()*available.length)];
+  // ⭐ RANDOM CÂU HỎI (KHÔNG LIÊN QUAN WHEEL)
+  let picked = available[Math.floor(Math.random() * available.length)];
   currentIndex = picked.index;
 
-  let each = 360 / available.length;
-  let stopDeg = 360 - (available.indexOf(picked) * each) - each/2;
-
-  rotate += 360*5 + stopDeg;
+  // ⭐ WHEEL CHỈ LÀ HIỆU ỨNG QUAY
+  rotate += 360 * 5;
 
   canvas.style.transform = `rotate(${rotate}deg)`;
 
@@ -635,9 +623,8 @@ function spinWheel(){
     showQuestion();
     spinning = false;
     document.getElementById("spinBtn").disabled = false;
-  },4200);
+  }, 4200);
 }
-  
 
 
 /* ===================== QUESTION ===================== */
