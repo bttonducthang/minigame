@@ -455,7 +455,6 @@ loadImages();
 renderBoard();
 updateTime();
 
-setTimeout(()=>startTimer(),400);
 }
 
 function renderBoard(){
@@ -486,30 +485,38 @@ if(lock) return;
 if(card.classList.contains("flip")) return;
 if(card.classList.contains("hide")) return;
 
+/* bắt đầu đếm giờ khi chạm hình đầu tiên */
+if(!timer){
+startTimer();
+}
+
 card.classList.add("flip");
 
 if(!first){
-first=card;
+first = card;
 return;
 }
 
-second=card;
-lock=true;
+second = card;
+lock = true;
 
-if(first.dataset.img===second.dataset.img){
+if(first.dataset.img === second.dataset.img){
 
 score++;
 remain--;
 
-document.getElementById("score").innerText=score;
-document.getElementById("remain").innerText=remain;
+document.getElementById("score").innerText = score;
+document.getElementById("remain").innerText = remain;
 
 setTimeout(()=>{
 first.classList.add("hide");
 second.classList.add("hide");
+
 resetTurn();
 
-if(remain===0) finishGame();
+if(remain === 0){
+finishGame();
+}
 
 },500);
 
@@ -584,9 +591,16 @@ document.getElementById("rulePopup").style.display="none";
 }
 
 function openMenuPopup(){
-document.getElementById("menuPopup").style.display="flex";
-}
 
+  const popup = document.getElementById("menuPopup");
+
+  if(popup.style.display === "flex"){
+    popup.style.display = "none";
+  }else{
+    popup.style.display = "flex";
+  }
+}
+  
 function closeMenuPopup(){
 document.getElementById("menuPopup").style.display="none";
 }
