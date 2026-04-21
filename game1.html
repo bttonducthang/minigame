@@ -340,11 +340,93 @@ body::before{
   height:280px;
   }
 }
+/*====================Nút Menu========================*/
+/* ===== Nút menu góc phải ===== */
+.menu-btn {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+
+  width: 62px;
+  height: 62px;
+
+  border: 1px solid rgba(255,255,255,0.45);
+  border-radius: 50%;
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+  z-index: 999;
+
+  background: transparent;
+
+  box-shadow:
+    0 0 10px rgba(255,255,255,0.8),
+    0 0 18px rgba(255,255,255,0.5);
+
+  animation: pulseMenu 1.8s infinite;
+}
+
+@keyframes pulseMenu{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.08);}
+  100%{transform:scale(1);}
+}
+
+.menu-btn img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.menu-btn:active{
+  transform:scale(.92);
+}
+
+/* mobile */
+@media(max-width:768px){
+  .menu-btn{
+    width:58px;
+    height:58px;
+    top:10px;
+    right:10px;
+  }
+}
+
+/* popup menu */
+.menu-grid{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin:15px 0;
+}
+
+.menu-item{
+  cursor:pointer;
+  text-align:center;
+  color:white;
+  font-weight:bold;
+}
+
+.menu-item img{
+  width:170px;
+  border-radius:14px;
+}
+
+.menu-item p{
+  margin-top:8px;
+}
+  
 </style>
 </head>
 
 <body>
-
+<!-- Nút menu -->
+<button class="menu-btn" onclick="openMenuPopup()">
+  <img src="assets/menu_img.png" alt="Menu">
+</button>
+  
+<!-- Logo -->
 <a href="https://baotangtonducthang.vn/">
   <img src="assets/logo.png" class="logo">
 </a>
@@ -418,6 +500,35 @@ QUAY<br>🎡
 </div>
 
 <script>
+/* ===================== Pop up menu ===================== */
+<!-- Popup Menu -->
+<div class="popup" id="menuPopup">
+  <div class="hint-text">🎮 Chọn Mini Game</div>
+
+  <div class="menu-grid">
+
+    <!-- Game 1 -->
+    <div class="menu-item"
+      onclick="window.location.href='index.html'">
+
+      <img src="assets/minigame_0.png">
+      <p>[Dấu ấn thời gian]</p>
+    </div>
+
+    <!-- Game 2 -->
+    <div class="menu-item"
+      onclick="window.open('https://wordwall.net/resource/98086818/t%C3%ACm-c%E1%BA%B7p-h%C3%ACnh-gi%E1%BB%91ng-nhau')">
+
+      <img src="assets/minigame_2.png">
+      <p>[Tìm hình giống nhau]</p>
+    </div>
+
+  </div>
+
+  <button class="btn orange" onclick="closeMenuPopup()">
+    Đóng ❌
+  </button>
+</div>
 /* ===================== DATA ===================== */
 const originalQuestions = [
 {
@@ -777,6 +888,21 @@ document.getElementById("finishPopup").style.display = "none";
 drawWheel();
 updateRemain();
 }
+  
+// Popup menu  
+function openMenuPopup(){
+  const popup = document.getElementById("menuPopup");
+
+  if(popup.style.display === "flex"){
+    popup.style.display = "none";
+  }else{
+    popup.style.display = "flex";
+  }
+}
+
+function closeMenuPopup(){
+  document.getElementById("menuPopup").style.display = "none";
+} 
   
 window.addEventListener("DOMContentLoaded", loadQuestions);
 </script>
