@@ -282,15 +282,21 @@ body::before{
   to{transform:scale(1);opacity:1;}
 }
   
-#menuPopup .menu-grid{
+#menuPopup{
+  flex-direction:column;
+
   background:#0a3d62;
-  padding:18px;
-  border-radius:18px;
+  width:90%;
+  max-width:520px;
+  margin:auto;
+  padding:22px;
+  border-radius:22px;
+
   border:2px solid rgba(0,255,255,.9);
 
   box-shadow:
-    0 0 12px rgba(0,255,255,.55),
-    inset 0 0 8px rgba(0,255,255,.18);
+    0 0 15px rgba(0,255,255,.55),
+    inset 0 0 10px rgba(0,255,255,.18);
 }
 
 .box h2{
