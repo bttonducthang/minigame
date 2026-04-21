@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mini Game - Lật hình tìm cặp</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+min-height:100vh;
+background:url("assets/bg1.png") center/cover no-repeat;
+display:flex;
+flex-direction:column;
+align-items:center;
+text-align:center;
+color:white;
+padding:15px;
+}
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.15);
+z-index:-1;
+}
+
+.logo{
+width:95px;
+margin-top:10px;
+}
+
+.line1{
+font-family:'Playfair Display',serif;
+font-size:38px;
+color:#00aaff;
+text-shadow:0 0 10px #fff,0 0 20px gold;
+}
+
+.line2{
+font-family:'Great Vibes',cursive;
+font-size:42px;
+color:#00aaff;
+text-shadow:0 0 10px #fff,0 0 20px gold;
+margin-bottom:12px;
+}
+
+.top-info{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+justify-content:center;
+margin-bottom:15px;
+}
+
+.info-box{
+background:#0a3d62;
+padding:10px 16px;
+border-radius:12px;
+font-weight:bold;
+min-width:110px;
+}
+
+.warning{
+background:#d50000;
+animation:blink .7s infinite;
+}
+
+@keyframes blink{
+50%{opacity:.5;}
+}
+
+.btn-group{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+justify-content:center;
+margin-top:18px;
+}
+
+.btn{
+padding:14px 22px;
+border:none;
+border-radius:12px;
+font-size:16px;
+font-weight:bold;
+color:white;
+cursor:pointer;
+}
+
+.blue{
+background:linear-gradient(145deg,#42a5f5,#1565c0);
+box-shadow:0 5px 0 #0d47a1;
+}
+
+.green{
+background:linear-gradient(145deg,#00c853,#00a63f);
+box-shadow:0 5px 0 #00792d;
+}
+
+.orange{
+background:linear-gradient(145deg,#ff7b00,#ff3d00);
+box-shadow:0 5px 0 #a92b00;
+}
+
+.popup{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.88);
+display:none;
+justify-content:center;
+align-items:center;
+padding:15px;
+z-index:50;
+}
+
+.box{
+background:#0a3d62;
+width:100%;
+max-width:430px;
+border-radius:18px;
+padding:20px;
+animation:zoom .25s ease;
+}
+
+@keyframes zoom{
+from{transform:scale(.8);opacity:0;}
+to{transform:scale(1);opacity:1;}
+}
+
+/* board */
+.board{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+margin-top:15px;
+}
+
+.card{
+aspect-ratio:1/1;
+perspective:1000px;
+cursor:pointer;
+}
+
+.inner{
+position:relative;
+width:100%;
+height:100%;
+transition:transform .5s;
+transform-style:preserve-3d;
+}
+
+.card.flip .inner{
+transform:rotateY(180deg);
+}
+
+.front,.back{
+position:absolute;
+inset:0;
+border-radius:12px;
+backface-visibility:hidden;
+overflow:hidden;
+}
+
+.front{
+background:linear-gradient(145deg,#1565c0,#42a5f5);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:30px;
+}
+
+.back{
+transform:rotateY(180deg);
+background:#fff;
+}
+
+.back img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.hide{
+visibility:hidden;
+pointer-events:none;
+}
+
+.menu-btn,.feed-btn{
+position:fixed;
+top:10px;
+width:58px;
+height:58px;
+border-radius:50%;
+border:none;
+overflow:hidden;
+cursor:pointer;
+z-index:999;
+box-shadow:0 0 10px #fff;
+}
+
+.menu-btn{right:10px;}
+.feed-btn{left:10px;}
+
+.menu-btn img,.feed-btn img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+@media(max-width:768px){
+.line1{font-size:28px;}
+.line2{font-size:30px;}
+}
+</style>
+</head>
+
+<body>
+
+<button class="menu-btn" onclick="goMenu()">
+<img src="assets/menu_img.png">
+</button>
+
+<button class="feed-btn"
+onclick="window.open('https://bttonducthang.github.io/feedback-baotangtonducthang/')">
+<img src="assets/feedback.png">
+</button>
+
+<a href="https://baotangtonducthang.vn/">
+<img src="assets/logo.png" class="logo">
+</a>
+
+<div class="line1">Mini Game</div>
+<div class="line2">Lật hình ký ức</div>
+
+<div class="top-info">
+<div class="info-box">⭐ Điểm: <span id="score">0</span></div>
+<div class="info-box" id="timeBox">⏰ <span id="time">01:00</span></div>
+<div class="info-box">📚 Cặp còn: <span id="remain">8</span></div>
+</div>
+
+<div class="btn-group">
+<button class="btn blue" onclick="startGame()">CHƠI 🎮</button>
+<button class="btn orange" onclick="reloadGame()">CHƠI LẠI 🔄</button>
+<button class="btn green" onclick="goMenu()">VỀ MENU ↩️</button>
+</div>
+
+<!-- Popup Game -->
+<div class="popup" id="gamePopup">
+<div class="box">
+<h2>TÌM CẶP GIỐNG NHAU</h2>
+<div class="board" id="board"></div>
+</div>
+</div>
+
+<!-- Popup Finish -->
+<div class="popup" id="finishPopup">
+<div class="box">
+<h2>🎉 Hoàn Thành</h2>
+<p id="finalText"></p>
+<br>
+<button class="btn orange" onclick="reloadGame()">CHƠI LẠI</button>
+</div>
+</div>
+
+<script>
+let images = [];
+let firstCard = null;
+let secondCard = null;
+let lock = false;
+let score = 0;
+let remain = 8;
+let timeLeft = 60;
+let timer = null;
+
+function loadImages(){
+images = [];
+
+for(let i=1;i<=8;i++){
+let path = `images/minigame_2/game2_${i}.jpg`;
+images.push(path);
+images.push(path);
+}
+
+shuffle(images);
+}
+
+function shuffle(arr){
+for(let i=arr.length-1;i>0;i--){
+let j=Math.floor(Math.random()*(i+1));
+[arr[i],arr[j]]=[arr[j],arr[i]];
+}
+}
+
+function startGame(){
+document.getElementById("gamePopup").style.display="flex";
+
+resetData();
+loadImages();
+renderBoard();
+
+setTimeout(()=>{
+startTimer();
+},500);
+}
+
+function resetData(){
+score=0;
+remain=8;
+timeLeft=60;
+firstCard=null;
+secondCard=null;
+lock=false;
+
+document.getElementById("score").innerText=0;
+document.getElementById("remain").innerText=8;
+updateTime();
+clearInterval(timer);
+}
+
+function renderBoard(){
+let board=document.getElementById("board");
+board.innerHTML="";
+
+images.forEach(src=>{
+
+let card=document.createElement("div");
+card.className="card";
+card.dataset.img=src;
+
+card.innerHTML=`
+<div class="inner">
+<div class="front">❓</div>
+<div class="back"><img src="${src}"></div>
+</div>
+`;
+
+card.onclick=()=>flipCard(card);
+
+board.appendChild(card);
+
+});
+}
+
+function flipCard(card){
+
+if(lock) return;
+if(card.classList.contains("flip")) return;
+if(card.classList.contains("hide")) return;
+
+card.classList.add("flip");
+
+if(!firstCard){
+firstCard=card;
+return;
+}
+
+secondCard=card;
+lock=true;
+
+if(firstCard.dataset.img===secondCard.dataset.img){
+
+score++;
+remain--;
+
+document.getElementById("score").innerText=score;
+document.getElementById("remain").innerText=remain;
+
+setTimeout(()=>{
+firstCard.classList.add("hide");
+secondCard.classList.add("hide");
+resetTurn();
+
+if(remain===0) finishGame();
+
+},500);
+
+}else{
+
+setTimeout(()=>{
+firstCard.classList.remove("flip");
+secondCard.classList.remove("flip");
+resetTurn();
+},800);
+
+}
+}
+
+function resetTurn(){
+firstCard=null;
+secondCard=null;
+lock=false;
+}
+
+function startTimer(){
+timer=setInterval(()=>{
+timeLeft--;
+updateTime();
+
+if(timeLeft<=0){
+finishGame();
+}
+},1000);
+}
+
+function updateTime(){
+
+let min=String(Math.floor(timeLeft/60)).padStart(2,"0");
+let sec=String(timeLeft%60).padStart(2,"0");
+
+document.getElementById("time").innerText=`${min}:${sec}`;
+
+let box=document.getElementById("timeBox");
+
+if(timeLeft<=10){
+box.classList.add("warning");
+}else{
+box.classList.remove("warning");
+}
+}
+
+function finishGame(){
+
+clearInterval(timer);
+
+document.getElementById("gamePopup").style.display="none";
+
+let msg="";
+
+if(score>=5){
+msg=`Bạn đạt <b>${score}/8</b> điểm.<br>🎁 Chúc mừng! Bạn đủ điều kiện nhận quà.`;
+}else{
+msg=`Bạn đạt <b>${score}/8</b> điểm.<br>💪 Chưa đủ 5 điểm. Hãy thử lại nhé!`;
+}
+
+document.getElementById("finalText").innerHTML=msg;
+document.getElementById("finishPopup").style.display="flex";
+}
+
+function reloadGame(){
+location.reload();
+}
+
+function goMenu(){
+window.location.href="index.html";
+}
+</script>
+
+</body>
+</html>
