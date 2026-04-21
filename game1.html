@@ -727,8 +727,10 @@ timerStarted = false;
 document.getElementById("score").innerText = 0;
 document.getElementById("timeBox").classList.remove("warning");
 
-// reset questions
-questions = JSON.parse(JSON.stringify(questionsCache))
+// ⭐ TẠO BỘ CÂU HỎI MỚI HOÀN TOÀN
+let base = JSON.parse(JSON.stringify(questionsCache));
+
+questions = shuffle([...base])
   .slice(0,5)
   .map(q => ({
     ...q,
