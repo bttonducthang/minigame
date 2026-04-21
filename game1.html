@@ -407,11 +407,35 @@ body::before{
   color:white;
   font-weight:bold;
 }
-
+  
+.menu-item:hover{
+  transform:scale(1.03);
+  transition:0.25s;
+}
+  
 .menu-item img{
   width:170px;
   border-radius:14px;
+  padding:4px;
+
+  background:linear-gradient(
+    45deg,
+    red,orange,yellow,green,cyan,blue,violet,red
+  );
+
+  background-size:400% 400%;
+  animation:ledFrame 4s linear infinite;
+
+  box-shadow:
+    0 0 10px rgba(255,255,255,.8),
+    0 0 20px rgba(255,255,255,.5);
 }
+  
+@keyframes ledFrame{
+  0%{background-position:0% 50%;}
+  100%{background-position:400% 50%;}
+}
+
 
 .menu-item p{
   margin-top:8px;
