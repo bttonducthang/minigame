@@ -30,7 +30,7 @@ body::before{
 content:"";
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.15);
+background:rgba(0,0,0,.18);
 z-index:-1;
 }
 
@@ -41,60 +41,75 @@ margin-top:10px;
 
 .line1{
 font-family:'Playfair Display',serif;
-font-size:38px;
-color:#00aaff;
-text-shadow:0 0 10px #fff,0 0 20px gold;
+font-size:40px;
+color:#0099ff;
+text-shadow:0 0 5px #fff,0 0 15px gold;
 }
 
 .line2{
 font-family:'Great Vibes',cursive;
-font-size:42px;
-color:#00aaff;
-text-shadow:0 0 10px #fff,0 0 20px gold;
-margin-bottom:12px;
+font-size:44px;
+color:#0099ff;
+text-shadow:0 0 5px #fff,0 0 15px gold;
+margin-bottom:18px;
 }
 
-.top-info{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-justify-content:center;
-margin-bottom:15px;
+/* menu + feed */
+.menu-btn,.feed-btn{
+position:fixed;
+top:12px;
+width:62px;
+height:62px;
+border-radius:50%;
+overflow:hidden;
+border:none;
+cursor:pointer;
+z-index:999;
+box-shadow:0 0 12px rgba(255,255,255,.8);
 }
 
-.info-box{
-background:#0a3d62;
-padding:10px 16px;
-border-radius:12px;
+.menu-btn{right:12px;}
+.feed-btn{left:12px;}
+
+.menu-btn img,.feed-btn img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+/* play button */
+.play-btn{
+margin-top:30px;
+width:130px;
+height:130px;
+border:none;
+border-radius:50%;
+cursor:pointer;
+font-size:24px;
 font-weight:bold;
-min-width:110px;
+color:white;
+background:linear-gradient(145deg,#ff1744,#ff9100);
+box-shadow:0 0 18px rgba(255,100,0,.8),
+0 0 40px rgba(255,120,0,.6);
+animation:pulse 1.3s infinite;
 }
 
-.warning{
-background:#d50000;
-animation:blink .7s infinite;
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.12);}
+100%{transform:scale(1);}
 }
 
-@keyframes blink{
-50%{opacity:.5;}
-}
-
-.btn-group{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-justify-content:center;
-margin-top:18px;
-}
-
+/* button */
 .btn{
-padding:14px 22px;
+padding:12px 20px;
 border:none;
 border-radius:12px;
 font-size:16px;
 font-weight:bold;
 color:white;
 cursor:pointer;
+margin-top:10px;
 }
 
 .blue{
@@ -102,14 +117,14 @@ background:linear-gradient(145deg,#42a5f5,#1565c0);
 box-shadow:0 5px 0 #0d47a1;
 }
 
-.green{
-background:linear-gradient(145deg,#00c853,#00a63f);
-box-shadow:0 5px 0 #00792d;
-}
-
 .orange{
 background:linear-gradient(145deg,#ff7b00,#ff3d00);
 box-shadow:0 5px 0 #a92b00;
+}
+
+.green{
+background:linear-gradient(145deg,#00c853,#00a63f);
+box-shadow:0 5px 0 #00792d;
 }
 
 .popup{
@@ -126,7 +141,7 @@ z-index:50;
 .box{
 background:#0a3d62;
 width:100%;
-max-width:430px;
+max-width:440px;
 border-radius:18px;
 padding:20px;
 animation:zoom .25s ease;
@@ -137,12 +152,72 @@ from{transform:scale(.8);opacity:0;}
 to{transform:scale(1);opacity:1;}
 }
 
+/* led rule */
+.rule-box{
+position:relative;
+padding:18px;
+width:100%;
+max-width:420px;
+border-radius:15px;
+border:3px solid transparent;
+background-image:
+linear-gradient(135deg,#0a3d62,#145da0),
+linear-gradient(45deg,red,orange,yellow,green,cyan,blue,violet,red);
+background-origin:border-box;
+background-clip:padding-box,border-box;
+background-size:100% 100%,300% 300%;
+animation:led 6s linear infinite;
+}
+
+@keyframes led{
+0%{background-position:0 0,0% 50%;}
+100%{background-position:0 0,300% 50%;}
+}
+
+.rule-box ul{
+text-align:left;
+padding-left:18px;
+line-height:1.6;
+}
+
+.rule-title{
+font-size:22px;
+font-weight:bold;
+color:#ffeb3b;
+margin-bottom:10px;
+}
+
+/* top info */
+.top-info{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+justify-content:center;
+margin-bottom:15px;
+}
+
+.info-box{
+background:#103a5d;
+padding:10px 14px;
+border-radius:12px;
+font-weight:bold;
+min-width:105px;
+}
+
+.warning{
+background:#d50000;
+animation:blink .7s infinite;
+}
+
+@keyframes blink{
+50%{opacity:.5;}
+}
+
 /* board */
 .board{
 display:grid;
 grid-template-columns:repeat(4,1fr);
 gap:10px;
-margin-top:15px;
 }
 
 .card{
@@ -155,8 +230,8 @@ cursor:pointer;
 position:relative;
 width:100%;
 height:100%;
-transition:transform .5s;
 transform-style:preserve-3d;
+transition:transform .5s;
 }
 
 .card.flip .inner{
@@ -167,8 +242,8 @@ transform:rotateY(180deg);
 position:absolute;
 inset:0;
 border-radius:12px;
-backface-visibility:hidden;
 overflow:hidden;
+backface-visibility:hidden;
 }
 
 .front{
@@ -176,7 +251,7 @@ background:linear-gradient(145deg,#1565c0,#42a5f5);
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:30px;
+font-size:28px;
 }
 
 .back{
@@ -195,38 +270,45 @@ visibility:hidden;
 pointer-events:none;
 }
 
-.menu-btn,.feed-btn{
-position:fixed;
-top:10px;
-width:58px;
-height:58px;
-border-radius:50%;
-border:none;
-overflow:hidden;
-cursor:pointer;
-z-index:999;
-box-shadow:0 0 10px #fff;
+/* menu popup */
+.menu-grid{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+justify-content:center;
+margin:15px 0;
 }
 
-.menu-btn{right:10px;}
-.feed-btn{left:10px;}
+.menu-item{
+cursor:pointer;
+font-weight:bold;
+}
 
-.menu-btn img,.feed-btn img{
-width:100%;
-height:100%;
-object-fit:cover;
+.menu-item img{
+width:170px;
+border-radius:14px;
+padding:4px;
+background:linear-gradient(45deg,red,orange,yellow,green,cyan,blue,violet,red);
+background-size:400% 400%;
+animation:ledframe 10s linear infinite;
+}
+
+@keyframes ledframe{
+0%{background-position:0% 50%;}
+100%{background-position:400% 50%;}
 }
 
 @media(max-width:768px){
-.line1{font-size:28px;}
-.line2{font-size:30px;}
+.line1{font-size:30px;}
+.line2{font-size:34px;}
+.play-btn{width:115px;height:115px;font-size:22px;}
 }
 </style>
 </head>
 
 <body>
 
-<button class="menu-btn" onclick="goMenu()">
+<button class="menu-btn" onclick="openMenuPopup()">
 <img src="assets/menu_img.png">
 </button>
 
@@ -242,57 +324,88 @@ onclick="window.open('https://bttonducthang.github.io/feedback-baotangtonducthan
 <div class="line1">Mini Game</div>
 <div class="line2">Lật hình ký ức</div>
 
-<div class="top-info">
-<div class="info-box">⭐ Điểm: <span id="score">0</span></div>
-<div class="info-box" id="timeBox">⏰ <span id="time">01:00</span></div>
-<div class="info-box">📚 Cặp còn: <span id="remain">8</span></div>
-</div>
+<button class="play-btn" onclick="startGame()">
+CHƠI 🎮
+</button>
 
-<div class="btn-group">
-<button class="btn blue" onclick="startGame()">CHƠI 🎮</button>
-<button class="btn orange" onclick="reloadGame()">CHƠI LẠI 🔄</button>
-<button class="btn green" onclick="goMenu()">VỀ MENU ↩️</button>
-</div>
+<br>
+<button class="btn blue" onclick="openRule()">LUẬT CHƠI 📜</button>
 
-<!-- Popup Game -->
+<!-- popup game -->
 <div class="popup" id="gamePopup">
 <div class="box">
-<h2>TÌM CẶP GIỐNG NHAU</h2>
+
+<div class="top-info">
+<div class="info-box">⭐ <span id="score">0</span></div>
+<div class="info-box" id="timeBox">⏰ <span id="time">01:00</span></div>
+<div class="info-box">📚 <span id="remain">8</span></div>
+</div>
+
 <div class="board" id="board"></div>
+
+<button class="btn orange" onclick="restartGame()">CHƠI LẠI 🔄</button>
+<button class="btn green" onclick="closeGame()">ĐÓNG ❌</button>
+
 </div>
 </div>
 
-<!-- Popup Finish -->
+<!-- finish -->
 <div class="popup" id="finishPopup">
 <div class="box">
 <h2>🎉 Hoàn Thành</h2>
 <p id="finalText"></p>
 <br>
-<button class="btn orange" onclick="reloadGame()">CHƠI LẠI</button>
+<button class="btn orange" onclick="restartGame()">CHƠI LẠI</button>
+</div>
+</div>
+
+<!-- rule -->
+<div class="popup" id="rulePopup">
+<div class="rule-box">
+<div class="rule-title">📜 Luật chơi</div>
+<ul>
+<li>Bấm CHƠI để bắt đầu.</li>
+<li>Có 60 giây tìm cặp hình giống nhau.</li>
+<li>Mỗi cặp đúng được 1 điểm.</li>
+<li>Tìm đủ hoặc hết giờ sẽ kết thúc.</li>
+<li>Từ 5 điểm trở lên sẽ nhận quà.</li>
+</ul>
+<button class="btn orange" onclick="closeRule()">ĐÓNG</button>
+</div>
+</div>
+
+<!-- menu -->
+<div class="popup" id="menuPopup">
+<div class="box">
+<h2>🎮 Chọn Mini Game</h2>
+
+<div class="menu-grid">
+
+<div class="menu-item" onclick="window.location.href='index.html'">
+<img src="assets/minigame_0.png">
+<p>Dấu ấn thời gian</p>
+</div>
+
+<div class="menu-item" onclick="window.location.href='game2.html'">
+<img src="assets/minigame_2.png">
+<p>Lật hình ký ức</p>
+</div>
+
+</div>
+
+<button class="btn orange" onclick="closeMenuPopup()">Đóng ❌</button>
 </div>
 </div>
 
 <script>
-let images = [];
-let firstCard = null;
-let secondCard = null;
-let lock = false;
-let score = 0;
-let remain = 8;
-let timeLeft = 60;
-let timer = null;
-
-function loadImages(){
-images = [];
-
-for(let i=1;i<=8;i++){
-let path = `images/minigame_2/game2_${i}.jpg`;
-images.push(path);
-images.push(path);
-}
-
-shuffle(images);
-}
+let images=[];
+let first=null;
+let second=null;
+let lock=false;
+let score=0;
+let remain=8;
+let timeLeft=60;
+let timer=null;
 
 function shuffle(arr){
 for(let i=arr.length-1;i>0;i--){
@@ -301,30 +414,41 @@ let j=Math.floor(Math.random()*(i+1));
 }
 }
 
-function startGame(){
-document.getElementById("gamePopup").style.display="flex";
-
-resetData();
-loadImages();
-renderBoard();
-
-setTimeout(()=>{
-startTimer();
-},500);
+function loadImages(){
+images=[];
+for(let i=1;i<=8;i++){
+let p=`images/minigame_2/game2_${i}.jpg`;
+images.push(p);
+images.push(p);
+}
+shuffle(images);
 }
 
-function resetData(){
+function startGame(){
+document.getElementById("gamePopup").style.display="flex";
+restartGame();
+}
+
+function restartGame(){
+clearInterval(timer);
+
 score=0;
 remain=8;
 timeLeft=60;
-firstCard=null;
-secondCard=null;
+first=null;
+second=null;
 lock=false;
 
 document.getElementById("score").innerText=0;
 document.getElementById("remain").innerText=8;
+document.getElementById("finishPopup").style.display="none";
+document.getElementById("gamePopup").style.display="flex";
+
+loadImages();
+renderBoard();
 updateTime();
-clearInterval(timer);
+
+setTimeout(()=>startTimer(),400);
 }
 
 function renderBoard(){
@@ -332,7 +456,6 @@ let board=document.getElementById("board");
 board.innerHTML="";
 
 images.forEach(src=>{
-
 let card=document.createElement("div");
 card.className="card";
 card.dataset.img=src;
@@ -347,7 +470,6 @@ card.innerHTML=`
 card.onclick=()=>flipCard(card);
 
 board.appendChild(card);
-
 });
 }
 
@@ -359,15 +481,15 @@ if(card.classList.contains("hide")) return;
 
 card.classList.add("flip");
 
-if(!firstCard){
-firstCard=card;
+if(!first){
+first=card;
 return;
 }
 
-secondCard=card;
+second=card;
 lock=true;
 
-if(firstCard.dataset.img===secondCard.dataset.img){
+if(first.dataset.img===second.dataset.img){
 
 score++;
 remain--;
@@ -376,8 +498,8 @@ document.getElementById("score").innerText=score;
 document.getElementById("remain").innerText=remain;
 
 setTimeout(()=>{
-firstCard.classList.add("hide");
-secondCard.classList.add("hide");
+first.classList.add("hide");
+second.classList.add("hide");
 resetTurn();
 
 if(remain===0) finishGame();
@@ -387,8 +509,8 @@ if(remain===0) finishGame();
 }else{
 
 setTimeout(()=>{
-firstCard.classList.remove("flip");
-secondCard.classList.remove("flip");
+first.classList.remove("flip");
+second.classList.remove("flip");
 resetTurn();
 },800);
 
@@ -396,8 +518,8 @@ resetTurn();
 }
 
 function resetTurn(){
-firstCard=null;
-secondCard=null;
+first=null;
+second=null;
 lock=false;
 }
 
@@ -413,25 +535,20 @@ finishGame();
 }
 
 function updateTime(){
-
 let min=String(Math.floor(timeLeft/60)).padStart(2,"0");
 let sec=String(timeLeft%60).padStart(2,"0");
 
 document.getElementById("time").innerText=`${min}:${sec}`;
 
-let box=document.getElementById("timeBox");
-
 if(timeLeft<=10){
-box.classList.add("warning");
+document.getElementById("timeBox").classList.add("warning");
 }else{
-box.classList.remove("warning");
+document.getElementById("timeBox").classList.remove("warning");
 }
 }
 
 function finishGame(){
-
 clearInterval(timer);
-
 document.getElementById("gamePopup").style.display="none";
 
 let msg="";
@@ -446,12 +563,25 @@ document.getElementById("finalText").innerHTML=msg;
 document.getElementById("finishPopup").style.display="flex";
 }
 
-function reloadGame(){
-location.reload();
+function closeGame(){
+clearInterval(timer);
+document.getElementById("gamePopup").style.display="none";
 }
 
-function goMenu(){
-window.location.href="index.html";
+function openRule(){
+document.getElementById("rulePopup").style.display="flex";
+}
+
+function closeRule(){
+document.getElementById("rulePopup").style.display="none";
+}
+
+function openMenuPopup(){
+document.getElementById("menuPopup").style.display="flex";
+}
+
+function closeMenuPopup(){
+document.getElementById("menuPopup").style.display="none";
 }
 </script>
 
