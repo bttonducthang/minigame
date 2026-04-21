@@ -571,65 +571,60 @@ finishGame();
 }
 
 /* ===================== SPIN ===================== */
-
-  
 function spinWheel(){
 
-if(spinning || questions.length===0) return;
-  
-if(questions.every(q => q.used)){
-  finishGame();
-  return;
-}
-startTimer();
+  if(spinning || questions.length===0) return;
 
-spinning = true;
+  if(questions.every(q => q.used)){
+    finishGame();
+    return;
+  }
 
-let available = questions
-  .map((q, i) => ({...q, index:i}))
-  .filter(q => !q.used);
-
-
-  
-// ⭐ AUTO MODE: chỉ còn 1 câu thì tự xử lý luôn
-if(available.length === 1){
-  currentIndex = available[0].index;
+  startTimer();
 
   spinning = true;
 
-  document.getElementById("spinBtn").disabled = true;
+  let available = questions
+    .map((q, i) => ({...q, index:i}))
+    .filter(q => !q.used);
 
-  // hiệu ứng quay nhẹ cho đẹp
-  canvas.style.transform = `rotate(${rotate + 720}deg)`;
+  if(available.length === 0) return;
+
+  // AUTO MODE
+  if(available.length === 1){
+    currentIndex = available[0].index;
+
+    document.getElementById("spinBtn").disabled = true;
+    canvas.style.transform = `rotate(${rotate + 720}deg)`;
+
+    setTimeout(()=>{
+      showQuestion();
+      spinning = false;
+    },1000);
+
+    return;
+  }
+
+  let picked = available[Math.floor(Math.random()*available.length)];
+  currentIndex = picked.index;
+
+  let each = 360 / available.length;
+  let stopDeg = 360 - (available.indexOf(picked) * each) - each/2;
+
+  rotate += 360*5 + stopDeg;
+
+  canvas.style.transform = `rotate(${rotate}deg)`;
+
+  document.getElementById("spinBtn").disabled = true;
 
   setTimeout(()=>{
     showQuestion();
     spinning = false;
-  },1000);
-
-  return;
+    document.getElementById("spinBtn").disabled = false;
+  },4200);
 }
   
-let pickedIndex = Math.floor(Math.random() * available.length);
-currentIndex = questions.indexOf(available[pickedIndex]);
-  
-let available = questions.filter(q => !q.used);
-let each = 360 / available.length;
-  
-let stopDeg = 360 - (currentIndex*each) - each/2;
 
-rotate += 360*5 + stopDeg;
-
-canvas.style.transform = `rotate(${rotate}deg)`;
-
-document.getElementById("spinBtn").disabled = true;
-
-setTimeout(()=>{
-showQuestion();
-spinning = false;
-document.getElementById("spinBtn").disabled = false;
-},4200);
-}
 
 /* ===================== QUESTION ===================== */
 function showQuestion(){
@@ -648,7 +643,7 @@ btn.disabled = false;
 }
 
 function chooseAnswer(index){
-
+if(document.getElementById("popup").style.display !== "flex") return;
 let q = questions[currentIndex];
 
 for(let i=0;i<4;i++){
