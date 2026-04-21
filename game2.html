@@ -368,10 +368,26 @@ onclick="window.open('https://bttonducthang.github.io/feedback-baotangtonducthan
 <button class="play-btn" onclick="startGame()">
 CHƠI 🎮
 </button>
+  
+<br>
+<button class="btn blue" onclick="goMenu()">VỀ MENU ↩️</button>
 
 <br>
-<button class="btn blue" onclick="openRule()">LUẬT CHƠI 📜</button>
+/*!-- Luật chơi --*/
+<div class="rule-box">
+<div class="rule-title">📜 Luật chơi</div>
 
+<ul>
+<li>Bấm CHƠI để bắt đầu.</li>
+<li>Bạn có 1 phút 30 giây để tìm các hình giống nhau.</li>
+<li>Thời gian sẽ chạy khi bạn bấm vào hình.</li>
+<li>Mỗi cặp đúng được 1 điểm.</li>
+<li>Đủ 5 điểm trở lên sẽ nhận quà.</li>
+<li>Hoàn tất hoặc hết giờ sẽ kết thúc.</li>
+</ul>
+
+<div class="note">✨ Chúc bạn may mắn ✨</div>
+</div>
 <!-- popup game -->
 <div class="popup" id="gamePopup">
 <div class="box">
@@ -400,21 +416,6 @@ CHƠI 🎮
 </div>
 </div>
 
-<!-- rule -->
-<div class="popup" id="rulePopup">
-<div class="rule-box">
-<div class="rule-title">📜 Luật chơi</div>
-<ul>
-<li>Bấm CHƠI để bắt đầu.</li>
-<li>Bạn có 1 phút 30 giây tìm các cặp hình giống nhau.</li>
-<li>Mỗi cặp đúng được 1 điểm.</li>
-<li>Tìm đủ hoặc hết giờ sẽ kết thúc.</li>
-<li>Từ 5 điểm trở lên sẽ nhận quà.</li>
-</ul>
-  <div class="note">✨ Chúc bạn may mắn ✨</div>
-<button class="btn orange" onclick="closeRule()">ĐÓNG</button>
-</div>
-</div>
 
 <!-- menu -->
 <div class="popup" id="menuPopup">
@@ -621,14 +622,6 @@ clearInterval(timer);
 document.getElementById("gamePopup").style.display="none";
 }
 
-function openRule(){
-document.getElementById("rulePopup").style.display="flex";
-}
-
-function closeRule(){
-document.getElementById("rulePopup").style.display="none";
-}
-
 function openMenuPopup(){
 
   const popup = document.getElementById("menuPopup");
@@ -642,6 +635,10 @@ function openMenuPopup(){
   
 function closeMenuPopup(){
 document.getElementById("menuPopup").style.display="none";
+}
+  
+function goMenu(){
+window.location.href = "index.html";
 }
 </script>
 
