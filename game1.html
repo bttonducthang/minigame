@@ -396,7 +396,7 @@ QUAY<br>🎡
 <ul>
 <li>Bấm QUAY để bắt đầu.</li>
 <li>Đồng hồ sẽ chạy khi bấm quay lần đầu.</li>
-<li>Có 60 giây để hoàn thành 5 câu hỏi.</li>
+<li>Bạn có 60 giây để hoàn thành 5 câu hỏi.</li>
 <li>Chọn câu trả lời A B C D tương ứng với câu hỏi.</li>
 <li>Trả lời đúng sẽ được 1 điểm.</li>
 <li>Tổng điểm từ 3 điểm trở lên sẽ được nhận quà.</li>
@@ -529,8 +529,12 @@ function updateTime(){
   let sec = String(timeLeft%60).padStart(2,"0");
   document.getElementById("time").innerText = `${min}:${sec}`;
 
-  if(timeLeft <= 30){
-    document.getElementById("timeBox").classList.add("warning");
+  let box = document.getElementById("timeBox");
+
+  if(timeLeft <= 10){
+    box.classList.add("warning");
+  } else {
+    box.classList.remove("warning");
   }
 }
 
