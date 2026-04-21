@@ -503,6 +503,8 @@ first=null;
 second=null;
 lock=false;
 
+timer = null; // ⭐
+  
 document.getElementById("score").innerText=0;
 document.getElementById("remain").innerText=8;
 document.getElementById("finishPopup").style.display="none";
@@ -599,6 +601,8 @@ lock=false;
 }
 
 function startTimer(){
+clearInterval(timer); // đảm bảo không bị duplicate
+
 timer=setInterval(()=>{
 timeLeft--;
 updateTime();
