@@ -611,7 +611,7 @@ function spinWheel(){
     .filter(q => !q.used);
 
   if(available.length === 0) return;
-  
+
   // ⭐ AUTO CÂU CUỐI
   if(available.length === 1){
     currentIndex = available[0].index;
@@ -628,28 +628,21 @@ function spinWheel(){
 
     return;
   }
-  
-  // ⭐ RANDOM CÂU HỎI (KHÔNG LIÊN QUAN WHEEL)
-  let available = questions.filter(q => !q.used);
 
+  // ⭐ RANDOM CHUẨN (KHÔNG ĐÈ BIẾN)
   let pickedIndex = Math.floor(Math.random() * available.length);
   let picked = available[pickedIndex];
-  currentIndex = questions.indexOf(picked);
+  currentIndex = picked.index;
 
-  // số ô hiện tại
+  // số ô đang hiển thị
   let total = available.length;
   let each = 360 / total;
 
-  // offset để kim nằm giữa ô
   let offset = each / 2;
-
-  // góc trúng đúng ô
   let stopAngle = pickedIndex * each + offset;
-  
-  // quay nhiều vòng cho mượt
+
   let spins = 360 * 5;
 
-  // FIX LỆCH KIM Ở TOP
   rotate = rotate + spins - stopAngle + 90;
 
   canvas.style.transform = `rotate(${rotate}deg)`;
