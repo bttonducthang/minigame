@@ -565,6 +565,7 @@ QUAY<br>🎡
 
 <div class="btn-group">
 <button class="btn blue" onclick="openRule()">LUẬT CHƠI 📜</button>
+<button class="btn orange" onclick="reloadGame()">QUAY LẠI 🔄</button>
 <button class="btn green" onclick="goMenu()">VỀ MENU ↩️</button>
 </div>
 
@@ -1009,12 +1010,18 @@ function openMenuPopup(){
     popup.style.display = "flex";
   }
 }
-
+// Đóng menu popup
 function closeMenuPopup(){
   document.getElementById("menuPopup").style.display = "none";
 } 
   
 window.addEventListener("DOMContentLoaded", loadQuestions);
+
+// Quay lại game
+function reloadGame(){
+  location.reload();
+}
+  
 </script>
 
 </body>
