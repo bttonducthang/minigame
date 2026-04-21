@@ -125,7 +125,7 @@ body::before{
 .wheel-border{
   position:absolute;
   inset:0;
-  padding:px;
+  padding:4px;
   border-radius:50%;
 
   background:linear-gradient(
@@ -416,6 +416,54 @@ body::before{
 .menu-item p{
   margin-top:8px;
 }
+
+/* ===== Nút feedback góc trái ===== */ 
+.feed-btn{
+  position: fixed;
+  top: 12px;
+  left: 12px;
+
+  width: 62px;
+  height: 62px;
+
+  border: 1px solid rgba(255,255,255,0.45);
+  border-radius: 50%;
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+  z-index: 999;
+
+  background: transparent;
+
+  box-shadow:
+    0 0 10px rgba(255,255,255,0.8),
+    0 0 18px rgba(255,255,255,0.5);
+
+  animation: pulseMenu 1.8s infinite;
+}
+
+.feed-btn img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.feed-btn:hover{
+  transform:scale(1.08);
+}
+
+.feed-btn:active{
+  transform:scale(.92);
+}
+
+@media(max-width:768px){
+  .feed-btn{
+    width:58px;
+    height:58px;
+    top:10px;
+    left:10px;
+  }
+}
   
 </style>
 </head>
@@ -424,6 +472,12 @@ body::before{
 <!-- Nút menu -->
 <button class="menu-btn" onclick="openMenuPopup()">
   <img src="assets/menu_img.png" alt="Menu">
+</button>
+<!-- Nút feedback -->
+<button class="feed-btn"
+onclick="window.open('https://bttonducthang.github.io/feedback-baotangtonducthang/')">
+
+  <img src="assets/feedback.png" alt="Feed">
 </button>
   
 <!-- Logo -->
@@ -499,8 +553,6 @@ QUAY<br>🎡
 </div>
 </div>
 
-<script>
-/* ===================== Pop up menu ===================== */
 <!-- Popup Menu -->
 <div class="popup" id="menuPopup">
   <div class="hint-text">🎮 Chọn Mini Game</div>
@@ -529,6 +581,7 @@ QUAY<br>🎡
     Đóng ❌
   </button>
 </div>
+<script>
 /* ===================== DATA ===================== */
 const originalQuestions = [
 {
