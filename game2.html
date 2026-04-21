@@ -310,6 +310,36 @@ animation:ledframe 10s linear infinite;
 .line2{font-size:34px;}
 .play-btn{width:115px;height:115px;font-size:22px;}
 }
+
+/* hover menu + feed */
+.menu-btn,
+.feed-btn,
+.menu-item{
+transition:all .25s ease;
+}
+
+.menu-btn:hover,
+.feed-btn:hover{
+transform:scale(1.08);
+box-shadow:
+0 0 14px rgba(255,255,255,.95),
+0 0 28px rgba(255,255,255,.55);
+}
+
+.menu-btn:active,
+.feed-btn:active{
+transform:scale(.94);
+}
+
+/* hover mini game */
+.menu-item:hover{
+transform:translateY(-4px) scale(1.04);
+filter:brightness(1.08);
+}
+
+.menu-item:active{
+transform:scale(.97);
+}  
 </style>
 </head>
 
