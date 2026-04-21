@@ -610,10 +610,12 @@ if(available.length === 1){
   return;
 }
   
-let picked = available[Math.floor(Math.random()*available.length)];
-currentIndex = picked.index;
+let pickedIndex = Math.floor(Math.random() * available.length);
+currentIndex = questions.indexOf(available[pickedIndex]);
   
-let each = 360/questions.length;
+let available = questions.filter(q => !q.used);
+let each = 360 / available.length;
+  
 let stopDeg = 360 - (currentIndex*each) - each/2;
 
 rotate += 360*5 + stopDeg;
@@ -648,7 +650,7 @@ btn.disabled = false;
 function chooseAnswer(index){
 
 let q = questions[currentIndex];
-  
+
 for(let i=0;i<4;i++){
 document.getElementById("a"+i).disabled = true;
 }
@@ -663,36 +665,30 @@ document.getElementById("a"+index).classList.add("wrong");
 
 setTimeout(()=>{
 
-document.getElementById("popup").style.display="none";
-
+// ❗ mark used TRƯỚC
 questions[currentIndex].used = true;
-drawWheel();
-updateRemain();
-let activeQuestions = questions.filter(q => !q.used);
 
-setTimeout(()=>{
-
+// ❗ update UI
 document.getElementById("popup").style.display="none";
-
-questions[currentIndex].used = true;
 
 drawWheel();
 updateRemain();
 
-// ⭐ FIX NGAY
-if(questions.filter(q => !q.used).length === 0){
+// ❗ check kết thúc SAU KHI UPDATE
+let remain = questions.filter(q => !q.used).length;
+
+if(remain === 0){
   finishGame();
 }
 
-},1000);
-
-},1000);
+},900);
 }
 
 /* ===================== FINISH ===================== */
 function finishGame(){
 
 clearInterval(timer);
+timerStarted = true;
 
 document.getElementById("spinBtn").disabled = true;
 document.getElementById("popup").style.display="none";
