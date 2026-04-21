@@ -482,10 +482,11 @@ let questionsCache = null;   // ⭐ cache JSON
 async function loadQuestions(){
 
   if(questionsCache){
-    questions = JSON.parse(JSON.stringify(questionsCache)).map(q => ({
-      ...q,
-      used: false
-    }));
+    let data = JSON.parse(JSON.stringify(questionsCache));
+
+    questions = shuffle([...data])
+      .slice(0,5)
+      .map(q => ({ ...q, used:false }));
 
     updateRemain();
     drawWheel();
@@ -498,22 +499,20 @@ async function loadQuestions(){
 
     questionsCache = JSON.parse(JSON.stringify(data));
 
-    // ⭐ SHUFFLE 1 LẦN DUY NHẤT
-    let shuffled = shuffle([...data]);
-
-    questions = shuffled.map(q => ({
-      ...q,
-      used: false
-    }));
+    // ⭐ CHỈ LẤY 5 CÂU NGẪU NHIÊN
+    questions = shuffle([...data])
+      .slice(0,5)
+      .map(q => ({ ...q, used:false }));
 
   } catch (err) {
+
     console.warn("Fallback:", err);
 
     questionsCache = JSON.parse(JSON.stringify(originalQuestions));
-    questions = shuffle([...originalQuestions]).map(q => ({
-      ...q,
-      used: false
-    }));
+
+    questions = shuffle([...originalQuestions])
+      .slice(0,5)
+      .map(q => ({ ...q, used:false }));
   }
 
   updateRemain();
