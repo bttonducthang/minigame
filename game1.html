@@ -467,6 +467,14 @@ const ctx = canvas.getContext("2d");
 updateRemain();
 updateTime();*/
 
+/* ===================== Random JSON shuffle ===================== */
+function shuffle(array){
+  for(let i = array.length - 1; i > 0; i--){
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
 /* ===================== Load JSON ===================== */
 let questions = [];
 let questionsCache = null;   // ⭐ cache JSON
@@ -488,7 +496,13 @@ async function loadQuestions(){
     const data = await res.json();
 
     questionsCache = JSON.parse(JSON.stringify(data));
-    questions = JSON.parse(JSON.stringify(data)).slice(0,5);
+    let dataCopy = JSON.parse(JSON.stringify(data));
+    dataCopy = shuffle(dataCopy);
+
+    questions = dataCopy.slice(0,5).map(q => ({
+      ...q,
+      used: false
+    }));
 
   } catch (err) {
     console.warn("Fallback:", err);
