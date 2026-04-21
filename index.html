@@ -485,6 +485,24 @@
 .menu-item:hover {
   transform: scale(1.05);
 }
+
+#menuPopup{
+  flex-direction:column;
+}
+
+#menuPopup .menu-panel{
+  background:linear-gradient(135deg,#0a3d62,#145da0);
+  padding:22px;
+  border-radius:18px;
+  width:100%;
+  max-width:460px;
+  
+  box-shadow:
+  0 0 18px rgba(0,255,255,.35),
+  0 0 35px rgba(0,180,255,.25);
+
+  animation:zoom .25s ease;
+}    
   </style>
 </head>
 
@@ -547,30 +565,36 @@
 </button>
 
   <!-- Popup Menu -->
-  <div class="popup" id="menuPopup">
-    <div class="hint-text">🎮 Chọn Mini Game</div>
-  <div class="menu-grid">
+<div class="popup" id="menuPopup">
 
-  <!-- Mini game 1 -->
-  <div class="menu-item" onclick="window.location.href='game1.html'">
-  <div class="img-wrapper">
-    <img src="assets/minigame_1.png">
-  </div>
-      <p>[Vòng quay lịch sử]</p>
-  </div>
+<div class="menu-panel">
 
-  <!-- Mini game 2 -->
-   <div class="menu-item" onclick="window.location.href='game2.html'">
-    <div class="img-wrapper">
-      <img src="assets/minigame_2.png">
-    </div>
-      <p>[Tìm hình giống nhau]</p>
-  </div>
+<div class="hint-text">🎮 Chọn Mini Game</div>
 
-  </div>
+<div class="menu-grid">
 
-  <button class="close-btn game-btn" onclick="closeMenuPopup()">Đóng ❌</button>
-  </div>
+<!-- Mini game 1 -->
+<div class="menu-item" onclick="window.location.href='game1.html'">
+<div class="img-wrapper">
+<img src="assets/minigame_1.png">
+</div>
+<p>[Vòng quay lịch sử]</p>
+</div>
+
+<!-- Mini game 2 -->
+<div class="menu-item" onclick="window.location.href='game2.html'">
+<div class="img-wrapper">
+<img src="assets/minigame_2.png">
+</div>
+<p>[Tìm hình giống nhau]</p>
+</div>
+
+</div>
+
+<button class="close-btn game-btn" onclick="closeMenuPopup()">Đóng ❌</button>
+
+</div>
+</div>
 
   <script>
     
