@@ -552,8 +552,9 @@ function drawWheel(){
 
   for(let i=0;i<activeQuestions.length;i++){
     let q = activeQuestions[i];
-    let start = i*size;
+    let start = i*size-Math.PI/2;
     let end = start + size;
+    let centerAngle = start + size / 2;
 
     ctx.beginPath();
     ctx.moveTo(center,center);
@@ -563,7 +564,7 @@ function drawWheel(){
 
     ctx.save();
     ctx.translate(center,center);
-    ctx.rotate(start + size/2);
+    ctx.rotate(centerAngle);
     ctx.fillStyle = "white";
     ctx.font = "bold 18px Arial";
     ctx.textAlign = "right";
@@ -629,11 +630,27 @@ function spinWheel(){
   }
   
   // ⭐ RANDOM CÂU HỎI (KHÔNG LIÊN QUAN WHEEL)
-  let picked = available[Math.floor(Math.random() * available.length)];
-  currentIndex = picked.index;
+  let available = questions.filter(q => !q.used);
 
-  // ⭐ WHEEL CHỈ LÀ HIỆU ỨNG QUAY
-  rotate += 360 * 5;
+  let pickedIndex = Math.floor(Math.random() * available.length);
+  let picked = available[pickedIndex];
+  currentIndex = questions.indexOf(picked);
+
+  // số ô hiện tại
+  let total = available.length;
+  let each = 360 / total;
+
+  // offset để kim nằm giữa ô
+  let offset = each / 2;
+
+  // góc trúng đúng ô
+  let stopAngle = pickedIndex * each + offset;
+  
+  // quay nhiều vòng cho mượt
+  let spins = 360 * 5;
+
+  // FIX LỆCH KIM Ở TOP
+  rotate = rotate + spins - stopAngle + 90;
 
   canvas.style.transform = `rotate(${rotate}deg)`;
 
