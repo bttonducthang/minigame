@@ -470,7 +470,38 @@ let score=0;
 let remain=8;
 let timeLeft=90;
 let timer=null;
+  
+/* ================= ÂM THANH ================= */
+/* đặt đầu script, sau các biến let */
 
+const bgMusic = document.getElementById("bgMusic");
+const correctSound = document.getElementById("correctSound");
+const wrongSound = document.getElementById("wrongSound");
+
+bgMusic.volume = 0.45;
+correctSound.volume = 0.9;
+wrongSound.volume = 0.9;
+
+function playBG(){
+bgMusic.play().catch(()=>{});
+}
+
+function stopBG(){
+bgMusic.pause();
+bgMusic.currentTime = 0;
+}
+
+function playCorrect(){
+correctSound.currentTime = 0;
+correctSound.play().catch(()=>{});
+}
+
+function playWrong(){
+wrongSound.currentTime = 0;
+wrongSound.play().catch(()=>{});
+}
+  
+/* ================================== */
 function shuffle(arr){
 for(let i=arr.length-1;i>0;i--){
 let j=Math.floor(Math.random()*(i+1));
@@ -491,11 +522,14 @@ shuffle(images);
 function startGame(){
 document.getElementById("gamePopup").style.display="flex";
 restartGame();
+playBG();
 }
 
 function restartGame(){
 clearInterval(timer);
-
+stopBG();
+playBG();
+  
 score=0;
 remain=8;
 timeLeft=90;
@@ -564,7 +598,7 @@ second = card;
 lock = true;
 
 if(first.dataset.img === second.dataset.img){
-
+playCorrect();
 score++;
 remain--;
 
@@ -584,7 +618,7 @@ finishGame();
 },500);
 
 }else{
-
+playWrong();
 setTimeout(()=>{
 first.classList.remove("flip");
 second.classList.remove("flip");
@@ -628,6 +662,7 @@ document.getElementById("timeBox").classList.remove("warning");
 
 function finishGame(){
 clearInterval(timer);
+stopBG();
 document.getElementById("gamePopup").style.display="none";
 
 let msg="";
@@ -644,6 +679,7 @@ document.getElementById("finishPopup").style.display="flex";
 
 function closeGame(){
 clearInterval(timer);
+stopBG();
 document.getElementById("gamePopup").style.display="none";
 }
 
@@ -666,6 +702,10 @@ function goMenu(){
 window.location.href = "index.html";
 }
 </script>
-
+  
+<!-- Biến âm thanh -->
+<audio id="bgMusic" preload="auto" loop src="assets/game2/bg.mp3"></audio>
+<audio id="correctSound" preload="auto" src="assets/game2/correct.mp3"></audio>
+<audio id="wrongSound" preload="auto" src="assets/game2/wrong.mp3"></audio>
 </body>
 </html>
