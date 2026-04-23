@@ -736,12 +736,40 @@ let timer = null;
 
 const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
+  
+/* ===================== THÊM BIẾN AUDIO ===================== */
+/* đặt gần phần const canvas / ctx */
 
-/* ===================== INIT ===================== */
-/*drawWheel();
-updateRemain();
-updateTime();*/
+const spinSound = document.getElementById("spinSound");
+const correctSound = document.getElementById("correctSound");
+const wrongSound = document.getElementById("wrongSound");
 
+/* chỉnh âm lượng nếu muốn */
+spinSound.volume = 0.7;
+correctSound.volume = 0.9;
+wrongSound.volume = 0.9;
+
+/* hàm phát */
+function playSpinSound(){
+  spinSound.currentTime = 0;
+  spinSound.loop = true;
+  spinSound.play().catch(()=>{});
+}
+
+function stopSpinSound(){
+  spinSound.pause();
+  spinSound.currentTime = 0;
+}
+
+function playCorrectSound(){
+  correctSound.currentTime = 0;
+  correctSound.play().catch(()=>{});
+}
+
+function playWrongSound(){
+  wrongSound.currentTime = 0;
+  wrongSound.play().catch(()=>{});
+}
 /* ===================== Random JSON shuffle ===================== */
 function shuffle(array){
   for(let i = array.length - 1; i > 0; i--){
@@ -880,6 +908,7 @@ function spinWheel(){
 
   startTimer();
   spinning = true;
+  playSpinSound();
 
   let available = questions
     .map((q, i) => ({...q, index:i}))
@@ -896,6 +925,7 @@ function spinWheel(){
     canvas.style.transform = `rotate(${rotate + 720}deg)`;
 
     setTimeout(()=>{
+      stopSpinSound();
       showQuestion();
       spinning = false;
       document.getElementById("spinBtn").disabled = false;
@@ -925,6 +955,7 @@ function spinWheel(){
   document.getElementById("spinBtn").disabled = true;
 
   setTimeout(()=>{
+    stopSpinSound();
     showQuestion();
     spinning = false;
     document.getElementById("spinBtn").disabled = false;
@@ -957,11 +988,17 @@ document.getElementById("a"+i).disabled = true;
 }
 
 if(index === q.correct){
+
 score++;
 document.getElementById("score").innerText = score;
 document.getElementById("a"+index).classList.add("correct");
+playCorrectSound();
+
 }else{
+
 document.getElementById("a"+index).classList.add("wrong");
+playWrongSound();
+
 }
 
 setTimeout(()=>{
@@ -1076,6 +1113,11 @@ function reloadGame(){
 }
   
 </script>
-
+  
+<!-- Biến âm thanh -->
+<audio id="spinSound" preload="auto" src="assets/question_game1/spin.mp3"></audio>
+<audio id="correctSound" preload="auto" src="assets/question_game1/correct.mp3"></audio>
+<audio id="wrongSound" preload="auto" src="assets/question_game1/wrong.mp3"></audio>
+  
 </body>
 </html>
