@@ -48,5 +48,30 @@
     "q":"Bác Tôn từng học nghề tại trường nào?",
     "answers":["Cơ Khí Châu Á","Công Nghệ Á Châu","Cơ Khí Á Châu","Kỹ Thuật Châu Á"],
     "correct":2
+  },
+  {
+    "q": "Tổ chức nhằm bênh vực quyền lợi của thợ thuyền (công nhân) mà Bác Tôn đã sáng lập tại Sài Gòn vào năm 1920?",
+    "answers": ["Công hội bí mật","Công hội đỏ","Hội Ái hữu","Hội tương tế"],
+    "correct": 0
+  },
+  {
+    "q":"Bác Tôn bị thực dân Pháp bắt tại đâu, vào thời gian nào?",
+    "answers":["Chân cầu Bông, Sài Gòn ngày 23/7/1929","Chân cầu Sài Gòn, ngày 23/7/1929","Chân cầu Kiệu, Sài Gòn ngày 23/7/1929","Chân cầu Khánh Hội, Sài Gòn ngày 23/7/1929"],
+    "correct":2
+  },
+  {
+    "q":"Bác Tôn được bầu làm Trưởng ban Thường trực Quốc hội tại kỳ họp thứ mấy của Quốc hội khóa I?",
+    "answers":["Kỳ họp thứ 3","Kỳ họp thứ 4","Kỳ họp thứ 5","Kỳ họp thứ 6"],
+    "correct":2
+  },
+  {
+    "q": "Bí danh động cách mạng của Bác Tôn là gì?",
+    "answers": ["Thoại Sơn","Hai Thắng","Bảy Núi","Mỹ Hòa Hưng"],
+    "correct": 0
+  },
+  {
+    "q": "Bác Tôn từ nhà tù Côn Đảo trở về đất liền vào tháng, năm nào?",
+    "answers": ["Tháng 6/1945","Tháng 9/1945","Tháng 12/1945","Tháng 4/1945"],
+    "correct": 1
   }
 ]
