@@ -406,7 +406,7 @@ CHƠI 🎮
 </button>
   
 <br>
-<button class="btn blue" onclick="goMenu()">VỀ MENU ↩️</button
+<button class="btn blue" onclick="goMenu()">VỀ MENU ↩️</button>
 <br>
 
 <!-- popup game -->
@@ -460,7 +460,12 @@ CHƠI 🎮
 <button class="btn orange" onclick="closeMenuPopup()">Đóng ❌</button>
 </div>
 </div>
-
+  
+<!-- Biến âm thanh -->
+<audio id="bgMusic" preload="auto" loop src="assets/game2/bg.mp3"></audio>
+<audio id="correctSound" preload="auto" src="assets/game2/correct.mp3"></audio>
+<audio id="wrongSound" preload="auto" src="assets/game2/wrong.mp3"></audio>
+  
 <script>
 let images=[];
 let first=null;
@@ -703,9 +708,5 @@ window.location.href = "index.html";
 }
 </script>
   
-<!-- Biến âm thanh -->
-<audio id="bgMusic" preload="auto" loop src="assets/game2/bg.mp3"></audio>
-<audio id="correctSound" preload="auto" src="assets/game2/correct.mp3"></audio>
-<audio id="wrongSound" preload="auto" src="assets/game2/wrong.mp3"></audio>
 </body>
 </html>
