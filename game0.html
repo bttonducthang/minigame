@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Great+Vibes&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+
+      background-image: url("assets/bg1.png"); /* 👉 đổi tên ảnh của bạn */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+
+      
+      text-align: center;
+      color: white;
+
+      transform: translateY(-10px); /* 👈 kéo lên */
+    }
+
+    /* Overlay mờ */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.1);
+      z-index: -1;
+    }
+
+    .logo {
+      margin-top: 20px;
+      width: 120px;
+    }
+    
+    /*Tiêu đề*/
+    .title {
+      margin-top: 9px;
+      font-size: clamp(30px, 7vw, 46px);
+      font-weight: bold;
+      color: #b0050d;
+      
+      text-shadow:
+        0 0 5px white,
+        0 0 10px rgba(255, 255, 255, 0.8);
+      
+    }
+
+    .title .line1 {
+    font-family: 'Playfair Display', serif;
+    }
+
+    .title .line2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.2em;
+      letter-spacing: 2px; /*khoảng cách các từ*/
+    }
+
+    .btn-container {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 🎮 Gaming Button */
+    .game-btn {
+      position: relative;
+      padding: 14px 26px;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+
+      border: none;
+      border-radius: 12px;
+
+      background: linear-gradient(145deg, #ff7b00, #ff3d00);
+      box-shadow:
+        0 4px 0 #b22a00,
+        0 0 15px rgba(255, 87, 34, 0.6);
+
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    /* ✨ glow animation */
+    @keyframes glowBtn {
+      0% { box-shadow: 0 0 10px rgba(255, 87, 34, 0.5); }
+      50% { box-shadow: 0 0 25px rgba(255, 87, 34, 1); }
+      100% { box-shadow: 0 0 10px rgba(255, 87, 34, 0.5); }
+    }
+
+    .game-btn {
+      animation: glowBtn 2s infinite;
+    }
+
+    /* 🖱 hover */
+    .game-btn:hover {
+      transform: translateY(-2px);
+      box-shadow:
+      0 6px 0 #b22a00,
+      0 0 25px rgba(255, 87, 34, 1);
+    }
+
+    /* 👇 click */
+    .game-btn:active {
+      transform: translateY(3px);
+      box-shadow:
+        0 2px 0 #b22a00,
+        0 0 10px rgba(255, 87, 34, 0.7);
+    }
+    .download-btn,
+    .close-btn {
+      animation: none; /* ❌ tắt glow */
+      box-shadow: 0 5px 0 rgba(0,0,0,0.4); /* giữ đổ bóng nhẹ */
+    }
+
+   
+  /* 🎯 Nút chính nổi bật */
+    .main-btn {
+      color: #ff1a1a;
+      animation: pulseMain 1.5s infinite;
+      background: linear-gradient(145deg, #66ffcc, #00ffcc);
+      box-shadow:
+        0 6px 0 #00b3b3,
+        0 10px 25px rgba(33, 150, 243, 0.5); /* đổ bóng mềm */
+    }
+
+  /* 💓 hiệu ứng đập nhẹ */
+    @keyframes pulseMain {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.08);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+  /* 🖱 hover mạnh hơn */
+    .main-btn:hover {
+      transform: scale(1.12);
+      box-shadow:
+      0 8px 0 #00b3b3,
+      0 15px 35px rgba(255, 87, 34, 0.8);
+    }
+
+  /* 👇 click */
+    .main-btn:active {
+      transform: scale(0.95);
+      box-shadow:
+      0 3px 0 #00b3b3,
+      0 5px 15px rgba(255, 87, 34, 0.6);
+    }
+
+    /* Popup */
+    .popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 10;
+      padding: 20px;
+    }
+
+    .popup img {
+      max-width: 90%;
+      max-height: 70%;
+    }
+
+    .popup button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .close-btn {
+      background: red;
+      color: white;
+    }
+
+    .download-btn {
+      background: green;
+      color: white;
+    }
+    .hint-text {
+      color: #ffeb3b;
+      text-shadow: 0 0 10px rgba(0,0,0,0.7);
+      font-size: clamp(22px, 5vw, 28px);
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+   .rule-box {
+      position: relative;
+      margin-top: 15px;
+      padding: 15px;
+      width: 85%;
+      max-width: 400px;
+
+      border-radius: 15px;
+      color: white;
+
+  /* nền xanh */
+      background: linear-gradient(135deg, #0a3d62, #145da0);
+
+  /* tạo viền */
+      border: 3px solid transparent;
+
+  /* 2 lớp nền: trong + viền */
+      background-image:
+        linear-gradient(135deg, #0a3d62, #145da0),
+        linear-gradient(45deg, red, orange, yellow, green, cyan, blue, violet, red);
+
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+
+      background-size: 100% 100%, 300% 300%;
+
+      animation: ledBorder 6s linear infinite;
+    }
+    
+    @keyframes ledBorder {
+      0% {
+        background-position: 0% 0%, 0% 50%;
+      }
+      100% {
+        background-position: 0% 0%, 300% 50%;
+      }
+    }
+    
+    .rule-title {
+      font-size: clamp(18px, 4vw, 24px);
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #ffeb3b;
+    }
+
+    .rule-box ul {
+      text-align: left;
+      font-size: clamp(12px, 3vw, 16px);
+      line-height: 1.5;
+      padding-left: 18px;
+    }
+
+    /*Khung RGB*/
+    .img-wrapper {
+      position: relative;
+      display: inline-block;
+
+      width: fit-content;   /* giới hạn theo màn hình */
+      height: fit-content;  /* giới hạn chiều cao */
+
+      line-height: 0;
+      border-radius: 15px;
+      padding: 4px;
+      background: linear-gradient(
+        45deg,
+        red, orange, yellow, green, cyan, blue, violet, red
+        );
+      
+    background-size: 400%;
+    animation: ledBorderImg 10s linear infinite;
+    overflow: hidden;
+    }
+
+    @keyframes ledBorderImg {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 400% 50%; }
+    }
+    .img-wrapper img {
+      display: block;
+      max-width: 90vw;  
+      max-height: 70vh;
+
+      width: auto;
+      height: auto;
+
+      object-fit: contain; 
+      border-radius: 12px;
+    }
+
+    /*Note Lưu ý*/
+  .note-text {
+    margin-top: 10px;
+    font-size: clamp(13px, 3.5vw, 17px);
+    line-height: 1.5;
+    color: #ff3333;
+  }
+
+  .note-label {
+    font-style: italic;      /* chữ nghiêng */
+    text-decoration: underline; /* gạch chân */
+    font-weight: bold;
+    color: #ff3333; /* nổi bật */
+  }
+  /*UI Mobile*/
+  @media (max-width: 768px) {
+    body {
+      padding: 10px;
+      gap: 10px;
+    }
+
+    .logo {
+      width: 90px;
+      margin-top: 10px;
+    }
+
+    .rule-box {
+      width: 95%;
+      padding: 10px;
+
+      max-height: none;
+      overflow: visible;
+    }
+
+    .rule-box ul {
+      font-size: 12px;
+    }
+
+    .note-text {
+      font-size: 13px;
+    }
+
+
+    .img-wrapper img {
+      max-width: 95vw;
+      max-height: 60vh;
+    }
+  }
+  .menu-btn {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+
+    width: 62px;
+    height: 62px;
+
+    border: 1px solid rgba(255,255,255,0.45);
+    border-radius: 50%;
+    overflow: hidden;
+    padding: 0;
+    cursor: pointer;
+    z-index: 999;
+
+    background: transparent;
+
+    box-shadow:
+      0 0 10px rgba(255,255,255,0.8),
+      0 0 18px rgba(255,255,255,0.5);
+
+    animation: pulseMenu 1.8s infinite;
+}
+
+ 
+.menu-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.menu-btn:hover {
+  transform: scale(1.08);
+}
+.menu-btn:active {
+  transform: scale(0.92);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .menu-btn {
+    width: 58px;
+    height: 58px;
+    top: 10px;
+    right: 10px;
+  }
+}
+    
+/* Nút feedback góc trái */
+.feed-btn{
+  position: fixed;
+  top: 12px;
+  left: 12px;
+
+  width: 62px;
+  height: 62px;
+
+  border: 1px solid rgba(255,255,255,0.45);
+  border-radius: 50%;
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+  z-index: 999;
+
+  background: transparent;
+
+  box-shadow:
+    0 0 10px rgba(255,255,255,0.8),
+    0 0 18px rgba(255,255,255,0.5);
+
+  animation: pulseMenu 1.8s infinite;
+}
+
+.feed-btn img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.feed-btn:hover{
+  transform:scale(1.08);
+}
+
+.feed-btn:active{
+  transform:scale(.92);
+}
+
+@media(max-width:768px){
+  .feed-btn{
+    width:58px;
+    height:58px;
+    top:10px;
+    left:10px;
+  }
+}
+
+/* ===== Popup menu ===== */
+#menuPopup {
+  flex-direction: column;
+}
+
+.menu-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+.menu-item {
+  cursor: pointer;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+}
+
+.menu-item img {
+  width: 190px;
+  height: auto;
+}
+  /* Mobile */
+ @media (max-width: 768px) {
+   .menu-item img {
+      width: 160px;   /* mobile to hơn */
+    }
+  }
+
+.menu-item p {
+  margin-top: 8px;
+  font-size: 16px;
+}
+
+.menu-item:hover {
+  transform: scale(1.05);
+}
+
+#menuPopup{
+  flex-direction:column;
+}
+
+#menuPopup .menu-panel{
+  background:linear-gradient(135deg,#0a3d62,#145da0);
+  padding:22px;
+  border-radius:18px;
+  width:100%;
+  max-width:460px;
+  animation:zoom .25s ease;
+}    
+  </style>
+</head>
+
+<body>
+
+  <!-- Logo -->
+  <a href="https://baotangtonducthang.vn/">
+    <img src="assets/logo.png" class="logo">
+  </a>
+  <!-- Title -->
+  <div class="title">
+    <div class="line1">Mini game</div>
+    <div class="line2">Dấu ấn thời gian</div>
+  </div>
+  
+  <!-- Rule -->
+  <div class="rule-box">
+  <div class="rule-title">📜 Luật chơi</div>
+    <ul>
+      <li>Bấm "HIỆN ẢNH" để nhận gợi ý</li>
+      <li>Quan sát bức ảnh có 02 gợi ý chưa hoàn chỉnh được chương trình cung cấp và lưu ảnh về máy</li>
+      <li>Tham quan không gian trưng bày tại bảo tàng để tìm hiện vật/hình ảnh được gợi ý</li>
+      <li>Khi tìm thấy hãy chụp lại hình ảnh tại vị trí trưng bày</li>
+      <li>Đưa hình đã chụp và nói chính xác chú thích của hiện vật/hình ảnh cho nhân viên hướng dẫn tại quầy thông tin ở Tầng 1 để nhận thưởng</li>
+    </ul>
+    <p class="note-text">
+      <span class="note-label">⚠️**Lưu ý:</span> - Bạn phải tìm và nói chính xác cả 02 gợi ý thì mới được xem là hoàn thành!<br>
+      - Các khu vực trưng bày tại Tầng 1, 2 và 3<BR>
+      ✨Chúc các bạn may mắn!✨
+    </p>
+  </div>
+  <!-- Button -->
+  
+  <div class="btn-container">
+    <button class="game-btn main-btn" onclick="showImage()">HIỆN ẢNH<br>
+    ▶️</button>
+  </div>
+
+  <!-- Popup -->
+  <div class="popup" id="popup">
+    <div class="hint-text">🧩 Đây là gợi ý của bạn 🔍</div>
+    <div class="img-wrapper">
+      <img id="popupImg">
+    </div>
+    <div>
+      <button class="download-btn game-btn" onclick="downloadImage()">Lưu ảnh 💾</button>
+      <button class="close-btn game-btn" onclick="closePopup()">Đóng ❌</button>
+    </div>
+  </div>
+
+  <!-- Nút feedback góc trái -->
+<button class="feed-btn"
+  onclick="window.open('https://bttonducthang.github.io/feedback-baotangtonducthang/')">
+  <img src="assets/feedback.png" alt="Feed">
+</button>
+  
+  <!-- Nút menu góc phải -->
+<button class="menu-btn" onclick="openMenuPopup()">
+  <img src="assets/menu_img.png" alt="Menu">
+</button>
+
+  <!-- Popup Menu -->
+<div class="popup" id="menuPopup">
+
+<div class="menu-panel">
+
+<div class="hint-text">🎮 Chọn Mini Game</div>
+
+<div class="menu-grid">
+
+<!-- Mini game 1 -->
+<div class="menu-item" onclick="window.location.href='game1.html'">
+<div class="img-wrapper">
+<img src="assets/minigame_1.png">
+</div>
+<p>[Vòng quay lịch sử]</p>
+</div>
+
+<!-- Mini game 2 -->
+<div class="menu-item" onclick="window.location.href='game2.html'">
+<div class="img-wrapper">
+<img src="assets/minigame_2.png">
+</div>
+<p>[Tìm hình giống nhau]</p>
+</div>
+
+</div>
+
+<button class="close-btn game-btn" onclick="closeMenuPopup()">Đóng ❌</button>
+
+</div>
+</div>
+
+  <script>
+    
+    // Danh sách ảnh game
+    const images = [];
+    
+    const totalImages = 28;
+    for (let i = 1; i <= totalImages; i++) {
+      images.push(`images/img${i}.jpg`);
+    }
+
+    let shuffledImages = shuffleArray(images);
+    let currentIndex = 0;
+    let currentImage = "";
+
+    // Shuffle random
+    function shuffleArray(arr) {
+      const newArr = [...arr];
+      for (let i = newArr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+      }
+  return newArr;
+}
+    // Hiện ảnh
+    function showImage() {
+      //Shuffle
+      const img = shuffledImages[currentIndex];
+
+      currentIndex++;
+
+      // Hết vòng → shuffle lại
+      if (currentIndex >= shuffledImages.length) {
+      shuffledImages = shuffleArray(images);
+      currentIndex = 0;
+      }
+      
+      currentImage = img;
+
+      document.getElementById("popupImg").src = img;
+      document.getElementById("popup").style.display = "flex";
+    }
+
+    function closePopup() {
+      document.getElementById("popup").style.display = "none";
+    }
+
+    function downloadImage() {
+      const link = document.createElement("a");
+      link.href = currentImage;
+      link.download = "image.jpg";
+      link.click();
+    }
+    
+    function openMenuPopup() {
+      const popup = document.getElementById("menuPopup");
+    if (popup.style.display === "flex") {
+      popup.style.display = "none";   // nếu đang mở thì đóng
+    } else {
+      popup.style.display = "flex";   // nếu đang đóng thì mở
+    }
+  }
+
+    function closeMenuPopup() {
+      document.getElementById("menuPopup").style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
