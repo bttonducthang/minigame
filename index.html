@@ -38,7 +38,7 @@ body::before{
   content:"";
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.15);
+  background:rgba(0,0,0,.1);
   z-index:-1;
 }
 
@@ -65,8 +65,12 @@ body::before{
 
 .title .line2{
   font-family:'Great Vibes', cursive;
-  font-size:1.15em;
-  letter-spacing:2px;
+
+  font-size:clamp(32px,6vw,58px);
+
+  letter-spacing:1px;
+
+  white-space:nowrap; /* không xuống dòng */
 }
 
 /* ===== KHUNG CHÍNH ===== */
@@ -281,6 +285,14 @@ body::before{
     height:58px;
     top:10px;
     left:10px;
+  }
+  .title{
+    font-size:clamp(24px,5vw,34px);
+  }
+
+  .title .line2{
+    font-size:clamp(24px,7vw,42px);
+    letter-spacing:.5px;
   }
 }
 </style>
