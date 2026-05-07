@@ -71,12 +71,17 @@
       letter-spacing: 2px; /*khoảng cách các từ*/
     }
 
-    .btn-container {
-      margin-top: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  .btn-container {
+    margin-top: 20px;
+
+    display: flex;
+    flex-direction: column; /* xếp dọc */
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px; /* khoảng cách giữa 2 nút */
+  }
 
     /* 🎮 Gaming Button */
     .game-btn {
@@ -172,14 +177,14 @@
     
   /* Nút về menu */
   .menu-home-btn{
-    margin-left:15px;
+    margin-left:0;
 
     background:linear-gradient(145deg,#1e88e5,#1565c0);
 
     box-shadow:
       0 6px 0 #0d47a1,
       0 10px 25px rgba(33,150,243,.45);
-}
+  }
 
   .menu-home-btn:hover{
     transform:translateY(-2px);
