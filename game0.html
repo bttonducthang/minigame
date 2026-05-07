@@ -169,6 +169,33 @@
       0 3px 0 #00b3b3,
       0 5px 15px rgba(255, 87, 34, 0.6);
     }
+    
+  /* Nút về menu */
+  .menu-home-btn{
+    margin-left:15px;
+
+    background:linear-gradient(145deg,#1e88e5,#1565c0);
+
+    box-shadow:
+      0 6px 0 #0d47a1,
+      0 10px 25px rgba(33,150,243,.45);
+}
+
+  .menu-home-btn:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+      0 8px 0 #0d47a1,
+      0 15px 35px rgba(33,150,243,.65);
+  }
+
+  .menu-home-btn:active{
+    transform:translateY(3px);
+
+    box-shadow:
+      0 3px 0 #0d47a1,
+      0 5px 15px rgba(33,150,243,.45);
+}
 
     /* Popup */
     .popup {
@@ -529,12 +556,23 @@
       ✨Chúc các bạn may mắn!✨
     </p>
   </div>
-  <!-- Button -->
   
-  <div class="btn-container">
-    <button class="game-btn main-btn" onclick="showImage()">HIỆN ẢNH<br>
-    ▶️</button>
-  </div>
+  <!-- Button -->  
+<div class="btn-container">
+
+  <!-- Nút hiện ảnh -->
+  <button class="game-btn main-btn"
+    onclick="showImage()">
+    HIỆN ẢNH<br>▶️
+  </button>
+
+  <!-- Nút về menu -->
+  <button class="game-btn menu-home-btn"
+    onclick="window.location.href='index.html'">
+    VỀ MENU<br>🏠
+  </button>
+
+</div>
 
   <!-- Popup -->
   <div class="popup" id="popup">
