@@ -940,36 +940,51 @@ function spinWheel(){
 
   playSpinSound();
 
-  // lấy câu chưa dùng
+  // danh sách câu chưa dùng
   let available = questions
-    .map((q, i) => ({
+    .map((q,i)=>({
       ...q,
-      realIndex: i
+      realIndex:i
     }))
     .filter(q => !q.used);
 
-  if(available.length === 0) return;
+  let total = available.length;
 
   // random ô
-  let pickedIndex = Math.floor(Math.random() * available.length);
+  let pickedIndex = Math.floor(Math.random() * total);
 
   // câu được chọn
   let picked = available[pickedIndex];
 
-  // lưu index thật
   currentIndex = picked.realIndex;
 
-  let total = available.length;
-
+  // mỗi ô bao nhiêu độ
   let each = 360 / total;
 
-  // góc chính giữa ô được chọn
-  let targetAngle = (pickedIndex * each) + (each / 2);
+  /*
+    CANH CHÍNH XÁC:
+    pointer nằm ở TOP
+    nên phải offset -90 độ
+  */
 
-  // quay nhiều vòng rồi dừng đúng ô
-  rotate += (360 * 5) + (270 - targetAngle);
+  let stopAngle =
+    (pickedIndex * each)
+    + (each / 2);
 
-  canvas.style.transform = `rotate(${rotate}deg)`;
+  /*
+    quay:
+    nhiều vòng + canh giữa ô vào pointer
+  */
+
+  let finalRotate =
+    360 * 5
+    + (360 - stopAngle)
+    + 90;
+
+  rotate = finalRotate;
+
+  canvas.style.transform =
+    `rotate(${rotate}deg)`;
 
   document.getElementById("spinBtn").disabled = true;
 
@@ -985,7 +1000,6 @@ function spinWheel(){
 
   },4200);
 }
-
 /* ===================== QUESTION ===================== */
 function showQuestion(){
 
@@ -1040,10 +1054,16 @@ function chooseAnswer(index){
     document.getElementById("popup").style.display = "none";
 
     // reset góc quay
-    rotate = 0;
-
     canvas.style.transition = "none";
     canvas.style.transform = "rotate(0deg)";
+
+    rotate = 0;
+    
+    // redraw chuẩn frame
+    requestAnimationFrame(()=>{
+      drawWheel();
+      updateRemain();
+    });
 
     // cập nhật wheel
     drawWheel();
