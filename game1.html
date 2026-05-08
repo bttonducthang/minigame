@@ -925,10 +925,12 @@ function spinWheel(){
   }
 
   startTimer();
+
   spinning = true;
+
   playSpinSound();
 
-  // chỉ lấy câu chưa dùng
+  // lấy câu chưa dùng
   let available = questions
     .map((q, i) => ({
       ...q,
@@ -948,13 +950,14 @@ function spinWheel(){
   currentIndex = picked.realIndex;
 
   let total = available.length;
+
   let each = 360 / total;
 
-  // căn giữa ô
-  let stopAngle = (pickedIndex * each) + (each / 2);
+  // góc chính giữa ô được chọn
+  let targetAngle = (pickedIndex * each) + (each / 2);
 
-  // quay nhiều vòng
-  rotate += (360 * 5) - stopAngle + 90;
+  // quay nhiều vòng rồi dừng đúng ô
+  rotate += (360 * 5) + (270 - targetAngle);
 
   canvas.style.transform = `rotate(${rotate}deg)`;
 
