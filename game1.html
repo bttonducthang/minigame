@@ -1068,7 +1068,7 @@ function chooseAnswer(index){
 function finishGame(){
 
 clearInterval(timer);
-timerStarted = true;
+timerStarted = false;
 
 document.getElementById("spinBtn").disabled = true;
 document.getElementById("popup").style.display="none";
@@ -1111,7 +1111,9 @@ timerStarted = false;
 
 document.getElementById("score").innerText = 0;
 document.getElementById("timeBox").classList.remove("warning");
-
+  
+// reset hiển thị thời gian
+updateTime();
 // ⭐ TẠO BỘ CÂU HỎI MỚI HOÀN TOÀN
 let base = JSON.parse(JSON.stringify(questionsCache));
 
