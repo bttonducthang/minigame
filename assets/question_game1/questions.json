@@ -1,53 +1,53 @@
 [
   {
-    "q": "Giải thưởng cao quý nhất mà Bác Tôn được trao tặng là?",
-    "answers": ["Huân chương kháng chiến","Huân chương độc lập","Huân chương sao vàng","Huân chương lao động"],
-    "correct": 2
+    "q": "Huân chương cao quý nhất của Nhà nước Việt Nam, mà Bác Tôn là người đầu tiên được trao tặng tên là gì?",
+    "answers": ["Huân chương kháng chiến","Huân chương sao vàng","Huân chương độc lập","Huân chương lao động"],
+    "correct": 1
   },
   {
     "q": "Người thầy đầu tiên dạy cho Bác Tôn chữ Nho là ai?",
-    "answers": ["Nguyễn Trung Trực","Thủ Khoa Huân","Nguyễn Thượng Khách","Trương Định"],
-    "correct": 2
+    "answers": ["Ông Nguyễn Trung Trực","Ông Nguyễn Thượng Khách","Ông Thủ Khoa Huân","Ông Trương Định"],
+    "correct": 1
   },
   {
-    "q": "Bác Tôn quê ở đâu?",
-    "answers": ["An Giang","Huế","Hà Nội","Đà Nẵng"],
+    "q": "Bác Tôn được sinh ra ở đâu?",
+    "answers": ["An Giang","Thành phố Sài Gòn - Gia Định","Hà Nội","Đà Nẵng"],
     "correct": 0
   },
   {
     "q": "Song thân của Bác Tôn tên là gì?",
-    "answers": ["Tôn Gia Hưng — Nguyễn Lan Chi","Tôn Thất Hiệp - Nguyễn Thị Lộ","Tôn Thất Thuyết - Nguyễn Thị Minh Khai","Tôn Văn Đề - Nguyễn Thị Vị"],
+    "answers": ["Ông Tôn Văn Quý – bà Võ Thị Lang","Ông Tôn Văn Lâu – bà Nguyễn Thị Can","TÔng Tôn Văn Thông – bà Bùi Thị Nho","Ông Tôn Văn Đề – bà Nguyễn Thị Vị"],
     "correct": 3
   },
   {
-    "q": "Bác Tôn từng giữ chức vụ gì?",
-    "answers": ["Chủ tịch nước","Thủ tướng","Bộ trưởng","Tổ trưởng"],
-    "correct": 0
+    "q": "Bác Tôn mất vào ngày, tháng, năm nào?",
+    "answers": ["27/3/1980","28/3/1980","29/3/1980","30/3/1980"],
+    "correct": 3
   },
   {
     "q":"Bác Tôn sinh vào ngày, tháng, năm nào?",
     "answers":["20/8/1885","20/8/1886","20/8/1887","20/8/1888"],
-    "correct":3
+    "correct": 3
   },
   {
     "q":"Bác Tôn bị giam giữ tại nhà tù Côn Đảo bao nhiêu năm?",
     "answers":["10 năm","15 năm","20 năm","25 năm"],
-    "correct":1
+    "correct": 1
   },
   {
     "q":"Bác Tôn làm Chủ tịch nước trong bao nhiêu năm?",
     "answers":["9 năm","10 năm","11 năm","12 năm"],
-    "correct":2
+    "correct": 2
   },
   {
     "q":"Bác Tôn được bầu làm Phó Chủ tịch nước vào năm nào?",
     "answers":["1960","1965","1969","1975"],
-    "correct":0
+    "correct": 0
   },
   {
     "q":"Bác Tôn từng học nghề tại trường nào?",
     "answers":["Cơ Khí Châu Á","Công Nghệ Á Châu","Cơ Khí Á Châu","Kỹ Thuật Châu Á"],
-    "correct":2
+    "correct": 2
   },
   {
     "q": "Tổ chức nhằm bênh vực quyền lợi của thợ thuyền (công nhân) mà Bác Tôn đã sáng lập tại Sài Gòn vào năm 1920?",
@@ -56,22 +56,22 @@
   },
   {
     "q":"Bác Tôn bị thực dân Pháp bắt tại đâu, vào thời gian nào?",
-    "answers":["Chân cầu Bông, Sài Gòn ngày 23/7/1929","Chân cầu Sài Gòn, ngày 23/7/1929","Chân cầu Kiệu, Sài Gòn ngày 23/7/1929","Chân cầu Khánh Hội, Sài Gòn ngày 23/7/1929"],
-    "correct":2
+    "answers":["Chân cầu Bông, Sài Gòn, ngày 23/7/1929","Chân cầu Sài Gòn, ngày 23/7/1929","Chân cầu Kiệu, Sài Gòn, ngày 23/7/1929","Chân cầu Khánh Hội, Sài Gòn, ngày 23/7/1929"],
+    "correct": 2
   },
   {
     "q":"Bác Tôn được bầu làm Trưởng ban Thường trực Quốc hội tại kỳ họp thứ mấy của Quốc hội khóa I?",
     "answers":["Kỳ họp thứ 3","Kỳ họp thứ 4","Kỳ họp thứ 5","Kỳ họp thứ 6"],
-    "correct":2
+    "correct": 2
   },
   {
     "q": "Bí danh động cách mạng của Bác Tôn là gì?",
-    "answers": ["Thoại Sơn","Hai Thắng","Bảy Núi","Mỹ Hòa Hưng"],
-    "correct": 0
+    "answers": ["Hai Thắng","Thoại Sơn","Bảy Núi","Charles de Lentali"],
+    "correct": 1
   },
   {
     "q": "Bác Tôn từ nhà tù Côn Đảo trở về đất liền vào tháng, năm nào?",
-    "answers": ["Tháng 6/1945","Tháng 9/1945","Tháng 12/1945","Tháng 4/1945"],
-    "correct": 1
+    "answers": ["Tháng 4/1945","Tháng 6/1945","Tháng 9/1945","Tháng 12/1945"],
+    "correct": 0
   }
 ]
