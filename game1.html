@@ -928,58 +928,50 @@ function spinWheel(){
   spinning = true;
   playSpinSound();
 
+  // chỉ lấy câu chưa dùng
   let available = questions
-    .map((q, i) => ({...q, index:i}))
+    .map((q, i) => ({
+      ...q,
+      realIndex: i
+    }))
     .filter(q => !q.used);
 
   if(available.length === 0) return;
 
-  // ⭐ AUTO CÂU CUỐI
-  if(available.length === 1){
-    currentIndex = available[0].index;
-
-    document.getElementById("spinBtn").disabled = true;
-
-    canvas.style.transform = `rotate(${rotate + 720}deg)`;
-
-    setTimeout(()=>{
-      stopSpinSound();
-      showQuestion();
-      spinning = false;
-      document.getElementById("spinBtn").disabled = false;
-    }, 1000);
-
-    return;
-  }
-
-  // ⭐ RANDOM CHUẨN (KHÔNG ĐÈ BIẾN)
+  // random ô
   let pickedIndex = Math.floor(Math.random() * available.length);
-  let picked = available[pickedIndex];
-  currentIndex = picked.index;
 
-  // số ô đang hiển thị
+  // câu được chọn
+  let picked = available[pickedIndex];
+
+  // lưu index thật
+  currentIndex = picked.realIndex;
+
   let total = available.length;
   let each = 360 / total;
 
-  let offset = each / 2;
-  let stopAngle = pickedIndex * each + offset;
+  // căn giữa ô
+  let stopAngle = (pickedIndex * each) + (each / 2);
 
-  let spins = 360 * 5;
-
-  rotate = rotate + spins - stopAngle + 90;
+  // quay nhiều vòng
+  rotate += (360 * 5) - stopAngle + 90;
 
   canvas.style.transform = `rotate(${rotate}deg)`;
 
   document.getElementById("spinBtn").disabled = true;
 
   setTimeout(()=>{
-    stopSpinSound();
-    showQuestion();
-    spinning = false;
-    document.getElementById("spinBtn").disabled = false;
-  }, 4200);
-}
 
+    stopSpinSound();
+
+    showQuestion();
+
+    spinning = false;
+
+    document.getElementById("spinBtn").disabled = false;
+
+  },4200);
+}
 
 /* ===================== QUESTION ===================== */
 function showQuestion(){
