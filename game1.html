@@ -793,12 +793,9 @@ async function loadQuestions(){
   if(questionsCache){
     let data = JSON.parse(JSON.stringify(questionsCache));
 
-  questions = shuffle([...data])
-    .slice(0,5)
-    .map((q,index) => ({
-    ...q,
-    used:false,
-    }));
+    questions = shuffle([...data])
+      .slice(0,5)
+      .map(q => ({ ...q, used:false }));
 
     updateRemain();
     drawWheel();
@@ -812,12 +809,9 @@ async function loadQuestions(){
     questionsCache = JSON.parse(JSON.stringify(data));
 
     // ⭐ CHỈ LẤY 5 CÂU NGẪU NHIÊN
-   questions = shuffle([...data])
-  .slice(0,5)
-  .map((q,index) => ({
-    ...q,
-    used:false,
-  }));
+    questions = shuffle([...data])
+      .slice(0,5)
+      .map(q => ({ ...q, used:false }));
 
   } catch (err) {
 
@@ -827,11 +821,8 @@ async function loadQuestions(){
 
     questions = shuffle([...originalQuestions])
       .slice(0,5)
-      .map((q,index) => ({
-          ...q,
-        used:false,
-      }));
-    }
+      .map(q => ({ ...q, used:false }));
+  }
 
   updateRemain();
   drawWheel();
@@ -858,45 +849,35 @@ function updateTime(){
 
 function drawWheel(){
 
+  let activeQuestions = questions.filter(q => !q.used);
+  let total = activeQuestions.length;
+
   ctx.setTransform(1,0,0,1,0,0);
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
   let center = 160;
   let radius = 155;
+  let size = (Math.PI*2)/total;
 
-  // luôn chia 5 ô cố định
-  let total = questions.length;
-  let size = (Math.PI * 2) / total;
-
-  for(let i = 0; i < questions.length; i++){
-
-    let q = questions[i];
-
-    // nếu đã dùng thì bỏ qua
-    if(q.used) continue;
-
-    let start = i * size - Math.PI/2;
+  for(let i=0;i<activeQuestions.length;i++){
+    let q = activeQuestions[i];
+    let start = i*size-Math.PI/2;
     let end = start + size;
-    let centerAngle = start + size/2;
+    let centerAngle = start + size / 2;
 
-    // vẽ ô
     ctx.beginPath();
-    ctx.moveTo(center, center);
-    ctx.arc(center, center, radius, start, end);
+    ctx.moveTo(center,center);
+    ctx.arc(center,center,radius,start,end);
     ctx.fillStyle = colors[i % colors.length];
     ctx.fill();
 
-    // chữ
     ctx.save();
-    ctx.translate(center, center);
+    ctx.translate(center,center);
     ctx.rotate(centerAngle);
-
     ctx.fillStyle = "white";
     ctx.font = "bold 18px Arial";
     ctx.textAlign = "right";
-
-    ctx.fillText("Câu " + q.label, radius - 18, 6);
-
+    ctx.fillText("Câu " + (i+1), radius-18, 6);
     ctx.restore();
   }
 }
@@ -1100,9 +1081,9 @@ let base = JSON.parse(JSON.stringify(questionsCache));
 
 questions = shuffle([...base])
   .slice(0,5)
-  .map((q,index) => ({
+  .map(q => ({
     ...q,
-    used:false,
+    used: false
   }));
 
 // reset UI
