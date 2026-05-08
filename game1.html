@@ -966,7 +966,7 @@ function spinWheel(){
     (pickedIndex * each) + (each / 2);
 
   // quay đúng vị trí pointer TOP
-  rotate =
+  rotate +=
     (360 * 5) +
     (270 - stopAngle);
 
@@ -1040,21 +1040,11 @@ function chooseAnswer(index){
     // đóng popup
     document.getElementById("popup").style.display = "none";
 
-    // reset góc quay   
-    rotate = 0;
-    
-    canvas.style.transition = "none";
-    canvas.style.transform = "rotate(0deg)";
 
     // cập nhật wheel
     drawWheel();
     updateRemain();
 
-    // bật lại animation
-    setTimeout(()=>{
-      canvas.style.transition =
-        "transform 4s cubic-bezier(.17,.67,.15,1)";
-    },50);
 
     // kiểm tra kết thúc
     let remain = questions.filter(q => !q.used).length;
