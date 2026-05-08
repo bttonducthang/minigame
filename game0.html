@@ -176,33 +176,37 @@
     }
     
   /* Nút về menu */
-   .menu-home-btn{
-      margin-left:0;
+.menu-home-btn{
+  margin-left:0;
 
-      animation:none; /* bỏ glow */
+  padding: 8px 22px; /* 👈 giảm chiều cao */
 
-      background:linear-gradient(145deg,#1e88e5,#1565c0);
+  font-size:16px;
 
-      box-shadow:
-        0 6px 0 #0d47a1,
-        0 10px 25px rgba(33,150,243,.5);
-  }
+  animation:none; /* bỏ glow */
 
-  .menu-home-btn:hover{
-    transform:translateY(-2px);
+  background:linear-gradient(145deg,#1e88e5,#1565c0);
 
-    box-shadow:
-      0 8px 0 #0d47a1,
-      0 15px 35px rgba(33,150,243,.7);
-  }
+  box-shadow:
+    0 6px 0 #0d47a1,
+    0 10px 25px rgba(33,150,243,.5);
+}
 
-  .menu-home-btn:active{
-    transform:translateY(3px);
+.menu-home-btn:hover{
+  transform:translateY(-2px);
 
-    box-shadow:
-      0 3px 0 #0d47a1,
-      0 5px 15px rgba(33,150,243,.45);
-  }
+  box-shadow:
+    0 8px 0 #0d47a1,
+    0 15px 35px rgba(33,150,243,.7);
+}
+
+.menu-home-btn:active{
+  transform:translateY(3px);
+
+  box-shadow:
+    0 3px 0 #0d47a1,
+    0 5px 15px rgba(33,150,243,.45);
+}
 
     /* Popup */
     .popup {
@@ -576,7 +580,7 @@
   <!-- Nút về menu -->
   <button class="game-btn menu-home-btn"
     onclick="window.location.href='index.html'">
-    VỀ MENU<br>↩️
+    VỀ MENU ↩️
   </button>
 
 </div>
