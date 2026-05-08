@@ -798,7 +798,6 @@ async function loadQuestions(){
     .map((q,index) => ({
     ...q,
     used:false,
-    label:index + 1
     }));
 
     updateRemain();
@@ -818,7 +817,6 @@ async function loadQuestions(){
   .map((q,index) => ({
     ...q,
     used:false,
-    label:index + 1
   }));
 
   } catch (err) {
@@ -832,7 +830,6 @@ async function loadQuestions(){
       .map((q,index) => ({
           ...q,
         used:false,
-        label:index + 1
       }));
     }
 
@@ -889,7 +886,7 @@ function drawWheel(){
     ctx.fillStyle = "white";
     ctx.font = "bold 18px Arial";
     ctx.textAlign = "right";
-    ctx.fillText("Câu " +  q.label, radius-18, 6);
+    ctx.fillText("Câu " +  (i + 1), radius-18, 6);
     ctx.restore();
   }
 }
@@ -1096,7 +1093,6 @@ questions = shuffle([...base])
   .map((q,index) => ({
     ...q,
     used:false,
-    label:index + 1
   }));
 
 // reset UI
