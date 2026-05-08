@@ -929,10 +929,10 @@ finishGame();
 function spinWheel(){
 
   if(
-  spinning ||
-  questions.filter(q => !q.used).length === 0
+    spinning ||
+    questions.filter(q => !q.used).length === 0
   ) return;
-  
+
   if(questions.every(q => q.used)){
     finishGame();
     return;
@@ -955,20 +955,25 @@ function spinWheel(){
   // câu được chọn
   let pickedQuestion = activeQuestions[pickedIndex];
 
-  // lấy index THẬT trong questions
   currentQuestion = pickedQuestion;
 
   // góc mỗi ô
   let each = 360 / total;
 
-  // góc giữa ô
+  // góc giữa ô được chọn
   let stopAngle =
     (pickedIndex * each) + (each / 2);
 
-  // quay đúng vị trí pointer TOP
-  rotate +=
-    (360 * 5) +
-    (270 - stopAngle);
+  /*
+    Pointer nằm ở TOP
+    nên cần quay để tâm ô trùng 270 độ
+  */
+
+  let finalRotate =
+    360 - stopAngle + 270;
+
+  // quay thêm nhiều vòng cho đẹp
+  rotate += (360 * 5) + finalRotate;
 
   canvas.style.transform =
     `rotate(${rotate}deg)`;
