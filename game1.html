@@ -928,8 +928,11 @@ finishGame();
 /* ===================== SPIN ===================== */
 function spinWheel(){
 
-  if(spinning || questions.length === 0) return;
-
+  if(
+  spinning ||
+  questions.filter(q => !q.used).length === 0
+  ) return;
+  
   if(questions.every(q => q.used)){
     finishGame();
     return;
@@ -963,7 +966,7 @@ function spinWheel(){
     (pickedIndex * each) + (each / 2);
 
   // quay đúng vị trí pointer TOP
-  rotate +=
+  rotate =
     (360 * 5) +
     (270 - stopAngle);
 
