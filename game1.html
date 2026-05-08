@@ -867,29 +867,39 @@ function drawWheel(){
   ctx.setTransform(1,0,0,1,0,0);
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
+  // nếu hết câu thì không vẽ nữa
+  if(total <= 0) return;
+
   let center = 160;
   let radius = 155;
   let size = (Math.PI*2)/total;
 
   for(let i=0;i<activeQuestions.length;i++){
+
     let q = activeQuestions[i];
-    let start = i*size-Math.PI/2;
+
+    let start = i*size - Math.PI/2;
     let end = start + size;
-    let centerAngle = start + size / 2;
+    let centerAngle = start + size/2;
 
     ctx.beginPath();
     ctx.moveTo(center,center);
     ctx.arc(center,center,radius,start,end);
+
     ctx.fillStyle = colors[i % colors.length];
     ctx.fill();
 
     ctx.save();
+
     ctx.translate(center,center);
     ctx.rotate(centerAngle);
+
     ctx.fillStyle = "white";
     ctx.font = "bold 18px Arial";
     ctx.textAlign = "right";
+
     ctx.fillText("Câu " + q.label, radius-18, 6);
+
     ctx.restore();
   }
 }
@@ -991,69 +1001,71 @@ btn.className = "answer";
 btn.disabled = false;
 }
 }
-
 function chooseAnswer(index){
-if(document.getElementById("popup").style.display !== "flex") return;
-let q = questions[currentIndex];
 
-for(let i=0;i<4;i++){
-document.getElementById("a"+i).disabled = true;
+  if(document.getElementById("popup").style.display !== "flex") return;
+
+  let q = questions[currentIndex];
+
+  // khóa nút
+  for(let i=0;i<4;i++){
+    document.getElementById("a"+i).disabled = true;
+  }
+
+  // đúng / sai
+  if(index === q.correct){
+
+    score++;
+    document.getElementById("score").innerText = score;
+
+    document.getElementById("a"+index)
+      .classList.add("correct");
+
+    playCorrectSound();
+
+  }else{
+
+    document.getElementById("a"+index)
+      .classList.add("wrong");
+
+    playWrongSound();
+  }
+
+  setTimeout(()=>{
+
+    // đánh dấu đã dùng
+    questions[currentIndex].used = true;
+
+    // đóng popup
+    document.getElementById("popup").style.display = "none";
+
+    // reset góc quay
+    rotate = 0;
+
+    canvas.style.transition = "none";
+    canvas.style.transform = "rotate(0deg)";
+
+    // cập nhật wheel
+    drawWheel();
+    updateRemain();
+
+    // bật lại animation
+    setTimeout(()=>{
+      canvas.style.transition =
+        "transform 4s cubic-bezier(.17,.67,.15,1)";
+    },50);
+
+    // kiểm tra kết thúc
+    let remain = questions.filter(q => !q.used).length;
+
+    if(remain === 0){
+      finishGame();
+    }
+
+  },900);
 }
 
-if(index === q.correct){
 
-score++;
-document.getElementById("score").innerText = score;
-document.getElementById("a"+index).classList.add("correct");
-playCorrectSound();
-
-}else{
-
-document.getElementById("a"+index).classList.add("wrong");
-playWrongSound();
-
-}
-
-setTimeout(()=>{
-
-// đánh dấu đã dùng
-questions[currentIndex].used = true;
-
-// đóng popup
-document.getElementById("popup").style.display="none";
-
-// RESET GÓC QUAY
-rotate = 0;
-canvas.style.transition = "none";
-canvas.style.transform = "rotate(0deg)";
-
-// redraw vòng mới
-drawWheel();
-updateRemain();
-
-// bật lại animation quay
-setTimeout(()=>{
-  canvas.style.transition = "transform 4s cubic-bezier(.17,.67,.15,1)";
-},50);
-
-// kiểm tra kết thúc
-let remain = questions.filter(q => !q.used).length;
-
-if(remain === 0){
-  finishGame();
-}
-
-},900);
-
-// ❗ check kết thúc SAU KHI UPDATE
-let remain = questions.filter(q => !q.used).length;
-
-if(remain === 0){
-  finishGame();
-}
-
-},900);
-}
 
 /* ===================== FINISH ===================== */
 function finishGame(){
