@@ -953,27 +953,30 @@ function spinWheel(){
   let pickedIndex = Math.floor(Math.random() * total);
 
   // câu được chọn
-  let pickedQuestion = activeQuestions[pickedIndex];
-
-  currentQuestion = pickedQuestion;
+  currentQuestion = activeQuestions[pickedIndex];
 
   // góc mỗi ô
   let each = 360 / total;
 
-  // góc giữa ô được chọn
+  // góc giữa ô
   let stopAngle =
     (pickedIndex * each) + (each / 2);
 
   /*
-    Pointer nằm ở TOP
-    nên cần quay để tâm ô trùng 270 độ
+    Pointer ở TOP
+    => cần đưa tâm ô về 270 độ
   */
 
-  let finalRotate =
-    360 - stopAngle + 270;
+  let targetAngle = 270 - stopAngle;
 
-  // quay thêm nhiều vòng cho đẹp
-  rotate += (360 * 5) + finalRotate;
+  // chuẩn hóa góc
+  targetAngle = (targetAngle + 360) % 360;
+
+  // quay thêm nhiều vòng
+  rotate =
+    rotate +
+    (360 * 5) +
+    targetAngle;
 
   canvas.style.transform =
     `rotate(${rotate}deg)`;
