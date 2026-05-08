@@ -736,6 +736,7 @@ let score = 0;
 let rotate = 0;
 let spinning = false;
 let currentIndex = -1;
+let currentQuestion = null;
 let timeLeft = 60;
 let timerStarted = false;
 let timer = null;
@@ -952,7 +953,7 @@ function spinWheel(){
   let pickedQuestion = activeQuestions[pickedIndex];
 
   // lấy index THẬT trong questions
-  currentIndex = questions.indexOf(pickedQuestion);
+  currentQuestion = pickedQuestion;
 
   // góc mỗi ô
   let each = 360 / total;
@@ -986,7 +987,7 @@ function spinWheel(){
 /* ===================== QUESTION ===================== */
 function showQuestion(){
 
-let q = questions[currentIndex];
+let q = currentQuestion;
 
 document.getElementById("popup").style.display="flex";
 document.getElementById("questionText").innerText = q.q;
@@ -1002,7 +1003,7 @@ function chooseAnswer(index){
 
   if(document.getElementById("popup").style.display !== "flex") return;
 
-  let q = questions[currentIndex];
+  let q = currentQuestion;
 
   // khóa nút
   for(let i=0;i<4;i++){
@@ -1031,7 +1032,7 @@ function chooseAnswer(index){
   setTimeout(()=>{
 
     // đánh dấu đã dùng
-    questions[currentIndex].used = true;
+    currentQuestion.used = true;
 
     // đóng popup
     document.getElementById("popup").style.display = "none";
