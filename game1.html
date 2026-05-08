@@ -1016,14 +1016,34 @@ playWrongSound();
 
 setTimeout(()=>{
 
-// ❗ mark used TRƯỚC
+// đánh dấu đã dùng
 questions[currentIndex].used = true;
 
-// ❗ update UI
+// đóng popup
 document.getElementById("popup").style.display="none";
 
+// RESET GÓC QUAY
+rotate = 0;
+canvas.style.transition = "none";
+canvas.style.transform = "rotate(0deg)";
+
+// redraw vòng mới
 drawWheel();
 updateRemain();
+
+// bật lại animation quay
+setTimeout(()=>{
+  canvas.style.transition = "transform 4s cubic-bezier(.17,.67,.15,1)";
+},50);
+
+// kiểm tra kết thúc
+let remain = questions.filter(q => !q.used).length;
+
+if(remain === 0){
+  finishGame();
+}
+
+},900);
 
 // ❗ check kết thúc SAU KHI UPDATE
 let remain = questions.filter(q => !q.used).length;
