@@ -813,9 +813,13 @@ async function loadQuestions(){
     questionsCache = JSON.parse(JSON.stringify(data));
 
     // ⭐ CHỈ LẤY 5 CÂU NGẪU NHIÊN
-    questions = shuffle([...data])
-      .slice(0,5)
-      .map(q => ({ ...q, used:false }));
+   questions = shuffle([...data])
+  .slice(0,5)
+  .map((q,index) => ({
+    ...q,
+    used:false,
+    label:index + 1
+  }));
 
   } catch (err) {
 
