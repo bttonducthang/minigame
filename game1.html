@@ -1103,24 +1103,41 @@ window.location.href="index.html";
 
 function restartGame(){
 
+clearInterval(timer);
+
 score = 0;
 rotate = 0;
 spinning = false;
+
 currentIndex = -1;
+currentQuestion = null;
+
 timeLeft = 60;
 timerStarted = false;
 
 document.getElementById("score").innerText = 0;
-document.getElementById("timeBox").classList.remove("warning");
-  
+
+document.getElementById("timeBox")
+  .classList.remove("warning");
+
 // reset hiển thị thời gian
 updateTime();
-// ⭐ TẠO BỘ CÂU HỎI MỚI HOÀN TOÀN
+
+// reset wheel
+canvas.style.transition = "none";
+canvas.style.transform = "rotate(0deg)";
+
+setTimeout(()=>{
+  canvas.style.transition =
+    "transform 4s cubic-bezier(.17,.67,.15,1)";
+},50);
+
+// ⭐ tạo bộ câu hỏi mới
 let base = JSON.parse(JSON.stringify(questionsCache));
 
 questions = shuffle([...base])
   .slice(0,5)
-  .map((q,index) => ({
+  .map((q,index)=>({
     ...q,
     used:false,
     label:index + 1
@@ -1128,10 +1145,12 @@ questions = shuffle([...base])
 
 // reset UI
 document.getElementById("spinBtn").disabled = false;
+
 document.getElementById("popup").style.display = "none";
+
 document.getElementById("finishPopup").style.display = "none";
 
-// vẽ lại
+// redraw
 drawWheel();
 updateRemain();
 }
