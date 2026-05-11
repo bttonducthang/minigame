@@ -487,7 +487,7 @@
     left:10px;
   }
 }
-/* ===== ĐỒNG BỘ POPUP MENU CHUẨN GAME 1 ===== */
+/* ===== POPUP MENU ===== */
 #menuPopup {
     display: none;
     flex-direction: column;
@@ -496,7 +496,7 @@
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.85);
-    z-index: 1000;
+    z-index: 1001; /* Cao hơn popup ảnh gợi ý */
 }
 
 #menuPopup .menu-panel {
@@ -504,7 +504,7 @@
     padding: 25px;
     border-radius: 18px;
     width: 90%;
-    max-width: 430px; /* Độ rộng khung chuẩn */
+    max-width: 420px; /* Kích thước khung chuẩn Game 1 */
     animation: zoomIn .25s ease;
     border: 2px solid rgba(0, 255, 255, 0.9);
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.5), inset 0 0 10px rgba(0, 255, 255, 0.2);
@@ -512,38 +512,52 @@
     flex-direction: column;
     align-items: center;
 }
-.menu-item .img-wrapper {
-    width: 140px !important;  /* Kích thước icon chuẩn Game 1 */
+
+/* ÉP KÍCH THƯỚC ICON TRONG MENU */
+#menuPopup .menu-grid .menu-item .img-wrapper {
+    width: 140px !important;  /* Fix cứng kích thước */
     height: 140px !important;
-    padding: 3px !important;
+    padding: 4px !important;
     margin-bottom: 10px;
-    display: block !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
 }
-.menu-item img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important; /* Đảm bảo ảnh không bị méo */
-  border-radius: 10px;
+
+#menuPopup .menu-item img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important; 
+    border-radius: 10px;
 }
+
 .menu-grid {
     display: flex;
-    gap: 20px;
+    gap: 15px;
     flex-wrap: wrap;
     justify-content: center;
     margin: 20px 0;
 }
+
 .menu-item p {
     font-size: 14px;
     font-weight: bold;
-    color: #fff;
+    color: #fff !important;
     margin: 0;
+    text-shadow: 1px 1px 2px #000;
 }
-.menu-item {
-    cursor: pointer;
-    text-align: center;
-    color: white;
-    font-weight: bold;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+
+/* Mobile responsive riêng cho Menu */
+@media (max-width: 768px) {
+    #menuPopup .menu-panel {
+        max-width: 320px;
+        padding: 15px;
+    }
+    #menuPopup .menu-grid .menu-item .img-wrapper {
+        width: 115px !important;
+        height: 115px !important;
+    }
+    .menu-grid { gap: 10px; }
 }
 
 /* Hiệu ứng Hover & Glow */
@@ -564,11 +578,13 @@
 @media (max-width: 768px) {
     #menuPopup .menu-panel {
         max-width: 320px;
+        padding: 15px;
     }
-    .menu-item .img-wrapper {
-        width: 110px !important;
-        height: 110px !important;
+    #menuPopup .menu-grid .menu-item .img-wrapper {
+        width: 115px !important;
+        height: 115px !important;
     }
+    .menu-grid { gap: 10px; }
 }
   </style>
 </head>
@@ -642,38 +658,25 @@
   <img src="assets/menu_img.png" alt="Menu">
 </button>
 
-  <!-- Popup Menu -->
-<div class="popup" id="menuPopup">
-
-<div class="menu-panel">
-
-<div class="hint-text">🎮 Chọn Trò Chơi</div>
-
-<div class="menu-grid">
-
-<!-- Mini game 1 -->
-<div class="menu-item" onclick="window.location.href='game1.html'">
-<div class="img-wrapper"> <!-- Cần có cái này để có viền LED -->
-<img src="assets/minigame_1.png">
+ <!-- Popup Menu -->
+<div id="menuPopup"> <!-- Chỉ cần ID này là đủ vì CSS trên đã định nghĩa display -->
+    <div class="menu-panel">
+        <div class="hint-text">🎮 Chọn Trò Chơi</div>
+        <div class="menu-grid">
+            <!-- Item 1 -->
+            <div class="menu-item" onclick="window.location.href='game1.html'">
+                <div class="img-wrapper"><img src="assets/minigame_1.png"></div>
+                <p>[Vòng quay lịch sử]</p>
+            </div>
+            <!-- Item 2 -->
+            <div class="menu-item" onclick="window.location.href='game2.html'">
+                <div class="img-wrapper"><img src="assets/minigame_2.png"></div>
+                <p>[Tìm hình giống nhau]</p>
+            </div>
+        </div>
+        <button class="close-btn game-btn" onclick="closeMenuPopup()">Đóng ❌</button>
+    </div>
 </div>
-<p>[Vòng quay lịch sử]</p>
-</div>
-
-<!-- Mini game 2 -->
-<div class="menu-item" onclick="window.location.href='game2.html'">
-<div class="img-wrapper">
-<img src="assets/minigame_2.png">
-</div>
-<p>[Tìm hình giống nhau]</p>
-</div>
-
-</div>
-
-<button class="close-btn game-btn" onclick="closeMenuPopup()">Đóng ❌</button>
-
-</div>
-</div>
-
   <script>
     
     // Danh sách ảnh game
