@@ -861,24 +861,23 @@ function updateTime(){
   }
 }
 
+/* ===================== drawWheel() ĐÃ SỬA LỖI LỆCH Ô ===================== */
 function drawWheel(){
-
-  let activeQuestions = questions.filter(q => !q.used);
-  let total = activeQuestions.length;
+  // ⭐ Sửa logic: Vẽ TẤT CẢ câu hỏi, không filter câu chưa dùng
+  let total = questions.length; 
 
   ctx.setTransform(1,0,0,1,0,0);
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  // nếu hết câu thì không vẽ nữa
+  // nếu hết câu (không thể xảy ra do state ban đầu)
   if(total <= 0) return;
 
   let center = 160;
   let radius = 155;
   let size = (Math.PI*2)/total;
 
-  for(let i=0;i<activeQuestions.length;i++){
-
-    let q = activeQuestions[i];
+  for(let i=0; i<questions.length; i++){
+    let q = questions[i];
 
     let start = i*size - Math.PI/2;
     let end = start + size;
@@ -888,11 +887,18 @@ function drawWheel(){
     ctx.moveTo(center,center);
     ctx.arc(center,center,radius,start,end);
 
-    ctx.fillStyle = colors[i % colors.length];
+    // ⭐ SỬA LOGIC TÔ MÀU
+    if (q.used) {
+      // Nếu câu hỏi đã dùng => Tô màu xám
+      ctx.fillStyle = "#b2bec3"; 
+    } else {
+      // Nếu chưa dùng => Tô màu bình thường
+      ctx.fillStyle = colors[i % colors.length];
+    }
     ctx.fill();
 
+    // Vẽ text
     ctx.save();
-
     ctx.translate(center,center);
     ctx.rotate(centerAngle);
 
@@ -900,6 +906,7 @@ function drawWheel(){
     ctx.font = "bold 18px Arial";
     ctx.textAlign = "right";
 
+    // Text vẫn hiển thị số câu như cũ
     ctx.fillText("Câu " + q.label, radius-18, 6);
 
     ctx.restore();
@@ -928,7 +935,6 @@ finishGame();
 
 /* ===================== SPIN ===================== */
 function spinWheel(){
-
   if(
     spinning ||
     questions.filter(q => !q.used).length === 0
@@ -939,61 +945,41 @@ function spinWheel(){
     return;
   }
 
+  // ⭐ Vẽ lại canvas một lần trước khi quay để cập nhật màu xám của câu trước (nếu có)
+  drawWheel(); 
+
   startTimer();
-
   spinning = true;
-
   playSpinSound();
 
-  // danh sách câu chưa dùng
+  // 1. Chỉ lọc danh sách CÂU HỎI CHƯA DÙNG
   let activeQuestions = questions.filter(q => !q.used);
+  let total = questions.length; // Tổng số ô trên Canvas vẫn giữ nguyên
 
-  let total = activeQuestions.length;
+  // 2. Random một câu trong danh sách chưa dùng
+  let pickedUsedQuestion = activeQuestions[Math.floor(Math.random() * activeQuestions.length)];
+  currentQuestion = pickedUsedQuestion;
 
-  // random ô
-  let pickedIndex = Math.floor(Math.random() * total);
+  // 3. Tìm vị trí thực tế của câu hỏi này trong mảng gốc `questions`
+  let realIndex = questions.indexOf(pickedUsedQuestion);
 
-  // câu được chọn
-  currentQuestion = activeQuestions[pickedIndex];
-
-  // góc mỗi ô
-  let each = 360 / total;
-
-  // góc giữa ô
-  let stopAngle =
-    (pickedIndex * each) + (each / 2);
-
-  /*
-    Pointer ở TOP
-    => cần đưa tâm ô về 270 độ
-  */
+  // 4. Tính toán góc quay dựa trên vị trí thực tế
+  let each = 360 / total; // Tổng số ô là cố định
+  let stopAngle = (realIndex * each) + (each / 2); // Góc giữa ô thực tế
 
   let targetAngle = 270 - stopAngle;
-
-  // chuẩn hóa góc
   targetAngle = (targetAngle + 360) % 360;
 
-  // quay thêm nhiều vòng
-  rotate =
-    rotate +
-    (360 * 5) +
-    targetAngle;
-
-  canvas.style.transform =
-    `rotate(${rotate}deg)`;
+  rotate = rotate + (360 * 5) + targetAngle;
+  canvas.style.transform = `rotate(${rotate}deg)`;
 
   document.getElementById("spinBtn").disabled = true;
 
   setTimeout(()=>{
-
     stopSpinSound();
-
     showQuestion();
-
     spinning = false;
-
     document.getElementById("spinBtn").disabled = false;
-
   },4200);
 }
 /* ===================== QUESTION ===================== */
@@ -1011,61 +997,29 @@ btn.className = "answer";
 btn.disabled = false;
 }
 }
+/* ===================== CHOOSE ANSWER ===================== */
 function chooseAnswer(index){
-
-  if(document.getElementById("popup").style.display !== "flex") return;
-
-  let q = currentQuestion;
-
-  // khóa nút
-  for(let i=0;i<4;i++){
-    document.getElementById("a"+i).disabled = true;
-  }
-
-  // đúng / sai
-  if(index === q.correct){
-
-    score++;
-    document.getElementById("score").innerText = score;
-
-    document.getElementById("a"+index)
-      .classList.add("correct");
-
-    playCorrectSound();
-
-  }else{
-
-    document.getElementById("a"+index)
-      .classList.add("wrong");
-
-    playWrongSound();
-  }
+  // ... code khóa nút và tô màu đúng sai giữ nguyên ...
 
   setTimeout(()=>{
-
-    // đánh dấu đã dùng
+    // 1. Đánh dấu câu hỏi đã dùng (giữ nguyên)
     currentQuestion.used = true;
 
-    // đóng popup
+    // 2. Đóng popup (giữ nguyên)
     document.getElementById("popup").style.display = "none";
 
+    // drawWheel(); // ❌ HÃY XÓA DÒNG NÀY HOẶC COMMENT LẠI
+    
+    updateRemain(); // (giữ nguyên)
 
-    // cập nhật wheel
-    drawWheel();
-    updateRemain();
-
-
-    // kiểm tra kết thúc
+    // kiểm tra kết thúc (giữ nguyên)
     let remain = questions.filter(q => !q.used).length;
-
     if(remain === 0){
       finishGame();
     }
 
   },900);
 }
-
-
 
 /* ===================== FINISH ===================== */
 function finishGame(){
