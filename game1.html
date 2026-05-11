@@ -739,7 +739,9 @@ let currentQuestion = null;
 let timeLeft = 90;
 let timerStarted = false;
 let timer = null;
-let questions = [];
+let allQuestions = []; // Lưu toàn bộ câu hỏi từ JSON
+let questions = []; // 5 câu được chọn cho vòng quay hiện tại
+let usedQuestionTexts = []; // Lưu các câu hỏi đã trả lời qua các lượt chơi
 let questionsCache = null;
 
 const canvas = document.getElementById("wheel");
@@ -766,27 +768,44 @@ function shuffle(array){
   return array;
 }
 
-async function loadQuestions(){
-  try {
-    let data;
-    if(!questionsCache){
-        const res = await fetch("assets/question_game1/questions.json").catch(()=>null);
-        data = res ? await res.json() : originalQuestions;
-        questionsCache = JSON.parse(JSON.stringify(data));
-    } else {
-        data = JSON.parse(JSON.stringify(questionsCache));
-    }
+async function loadQuestions() {
+    try {
+        if (allQuestions.length === 0) {
+            const res = await fetch("assets/question_game1/questions.json").catch(() => null);
+            const data = (res && res.ok) ? await res.json() : originalQuestions;
+            allQuestions = data;
+        }
 
-    questions = shuffle([...data]).slice(0,5).map((q,index) => ({
-      ...q, used:false, label:index + 1
-    }));
-  } catch (err) {
-    questions = shuffle([...originalQuestions]).slice(0,5).map((q,index) => ({
-      ...q, used:false, label:index + 1
-    }));
-  }
-  updateRemain();
-  drawWheel();
+        // Lọc ra những câu chưa dùng trong phiên làm việc này
+        let availablePool = allQuestions.filter(q => !usedQuestionTexts.includes(q.q));
+
+        // Nếu kho câu hỏi mới còn quá ít (dưới 5 câu), reset lại danh sách đã dùng
+        if (availablePool.length < 5) {
+            usedQuestionTexts = [];
+            availablePool = allQuestions;
+        }
+
+        // Xáo trộn kho câu hỏi và lấy 5 câu
+        let picked = shuffle([...availablePool]).slice(0, 5);
+        
+        // Gán vào biến questions của vòng quay
+        questions = picked.map((q, index) => ({
+            ...q,
+            used: false,
+            label: index + 1
+        }));
+
+        // Lưu tiêu đề câu hỏi vào danh sách "đã từng xuất hiện" để lần sau không trùng
+        questions.forEach(q => usedQuestionTexts.push(q.q));
+
+    } catch (err) {
+        console.error("Lỗi tải câu hỏi:", err);
+        questions = shuffle([...originalQuestions]).slice(0, 5).map((q, index) => ({
+            ...q, used: false, label: index + 1
+        }));
+    }
+    updateRemain();
+    drawWheel();
 }
 
 /* ===================== UI & DRAWING ===================== */
@@ -938,8 +957,24 @@ function finishGame(){
   document.getElementById("finalText").innerHTML = msg;
 }
 
-function restartGame(){
-  location.reload(); // Cách nhanh và sạch nhất để reset toàn bộ state
+function restartGame() {
+    // Đóng các popup
+    document.getElementById("finishPopup").style.display = "none";
+    
+    // Reset trạng thái game nhưng giữ lại usedQuestionTexts
+    score = 0;
+    timeLeft = 90;
+    currentRotation = 0;
+    timerStarted = false;
+    clearInterval(timer);
+    
+    document.getElementById("score").innerText = "0";
+    document.getElementById("time").innerText = "01:30";
+    canvas.style.transform = `rotate(0deg)`;
+    document.getElementById("spinBtn").disabled = false;
+
+    // Tải 5 câu hỏi mới hoàn toàn
+    loadQuestions();
 }
 
 function openRule(){ document.getElementById("rulePopup").style.display="flex"; }
@@ -966,7 +1001,7 @@ function openMenuPopup() {
 function closeMenuPopup() {
   document.getElementById("menuPopup").style.display = "none";
 }
-function reloadGame(){ location.reload(); }
+function reloadGame(){ restartGame(); }
 function goMenu(){ window.location.href="index.html"; }
 
 window.addEventListener("DOMContentLoaded", loadQuestions);
