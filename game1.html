@@ -835,6 +835,7 @@ function startTimer(){
   }, 1000);
 }
 
+/* ===================== SPINWHEEL ===================== */
 function spinWheel(){
   const availableIndexes = questions.map((q, i) => q.used ? null : i).filter(v => v !== null);
   
@@ -849,17 +850,10 @@ function spinWheel(){
   const randIdx = availableIndexes[Math.floor(Math.random() * availableIndexes.length)];
   currentQuestion = questions[randIdx];
 
-  // LOGIC TÍNH TOÁN GÓC QUAY CHÍNH XÁC:
-  // 1. Mỗi ô chiếm: 360 / total độ.
-  // 2. Ô thứ i nằm ở góc: i * (360/total) đến (i+1) * (360/total).
-  // 3. Để kim (ở đỉnh - 270 độ hoặc -90 độ) chỉ vào giữa ô i:
-  //    Góc cần quay = 360 * số_vòng + (270 - (i * 360/total + 180/total))
-  
   const arcDeg = 360 / total;
   const stopAt = 270 - (randIdx * arcDeg + arcDeg / 2); 
-  const extraRounds = 360 * 5; // Quay 5 vòng
+  const extraRounds = 360 * 5; 
   
-  // Tính toán góc quay cộng dồn để vòng quay không bị giật lùi
   const targetRotation = currentRotation + extraRounds + (stopAt - (currentRotation % 360) + 360) % 360;
   currentRotation = targetRotation;
 
@@ -869,6 +863,7 @@ function spinWheel(){
     stopSpinSound();
     spinning = false;
     showQuestion();
+    // Không cần enable nút Spin ở đây, vì chooseAnswer sẽ quản lý việc đó
   }, 4000);
 }
 
@@ -883,6 +878,7 @@ function showQuestion(){
   });
 }
 
+/* ===================== CHỈNH SỬA LOGIC CHỌN ĐÁP ÁN ===================== */
 function chooseAnswer(index){
   const btns = document.querySelectorAll('.answer');
   btns.forEach(b => b.disabled = true);
@@ -903,8 +899,21 @@ function chooseAnswer(index){
     drawWheel();
     updateRemain();
     
-    if(questions.every(q => q.used)) finishGame();
-    else document.getElementById("spinBtn").disabled = false;
+    // Kiểm tra số câu còn lại
+    const availableIndexes = questions.map((q, i) => q.used ? null : i).filter(v => v !== null);
+    
+    if(questions.every(q => q.used)) {
+        // Nếu đã hết sạch câu hỏi
+        finishGame();
+    } else if (availableIndexes.length === 1) {
+        // ⭐ TÍNH NĂNG MỚI: Nếu chỉ còn đúng 1 câu, tự động quay luôn
+        setTimeout(() => {
+            spinWheel(); 
+        }, 500); // Chờ 0.5s sau khi đóng popup cũ để bắt đầu quay câu cuối
+    } else {
+        // Nếu còn nhiều hơn 1 câu, trả lại nút bấm cho người chơi
+        document.getElementById("spinBtn").disabled = false;
+    }
   }, 1000);
 }
 
