@@ -446,61 +446,73 @@ flex-direction:column;
 }
 
 /* ===== Popup menu ===== */
-#menuPopup{
-  flex-direction:column;
+#menuPopup {
+    flex-direction: column;
 }
 
-.menu-grid{
-  display:flex;
-  gap:20px;
-  flex-wrap:wrap;
-  justify-content:center;
-  margin:15px 0;
+#menuPopup .menu-panel {
+    background: #0a3d62; /* Màu xanh đồng bộ với các box khác */
+    padding: 22px;
+    border-radius: 18px;
+    width: 100%;
+    max-width: 430px; /* Sửa từ 4px thành 430px */
+    animation: zoomIn .25s ease;
+    
+    /* Thêm khung cyan để đồng bộ với popup câu hỏi */
+    border: 2px solid rgba(0,255,255,.9);
+    box-shadow: 0 0 12px rgba(0,255,255,.55), inset 0 0 8px rgba(0,255,255,.18);
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.menu-item{
-  cursor:pointer;
-  text-align:center;
-  color:white;
-  font-weight:bold;
+.menu-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px 0;
 }
 
-.menu-item img{
-  width:190px;
-  border-radius:14px;
-  padding:4px;
-
-  background:linear-gradient(
-    45deg,
-    red,orange,yellow,green,cyan,blue,violet,red
-  );
-
-  background-size:400% 400%;
-  animation:ledFrame 10s linear infinite;
-
-  box-shadow:
-    0 0 10px rgba(255,255,255,.8),
-    0 0 20px rgba(255,255,255,.5);
-}
-@keyframes ledFrame{
-  0%{background-position:0% 50%;}
-  100%{background-position:400% 50%;}
-}
-  
-.menu-item p{
-  margin-top:8px;
-  font-size:16px;
+.menu-item {
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    transition: transform 0.2s;
 }
 
-.menu-item:hover{
-  transform:scale(1.05);
+.menu-item img {
+    width: 140px; /* Kích thước hợp lý cho menu item */
+    height: auto;
+    border-radius: 14px;
+    padding: 4px;
+    background: linear-gradient(45deg, red, orange, yellow, green, cyan, blue, violet, red);
+    background-size: 400% 400%;
+    animation: ledFrame 10s linear infinite;
+    box-shadow: 0 0 10px rgba(255,255,255,.8);
 }
 
-/* mobile */
-@media(max-width:768px){
-  .menu-item img{
-    width:1px;
-  }
+@keyframes ledFrame {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 400% 50%; }
+}
+
+.menu-item p {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #fff;
+}
+
+/* Mobile fix */
+@media(max-width: 768px) {
+    #menuPopup .menu-panel {
+        max-width: 90%;
+    }
+    .menu-item img {
+        width: 110px; /* Sửa từ 1px thành 110px để hiển thị được trên mobile */
+    }
 }
 
 /* ===== Nút feedback góc trái ===== */ 
