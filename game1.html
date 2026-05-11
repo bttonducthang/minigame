@@ -944,8 +944,28 @@ function restartGame(){
 
 function openRule(){ document.getElementById("rulePopup").style.display="flex"; }
 function closeRule(){ document.getElementById("rulePopup").style.display="none"; }
-function openMenuPopup(){ document.getElementById("menuPopup").style.display="flex"; }
-function closeMenuPopup(){ document.getElementById("menuPopup").style.display="none"; }
+function openMenuPopup() {
+  const menu = document.getElementById("menuPopup");
+  
+  // Nếu menu đang hiển thị thì đóng lại (Toggle)
+  if (menu.style.display === "flex") {
+    closeMenuPopup();
+    return;
+  }
+
+  // Đóng các popup khác nếu đang mở để tránh chồng lấn
+  const otherPopups = ["rulePopup", "popup", "finishPopup"];
+  otherPopups.forEach(id => {
+    const p = document.getElementById(id);
+    if(p) p.style.display = "none";
+  });
+
+  // Mở menu
+  menu.style.display = "flex";
+}
+function closeMenuPopup() {
+  document.getElementById("menuPopup").style.display = "none";
+}
 function reloadGame(){ location.reload(); }
 function goMenu(){ window.location.href="index.html"; }
 
