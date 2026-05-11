@@ -594,6 +594,38 @@ flex-direction:column;
     transform:scale(1.02);
   }
 }
+
+/* ===== Hover cho các nút menu ===== */
+.menu-item {
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    /* Giúp hiệu ứng phóng to và đổi màu mượt mà */
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+}
+
+/* Hiệu ứng khi rê chuột vào */
+.menu-item:hover {
+    transform: scale(1.1); /* Phóng to 10% */
+    filter: brightness(1.2); /* Tăng độ sáng */
+}
+
+/* Hiệu ứng khi nhấn ngón tay hoặc click chuột */
+.menu-item:active {
+    transform: scale(0.95);
+}
+
+/* Đảm bảo ảnh bên trong menu luôn có kích thước chuẩn */
+.menu-item img {
+    width: 150px; /* Bạn có thể chỉnh lại số này cho vừa mắt */
+    height: auto;
+    border-radius: 14px;
+    padding: 4px;
+    background: linear-gradient(45deg, red, orange, yellow, green, cyan, blue, violet, red);
+    background-size: 400% 400%;
+    animation: ledFrame 10s linear infinite;
+}
 </style>
 </head>
 
