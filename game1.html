@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Great+Vibes&display=swap" rel="stylesheet">
 
 <style>
+/* --- CSS GỐC CỦA BẠN (GIỮ NGUYÊN) --- */
 *{
   margin:0;
   padding:0;
@@ -130,6 +131,13 @@ body::before{
 
   transition:transform 4s cubic-bezier(.17,.67,.15,1);
 }
+
+/* --- CSS MỚI: Hiệu ứng khi vòng quay bị khóa hoàn toàn --- */
+.wheel-disabled {
+  filter: grayscale(100%) brightness(0.8);
+  pointer-events: none;
+}
+
 .wheel-border{
   position:absolute;
   inset:0;
@@ -702,83 +710,42 @@ QUAY<br>🎡
 <script>
 /* ===================== DATA ===================== */
 const originalQuestions = [
-{
-q:"1) Bác Tôn sinh vào ngày, tháng, năm nào?",
-answers:["20/8/1885","20/8/1886","20/8/1887","20/8/1888"],
-correct:3
-},
-{
-q:"2) Bác Tôn bị giam giữ tại nhà tù Côn Đảo bao nhiêu năm?",
-answers:["10 năm","15 năm","20 năm","25 năm"],
-correct:1
-},
-{
-q:"3) Bác Tôn làm Chủ tịch nước trong bao nhiêu năm?",
-answers:["9 năm","10 năm","11 năm","12 năm"],
-correct:2
-},
-{
-q:"4) Bác Tôn được bầu làm Phó Chủ tịch nước vào năm nào?",
-answers:["19","1965","1969","1975"],
-correct:0
-},
-{
-q:"5) Bác Tôn từng học nghề tại trường nào?",
-answers:["Cơ khí Châu Á","Công nghệ Á Châu","Cơ khí Á Châu","Kỹ thuật Châu Á"],
-correct:2
-}
+{ q:"1) Bác Tôn sinh vào ngày, tháng, năm nào?", answers:["20/8/1885","20/8/1886","20/8/1887","20/8/1888"], correct:3 },
+{ q:"2) Bác Tôn bị giam giữ tại nhà tù Côn Đảo bao nhiêu năm?", answers:["10 năm","15 năm","20 năm","25 năm"], correct:1 },
+{ q:"3) Bác Tôn làm Chủ tịch nước trong bao nhiêu năm?", answers:["9 năm","10 năm","11 năm","12 năm"], correct:2 },
+{ q:"4) Bác Tôn được bầu làm Phó Chủ tịch nước vào năm nào?", answers:["1960","1965","1969","1975"], correct:0 },
+{ q:"5) Bác Tôn từng học nghề tại trường nào?", answers:["Cơ khí Châu Á","Công nghệ Á Châu","Cơ khí Á Châu","Kỹ thuật Châu Á"], correct:2 }
 ];
-
 
 const colors = ["#ff5252","#42a5f5","#ffeb3b","#ab47bc","#ff9800"];
 
 /* ===================== STATE ===================== */
 let score = 0;
-let rotate = 0;
+let currentRotation = 0; // Lưu trữ góc quay hiện tại
 let spinning = false;
-let currentIndex = -1;
 let currentQuestion = null;
 let timeLeft = 90;
 let timerStarted = false;
 let timer = null;
+let questions = [];
+let questionsCache = null;
 
 const canvas = document.getElementById("wheel");
 const ctx = canvas.getContext("2d");
-  
-/* ===================== THÊM BIẾN AUDIO ===================== */
-/* đặt gần phần const canvas / ctx */
-
 const spinSound = document.getElementById("spinSound");
 const correctSound = document.getElementById("correctSound");
 const wrongSound = document.getElementById("wrongSound");
 
-/* chỉnh âm lượng nếu muốn */
 spinSound.volume = 0.7;
 correctSound.volume = 0.9;
 wrongSound.volume = 0.9;
 
-/* hàm phát */
-function playSpinSound(){
-  spinSound.currentTime = 0;
-  spinSound.loop = true;
-  spinSound.play().catch(()=>{});
-}
+/* ===================== HELPER FUNCTIONS ===================== */
+function playSpinSound(){ spinSound.currentTime = 0; spinSound.loop = true; spinSound.play().catch(()=>{}); }
+function stopSpinSound(){ spinSound.pause(); spinSound.currentTime = 0; }
+function playCorrectSound(){ correctSound.currentTime = 0; correctSound.play().catch(()=>{}); }
+function playWrongSound(){ wrongSound.currentTime = 0; wrongSound.play().catch(()=>{}); }
 
-function stopSpinSound(){
-  spinSound.pause();
-  spinSound.currentTime = 0;
-}
-
-function playCorrectSound(){
-  correctSound.currentTime = 0;
-  correctSound.play().catch(()=>{});
-}
-
-function playWrongSound(){
-  wrongSound.currentTime = 0;
-  wrongSound.play().catch(()=>{});
-}
-/* ===================== Random JSON shuffle ===================== */
 function shuffle(array){
   for(let i = array.length - 1; i > 0; i--){
     let j = Math.floor(Math.random() * (i + 1));
@@ -786,400 +753,180 @@ function shuffle(array){
   }
   return array;
 }
-/* ===================== Load JSON ===================== */
-let questions = [];
-let questionsCache = null;   // ⭐ cache JSON
 
 async function loadQuestions(){
-
-  if(questionsCache){
-    let data = JSON.parse(JSON.stringify(questionsCache));
-
-  questions = shuffle([...data])
-    .slice(0,5)
-    .map((q,index) => ({
-      ...q,
-      used:false,
-      label:index + 1
-    }));
-
-    updateRemain();
-    drawWheel();
-    return;
-  }
-
   try {
-    const res = await fetch("assets/question_game1/questions.json");
-    const data = await res.json();
+    let data;
+    if(!questionsCache){
+        const res = await fetch("assets/question_game1/questions.json").catch(()=>null);
+        data = res ? await res.json() : originalQuestions;
+        questionsCache = JSON.parse(JSON.stringify(data));
+    } else {
+        data = JSON.parse(JSON.stringify(questionsCache));
+    }
 
-    questionsCache = JSON.parse(JSON.stringify(data));
-
-    // ⭐ CHỈ LẤY 5 CÂU NGẪU NHIÊN
-    questions = shuffle([...data])
-    .slice(0,5)
-    .map((q,index) => ({
-      ...q,
-      used:false,
-      label:index + 1
+    questions = shuffle([...data]).slice(0,5).map((q,index) => ({
+      ...q, used:false, label:index + 1
     }));
-
   } catch (err) {
-
-    console.warn("Fallback:", err);
-
-    questionsCache = JSON.parse(JSON.stringify(originalQuestions));
-
-   questions = shuffle([...originalQuestions])
-    .slice(0,5)
-    .map((q,index) => ({
-      ...q,
-      used:false,
-      label:index + 1
+    questions = shuffle([...originalQuestions]).slice(0,5).map((q,index) => ({
+      ...q, used:false, label:index + 1
     }));
   }
-
   updateRemain();
   drawWheel();
 }
-/* ===================== UI ===================== */
+
+/* ===================== UI & DRAWING ===================== */
 function updateRemain(){
-  let remain = questions.filter(q => !q.used).length;
-  document.getElementById("remain").innerText = remain;
+  document.getElementById("remain").innerText = questions.filter(q => !q.used).length;
 }
 
 function updateTime(){
   let min = String(Math.floor(timeLeft/60)).padStart(2,"0");
   let sec = String(timeLeft%60).padStart(2,"0");
   document.getElementById("time").innerText = `${min}:${sec}`;
-
-  let box = document.getElementById("timeBox");
-
-  if(timeLeft <= 10){
-    box.classList.add("warning");
-  } else {
-    box.classList.remove("warning");
-  }
+  if(timeLeft <= 10) document.getElementById("timeBox").classList.add("warning");
+  else document.getElementById("timeBox").classList.remove("warning");
 }
 
 function drawWheel(){
-
-  let activeQuestions = questions.filter(q => !q.used);
-  let total = activeQuestions.length;
-
-  ctx.setTransform(1,0,0,1,0,0);
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  // nếu hết câu thì không vẽ nữa
+  const total = questions.length;
   if(total <= 0) return;
 
-  let center = 160;
-  let radius = 155;
-  let size = (Math.PI*2)/total;
+  const center = 160;
+  const radius = 155;
+  const arcSize = (Math.PI * 2) / total;
 
-  for(let i=0;i<activeQuestions.length;i++){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    let q = activeQuestions[i];
-
-    let start = i*size - Math.PI/2;
-    let end = start + size;
-    let centerAngle = start + size/2;
-
+  questions.forEach((q, i) => {
+    const angle = i * arcSize;
+    
     ctx.beginPath();
-    ctx.moveTo(center,center);
-    ctx.arc(center,center,radius,start,end);
-
-    ctx.fillStyle = colors[i % colors.length];
+    ctx.fillStyle = q.used ? "#95a5a6" : colors[i % colors.length];
+    ctx.moveTo(center, center);
+    ctx.arc(center, center, radius, angle, angle + arcSize);
+    ctx.lineTo(center, center);
     ctx.fill();
+    ctx.strokeStyle = "rgba(255,255,255,0.3)";
+    ctx.stroke();
 
+    // Vẽ chữ
     ctx.save();
-
-    ctx.translate(center,center);
-    ctx.rotate(centerAngle);
-
-    ctx.fillStyle = "white";
-    ctx.font = "bold 18px Arial";
+    ctx.translate(center, center);
+    ctx.rotate(angle + arcSize / 2);
     ctx.textAlign = "right";
-
-    ctx.fillText("Câu " + q.label, radius-18, 6);
-
+    ctx.fillStyle = q.used ? "#7f8c8d" : "white";
+    ctx.font = "bold 18px Arial";
+    ctx.fillText("Câu " + q.label, radius - 20, 10);
     ctx.restore();
-  }
+  });
 }
 
-/* ===================== TIMER ===================== */
+/* ===================== GAME LOGIC ===================== */
 function startTimer(){
-
-if(timerStarted) return;
-
-timerStarted = true;
-
-timer = setInterval(()=>{
-
-timeLeft--;
-updateTime();
-
-if(timeLeft <= 0){
-finishGame();
-
+  if(timerStarted) return;
+  timerStarted = true;
+  timer = setInterval(()=>{
+    timeLeft--;
+    updateTime();
+    if(timeLeft <= 0) finishGame();
+  }, 1000);
 }
 
-},1000);
-}
-
-/* ===================== SPIN ===================== */
 function spinWheel(){
-
-  if(
-    spinning ||
-    questions.filter(q => !q.used).length === 0
-  ) return;
-
-  if(questions.every(q => q.used)){
-    finishGame();
-    return;
-  }
+  const availableIndexes = questions.map((q, i) => q.used ? null : i).filter(v => v !== null);
+  
+  if(spinning || availableIndexes.length === 0) return;
 
   startTimer();
-
   spinning = true;
-
   playSpinSound();
-
-  // danh sách câu chưa dùng
-  let activeQuestions = questions.filter(q => !q.used);
-
-  let total = activeQuestions.length;
-
-  // random ô
-  let pickedIndex = Math.floor(Math.random() * total);
-
-  // câu được chọn
-  currentQuestion = activeQuestions[pickedIndex];
-
-  // góc mỗi ô
-  let each = 360 / total;
-
-  // góc giữa ô
-  let stopAngle =
-    (pickedIndex * each) + (each / 2);
-
-  /*
-    Pointer ở TOP
-    => cần đưa tâm ô về 270 độ
-  */
-
-  let targetAngle = 270 - stopAngle;
-
-  // chuẩn hóa góc
-  targetAngle = (targetAngle + 360) % 360;
-
-  // quay thêm nhiều vòng
-  rotate =
-    rotate +
-    (360 * 5) +
-    targetAngle;
-
-  canvas.style.transform =
-    `rotate(${rotate}deg)`;
-
   document.getElementById("spinBtn").disabled = true;
 
+  const total = questions.length;
+  const randIdx = availableIndexes[Math.floor(Math.random() * availableIndexes.length)];
+  currentQuestion = questions[randIdx];
+
+  // LOGIC TÍNH TOÁN GÓC QUAY CHÍNH XÁC:
+  // 1. Mỗi ô chiếm: 360 / total độ.
+  // 2. Ô thứ i nằm ở góc: i * (360/total) đến (i+1) * (360/total).
+  // 3. Để kim (ở đỉnh - 270 độ hoặc -90 độ) chỉ vào giữa ô i:
+  //    Góc cần quay = 360 * số_vòng + (270 - (i * 360/total + 180/total))
+  
+  const arcDeg = 360 / total;
+  const stopAt = 270 - (randIdx * arcDeg + arcDeg / 2); 
+  const extraRounds = 360 * 5; // Quay 5 vòng
+  
+  // Tính toán góc quay cộng dồn để vòng quay không bị giật lùi
+  const targetRotation = currentRotation + extraRounds + (stopAt - (currentRotation % 360) + 360) % 360;
+  currentRotation = targetRotation;
+
+  canvas.style.transform = `rotate(${currentRotation}deg)`;
+
   setTimeout(()=>{
-
     stopSpinSound();
-
-    showQuestion();
-
     spinning = false;
-
-    document.getElementById("spinBtn").disabled = false;
-
-  },4200);
+    showQuestion();
+  }, 4000);
 }
-/* ===================== QUESTION ===================== */
+
 function showQuestion(){
-
-let q = currentQuestion;
-
-document.getElementById("popup").style.display="flex";
-document.getElementById("questionText").innerText = q.q;
-
-for(let i=0;i<4;i++){
-let btn = document.getElementById("a"+i);
-btn.innerText = String.fromCharCode(65+i)+". "+q.answers[i];
-btn.className = "answer";
-btn.disabled = false;
+  document.getElementById("popup").style.display="flex";
+  document.getElementById("questionText").innerText = currentQuestion.q;
+  currentQuestion.answers.forEach((ans, i) => {
+    const btn = document.getElementById("a"+i);
+    btn.innerText = String.fromCharCode(65+i) + ". " + ans;
+    btn.className = "answer";
+    btn.disabled = false;
+  });
 }
-}
+
 function chooseAnswer(index){
+  const btns = document.querySelectorAll('.answer');
+  btns.forEach(b => b.disabled = true);
 
-  if(document.getElementById("popup").style.display !== "flex") return;
-
-  let q = currentQuestion;
-
-  // khóa nút
-  for(let i=0;i<4;i++){
-    document.getElementById("a"+i).disabled = true;
-  }
-
-  // đúng / sai
-  if(index === q.correct){
-
+  if(index === currentQuestion.correct){
     score++;
     document.getElementById("score").innerText = score;
-
-    document.getElementById("a"+index)
-      .classList.add("correct");
-
+    document.getElementById("a"+index).classList.add("correct");
     playCorrectSound();
-
-  }else{
-
-    document.getElementById("a"+index)
-      .classList.add("wrong");
-
+  } else {
+    document.getElementById("a"+index).classList.add("wrong");
     playWrongSound();
   }
 
   setTimeout(()=>{
-
-    // đánh dấu đã dùng
     currentQuestion.used = true;
-
-    // đóng popup
     document.getElementById("popup").style.display = "none";
-
-
-    // cập nhật wheel
     drawWheel();
     updateRemain();
-
-
-    // kiểm tra kết thúc
-    let remain = questions.filter(q => !q.used).length;
-
-    if(remain === 0){
-      finishGame();
-    }
-
-  },900);
+    
+    if(questions.every(q => q.used)) finishGame();
+    else document.getElementById("spinBtn").disabled = false;
+  }, 1000);
 }
 
-
-
-/* ===================== FINISH ===================== */
 function finishGame(){
-
-clearInterval(timer);
-timerStarted = false;
-
-document.getElementById("spinBtn").disabled = true;
-document.getElementById("popup").style.display="none";
-
-let msg = "";
-
-if(score >= 3){
-msg = `Bạn đạt <b>${score}/5</b> điểm.<br>🎁 Chúc mừng! Bạn đủ điều kiện nhận quà.`;
-}else{
-msg = `Bạn đạt <b>${score}/5</b> điểm.<br>💪 Hãy thử lại để săn quà nhé!`;
-}
-
-document.getElementById("finalText").innerHTML = msg;
-
-document.getElementById("finishPopup").style.display="flex";
-}
-
-/* ===================== POPUP ===================== */
-function openRule(){
-document.getElementById("rulePopup").style.display="flex";
-}
-
-function closeRule(){
-document.getElementById("rulePopup").style.display="none";
-}
-
-/* ===================== NAV ===================== */
-function goMenu(){
-window.location.href="index.html";
+  clearInterval(timer);
+  document.getElementById("finishPopup").style.display="flex";
+  let msg = score >= 3 ? 
+    `Bạn đạt <b>${score}/5</b> điểm.<br>🎁 Chúc mừng! Bạn đủ điều kiện nhận quà.` : 
+    `Bạn đạt <b>${score}/5</b> điểm.<br>💪 Hãy thử lại để săn quà nhé!`;
+  document.getElementById("finalText").innerHTML = msg;
 }
 
 function restartGame(){
-
-clearInterval(timer);
-
-score = 0;
-rotate = 0;
-spinning = false;
-
-currentIndex = -1;
-currentQuestion = null;
-
-timeLeft = 90;
-timerStarted = false;
-
-document.getElementById("score").innerText = 0;
-
-document.getElementById("timeBox")
-  .classList.remove("warning");
-
-// reset hiển thị thời gian
-updateTime();
-
-// reset wheel
-canvas.style.transition = "none";
-canvas.style.transform = "rotate(0deg)";
-
-setTimeout(()=>{
-  canvas.style.transition =
-    "transform 4s cubic-bezier(.17,.67,.15,1)";
-},50);
-
-// ⭐ tạo bộ câu hỏi mới
-let base = JSON.parse(JSON.stringify(questionsCache));
-
-questions = shuffle([...base])
-  .slice(0,5)
-  .map((q,index)=>({
-    ...q,
-    used:false,
-    label:index + 1
-  }));
-
-// reset UI
-document.getElementById("spinBtn").disabled = false;
-
-document.getElementById("popup").style.display = "none";
-
-document.getElementById("finishPopup").style.display = "none";
-
-// redraw
-drawWheel();
-updateRemain();
+  location.reload(); // Cách nhanh và sạch nhất để reset toàn bộ state
 }
-  
-// Popup menu  
-function openMenuPopup(){
-  const popup = document.getElementById("menuPopup");
 
-  if(popup.style.display === "flex"){
-    popup.style.display = "none";
-  }else{
-    popup.style.display = "flex";
-  }
-}
-// Đóng menu popup
-function closeMenuPopup(){
-  document.getElementById("menuPopup").style.display = "none";
-} 
-  
+function openRule(){ document.getElementById("rulePopup").style.display="flex"; }
+function closeRule(){ document.getElementById("rulePopup").style.display="none"; }
+function openMenuPopup(){ document.getElementById("menuPopup").style.display="flex"; }
+function closeMenuPopup(){ document.getElementById("menuPopup").style.display="none"; }
+function reloadGame(){ location.reload(); }
+function goMenu(){ window.location.href="index.html"; }
+
 window.addEventListener("DOMContentLoaded", loadQuestions);
-
-// Quay lại game
-function reloadGame(){
-  location.reload();
-}
-  
 </script>
-  
-</body>
-</html>
