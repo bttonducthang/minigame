@@ -340,10 +340,10 @@
       border-radius: 12px;
     }
     
-  @keyframes zoomIn {
-    from { transform: scale(0.8); opacity: 0; }
+@keyframes zoomIn {
+    from { transform: scale(0.7); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
-  }
+}
     /*Note Lưu ý*/
   .note-text {
     margin-top: 10px;
@@ -490,15 +490,22 @@
 
 /* ===== Popup menu ===== */
 #menuPopup {
-  flex-direction: column;
+    display: none; /* Mặc định ẩn */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 1000;
 }
 
 .menu-grid {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 15px 0;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px 0;
 }
 
 .menu-item {
@@ -506,14 +513,14 @@
     text-align: center;
     color: white;
     font-weight: bold;
-    /* Hiệu ứng chuyển động mượt mà */
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
 }
 
 .menu-item img {
-    width: 190px;
-    height: auto;
-    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
 }
 /* Mobile */
 @media (max-width: 768px) {
@@ -526,8 +533,10 @@
 }
 
 .menu-item p {
-  margin-top: 8px;
-  font-size: 16px;
+    margin-top: 5px;
+    font-size: 14px;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
 .menu-item:hover {
@@ -541,27 +550,29 @@
 
 #menuPopup .menu-panel {
     background: #0a3d62; 
-    padding: 22px;
+    padding: 25px;
     border-radius: 18px;
-    width: 100%;
-    max-width: 460px;
+    width: 90%;
+    max-width: 430px; /* Khớp kích thước với game 1 */
     animation: zoomIn .25s ease;
     
-    /* Thêm khung viền cyan đồng bộ */
-    border: 2px solid rgba(0,255,255,.9);
-    box-shadow: 0 0 12px rgba(0,255,255,.55), inset 0 0 8px rgba(0,255,255,.18);
+    /* Viền Cyan đặc trưng */
+    border: 2px solid rgba(0, 255, 255, 0.9);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5), inset 0 0 10px rgba(0, 255, 255, 0.2);
     
     display: flex;
     flex-direction: column;
     align-items: center;
-} 
+}
 /* Hiệu ứng khi nhấn */
 .menu-item:active {
     transform: scale(0.95);
 }
 .menu-item .img-wrapper {
-/* Đảm bảo khung LED hiện tại có transition để nhận bóng đổ mượt */
-  transition: box-shadow 0.3s ease;
+    width: 150px; /* Đồng bộ kích thước ảnh menu */
+    height: 150px;
+    margin-bottom: 10px;
+    transition: box-shadow 0.3s ease;
 }
   </style>
 </head>
