@@ -339,7 +339,11 @@
       object-fit: contain; 
       border-radius: 12px;
     }
-
+    
+  @keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
     /*Note Lưu ý*/
   .note-text {
     margin-top: 10px;
@@ -498,22 +502,28 @@
 }
 
 .menu-item {
-  cursor: pointer;
-  text-align: center;
-  color: white;
-  font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    /* Hiệu ứng chuyển động mượt mà */
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
 }
 
 .menu-item img {
-  width: 190px;
-  height: auto;
+    width: 190px;
+    height: auto;
+    display: block;
 }
-  /* Mobile */
- @media (max-width: 768px) {
-   .menu-item img {
-      width: 160px;   /* mobile to hơn */
+/* Mobile */
+@media (max-width: 768px) {
+    .menu-item img {
+        width: 140px; /* Điều chỉnh lại một chút cho cân đối trên mobile */
     }
-  }
+    #menuPopup .menu-panel {
+        max-width: 90%;
+    }
+}
 
 .menu-item p {
   margin-top: 8px;
@@ -521,21 +531,38 @@
 }
 
 .menu-item:hover {
-  transform: scale(1.05);
+    transform: scale(1.1);
+    filter: brightness(1.2);
 }
 
 #menuPopup{
   flex-direction:column;
 }
 
-#menuPopup .menu-panel{
-  background:linear-gradient(135deg,#0a3d62,#145da0);
-  padding:22px;
-  border-radius:18px;
-  width:100%;
-  max-width:460px;
-  animation:zoom .25s ease;
-}    
+#menuPopup .menu-panel {
+    background: #0a3d62; 
+    padding: 22px;
+    border-radius: 18px;
+    width: 100%;
+    max-width: 460px;
+    animation: zoomIn .25s ease;
+    
+    /* Thêm khung viền cyan đồng bộ */
+    border: 2px solid rgba(0,255,255,.9);
+    box-shadow: 0 0 12px rgba(0,255,255,.55), inset 0 0 8px rgba(0,255,255,.18);
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+} 
+/* Hiệu ứng khi nhấn */
+.menu-item:active {
+    transform: scale(0.95);
+}
+.menu-item .img-wrapper {
+/* Đảm bảo khung LED hiện tại có transition để nhận bóng đổ mượt */
+  transition: box-shadow 0.3s ease;
+}
   </style>
 </head>
 
