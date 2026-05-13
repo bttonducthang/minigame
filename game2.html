@@ -41,14 +41,14 @@ margin-top:10px;
 
 .line1{
 font-family:'Playfair Display',serif;
-font-size:40px;
+font-size:60px;
 color:#ff4dff;
 text-shadow:0 0 5px #fff,0 0 15px gold;
 }
 
 .line2{
 font-family:'Great Vibes',cursive;
-font-size:44px;
+font-size:65px;
 color:#ff4dff;
 text-shadow:0 0 5px #fff,0 0 15px gold;
 margin-bottom:18px;
@@ -113,14 +113,14 @@ animation:pulse 1.5s infinite;
 
 /* button */
 .btn{
-padding:12px 20px;
+padding:20px 40px;
 border:none;
-border-radius:12px;
-font-size:16px;
+border-radius:15px;
+font-size:24px;
 font-weight:bold;
 color:white;
 cursor:pointer;
-margin-top:10px;
+margin:10px;
 }
 
 .blue{
@@ -152,9 +152,9 @@ z-index:50;
 .box{
 background:#0a3d62;
 width:100%;
-max-width:440px;
+max-width:900px;
 border-radius:18px;
-padding:20px;
+padding:40px;
 animation:zoom .25s ease;
 }
 
@@ -201,18 +201,24 @@ margin-bottom:10px;
 /* top info */
 .top-info{
 display:flex;
-gap:8px;
+gap:20px;
 flex-wrap:wrap;
 justify-content:center;
-margin-bottom:15px;
+margin-bottom:30px;
 }
 
 .info-box{
 background:#103a5d;
-padding:10px 14px;
-border-radius:12px;
+padding:20px 30px;
+border-radius:15px;
+font-size: 30px;
 font-weight:bold;
-min-width:105px;
+min-width:180px;
+}
+  
+/* Tăng kích thước icon và text trong ô thông tin */
+.info-box span {
+    font-size: 35px;
 }
 
 .warning{
@@ -226,9 +232,9 @@ animation:blink .7s infinite;
 
 /* board */
 .board{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:10px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px; /* Khoảng cách giữa các ô rộng hơn */
+  margin-bottom: 30px;
 }
 
 .card{
@@ -238,31 +244,32 @@ cursor:pointer;
 }
 
 .inner{
-position:relative;
-width:100%;
-height:100%;
-transform-style:preserve-3d;
-transition:transform .5s;
+  position:relative;
+  width:100%;
+  height:100%;
+  transform-style:preserve-3d;
+  transition:transform .5s;
 }
 
 .card.flip .inner{
-transform:rotateY(180deg);
+  transform:rotateY(180deg);
 }
 
-.front,.back{
-position:absolute;
-inset:0;
-border-radius:12px;
-overflow:hidden;
-backface-visibility:hidden;
+.front,.back,.inner{
+  position:absolute;
+  inset:0;
+  border-radius:20px;
+  overflow:hidden;
+  backface-visibility:hidden;
 }
 
 .front{
-background:linear-gradient(145deg,#1565c0,#42a5f5);
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:28px;
+  background:linear-gradient(145deg,#1565c0,#42a5f5);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:50px;
+  font-weight: bold;
 }
 
 .back{
@@ -312,7 +319,17 @@ animation:ledframe 10s linear infinite;
 @media(max-width:768px){
 .line1{font-size:30px;}
 .line2{font-size:34px;}
-.play-btn{width:115px;height:115px;font-size:22px;}
+.play-btn{width:200px;height:200px;font-size:35px;}
+}
+
+@media (min-width: 1200px) {
+    .board {
+        gap: 25px;
+    }
+    .card {
+        /* Đảm bảo hình ảnh sắc nét và lớn */
+        box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+    }
 }
 
 /* hover menu + feed */
