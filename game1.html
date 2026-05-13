@@ -1030,24 +1030,26 @@ function finishGame(){
 }
 
 function restartGame() {
-    // Đóng các popup
-    document.getElementById("popup").style.display = "none"; 
-  
-    document.getElementById("finishPopup").style.display = "flex";
+   // 1. Đóng các popup (Quan trọng nhất là finishPopup)
+    document.getElementById("finishPopup").style.display = "none";
+    document.getElementById("popup").style.display = "none"; // Đảm bảo đóng luôn popup câu hỏi nếu có
     
-    // Reset trạng thái game nhưng giữ lại usedQuestionTexts
+    // 2. Reset trạng thái game
     score = 0;
     timeLeft = 90;
     currentRotation = 0;
     timerStarted = false;
+    spinning = false; // Đảm bảo trạng thái không bị kẹt là đang quay
     clearInterval(timer);
     
+    // 3. Cập nhật UI
     document.getElementById("score").innerText = "0";
     document.getElementById("time").innerText = "01:30";
+    document.getElementById("timeBox").classList.remove("warning"); // Xóa màu đỏ cảnh báo (nếu có)
     canvas.style.transform = `rotate(0deg)`;
     document.getElementById("spinBtn").disabled = false;
 
-    // Tải 5 câu hỏi mới hoàn toàn
+    // 4. Tải 5 câu hỏi mới
     loadQuestions();
 }
 
