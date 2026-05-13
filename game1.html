@@ -44,29 +44,20 @@ body::before{
   margin-top:8px;
 }
 
-.line1{
-  font-family:'Playfair Display',serif;
-  font-size:40px;
-  color:#0099ff;
-
-  text-shadow:
-    0 0 5px white,
-    0 0 10px rgba(255,255,255,.9),
-    0 0 18px rgba(255,215,0,.9),
-    0 0 28px rgba(255,215,0,.8);
+.line1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 5vw, 55px); 
+  color: #0099ff;
+  text-shadow: 0 0 5px white, 0 0 10px rgba(255,255,255,.9), 0 0 18px rgba(255,215,0,.9), 0 0 28px rgba(255,215,0,.8);
 }
 
-.line2{
-  font-family:'Great Vibes',cursive;
-  font-size:44px;
-  color:#0099ff;
+.line2 {
+  font-family: 'Great Vibes', cursive;
+  /* Tăng từ 44px lên 60px */
+  font-size: clamp(36px, 6vw, 60px);
+  color: #0099ff;
   letter-spacing: 2px;
-
-  text-shadow:
-    0 0 5px white,
-    0 0 10px rgba(255,255,255,.9),
-    0 0 18px rgba(255,215,0,.9),
-    0 0 28px rgba(255,215,0,.8);
+  text-shadow: 0 0 5px white, 0 0 10px rgba(255,255,255,.9), 0 0 18px rgba(255,215,0,.9), 0 0 28px rgba(255,215,0,.8);
 }
 
 .top-info{
@@ -77,12 +68,15 @@ body::before{
   justify-content:center;
 }
 
-.info-box{
-  background:#0a3d62;
-  padding:10px 15px;
-  border-radius:12px;
-  font-weight:bold;
-  min-width:105px;
+.info-box {
+  background: #0a3d62;
+  /* Tăng padding và font-size */
+  padding: 15px 25px; 
+  border-radius: 15px;
+  font-size: 22px; 
+  font-weight: bold;
+  min-width: 140px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
 .warning{
@@ -102,24 +96,18 @@ body::before{
   margin-bottom:12px;
 }
 /* wheel */
-.wheel-wrap{
-  margin-top:18px;
-  position:relative;
-  width:320px;
-  height:320px;
+.wheel-wrap {
+  margin-top: 30px;
+  position: relative;
+  /* Tăng kích thước khung chứa */
+  width: 450px; 
+  height: 450px;
 }
-
-.pointer{
-  position:absolute;
-  top:-10px;
-  left:50%;
-  transform:translateX(-50%);
-  width:0;
-  height:0;
-  border-left:18px solid transparent;
-  border-right:18px solid transparent;
-  border-top:38px solid #ff3333;
-  z-index:5;
+.pointer {
+  top: -15px;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-top: 50px solid #ff3333;
 }
 
 #wheel{
@@ -139,10 +127,10 @@ body::before{
 }
 
 .wheel-border{
-  position:absolute;
-  inset:0;
-  padding:4px;
-  border-radius:50%;
+ position: absolute;
+  inset: 0;
+  padding: 8px; /* Tăng độ dày viền LED */
+  border-radius: 50%;
 
   background:linear-gradient(
     45deg,
@@ -172,14 +160,14 @@ body::before{
   top:50%;
   left:50%;
   transform:translate(-50%,-50%);
-  width:95px;
-  height:95px;
+  width:120px;
+  height:120px;
   border:none;
   border-radius:50%;
   cursor:pointer;
   z-index:10;
 
-  font-size:18px;
+  font-size:22px;
   font-weight:bold;
   color:white;
 
@@ -386,14 +374,20 @@ flex-direction:column;
   box-shadow:0 5px 0 #a92b00;
 }
 
-@media(max-width:768px){
-  .wheel-wrap{width:280px;height:280px;}
-  #wheel{ width:100%;height:100%;}
-  .line1,.line2{font-size:28px;}
-  
-  .wheel-border{
-  width:280px;
-  height:280px;
+@media(max-width: 768px) {
+  .wheel-wrap, .wheel-border {
+    width: 320px;
+    height: 320px;
+  }
+  .info-box {
+    font-size: 16px;
+    padding: 10px 15px;
+    min-width: 105px;
+  }
+  /* Cần ép canvas co lại theo thẻ cha trên mobile */
+  #wheel {
+    width: 100% !important;
+    height: 100% !important;
   }
 }
 /*====================Nút Menu========================*/
@@ -660,7 +654,7 @@ onclick="window.open('https://bttonducthang.github.io/feedback-baotangtonducthan
 <div class="wheel-wrap">
 <div class="pointer"></div>
 <div class="wheel-border">
-  <canvas id="wheel" width="320" height="320"></canvas>
+  <canvas id="wheel" width="450" height="450"></canvas>
 </div>
 <button id="spinBtn" class="center-spin" onclick="spinWheel()">
 QUAY<br>🎡
@@ -857,8 +851,10 @@ function drawWheel(){
   const total = questions.length;
   if(total <= 0) return;
 
-  const center = 160;
-  const radius = 155;
+  // Cập nhật tọa độ tâm (450 / 2 = 225)
+  const center = 225; 
+  // Bán kính (trừ đi một chút lề)
+  const radius = 215; 
   const arcSize = (Math.PI * 2) / total;
 
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -875,14 +871,14 @@ function drawWheel(){
     ctx.strokeStyle = "rgba(255,255,255,0.3)";
     ctx.stroke();
 
-    // Vẽ chữ
+    // Vẽ chữ - Phóng to font chữ trên vòng quay
     ctx.save();
     ctx.translate(center, center);
     ctx.rotate(angle + arcSize / 2);
     ctx.textAlign = "right";
     ctx.fillStyle = q.used ? "#7f8c8d" : "white";
-    ctx.font = "bold 18px Arial";
-    ctx.fillText("Câu " + q.label, radius - 20, 10);
+    ctx.font = "bold 22px Arial"; // Tăng từ 18px lên 22px
+    ctx.fillText("Câu " + q.label, radius - 30, 10);
     ctx.restore();
   });
 }
