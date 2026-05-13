@@ -264,32 +264,37 @@ animation:blink .7s infinite;
   transform:rotateY(180deg);
 }
 
-.front,.back,.inner{
-  position:absolute;
-  inset:0;
-  border-radius:20px;
-  overflow:hidden;
-  backface-visibility:hidden;
+.front, .back {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  backface-visibility: hidden; /* Giúp ẩn mặt đối diện khi lật */
+  -webkit-backface-visibility: hidden; /* Hỗ trợ trình duyệt cũ/Kiosk */
 }
 
-.front{
-  background:linear-gradient(145deg,#1565c0,#42a5f5);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:50px;
+.front {
+  background: linear-gradient(145deg, #1565c0, #42a5f5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
   font-weight: bold;
+  z-index: 2; /* Mặt trước nằm trên */
 }
-
-.back{
-transform:rotateY(180deg);
-background:#fff;
+  
+.back {
+  transform: rotateY(180deg);
+  background: #fff;
+  z-index: 1; /* Mặt sau nằm dưới, sẽ hiện lên khi xoay 180 độ */
+  display: flex;
 }
-
-.back img{
-width:100%;
-height:100%;
-object-fit:cover;
+  
+.back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Đảm bảo ảnh lấp đầy ô */
+  display: block;
 }
 
 .hide{
@@ -583,27 +588,24 @@ updateTime();
 
 function renderBoard(){
 
-let board = document.getElementById("board");
-board.innerHTML = "";
+llet board = document.getElementById("board");
+    board.innerHTML = "";
+    images.forEach((src, index) => {
+        // Thêm dòng này để kiểm tra trong Console (F12)
+        // console.log("Đang load ảnh:", src); 
 
-images.forEach((src,index)=>{
-
-let card = document.createElement("div");
-card.className = "card";
-card.dataset.img = src;
-
-card.innerHTML = `
-<div class="inner">
-    <div class="front">${index + 1}</div>
-    <div class="back"><img src="${src}"></div>
-</div>
-`;
-
-card.onclick = ()=>flipCard(card);
-
-board.appendChild(card);
-
-});
+        let card = document.createElement("div");
+        card.className = "card";
+        card.dataset.img = src;
+        card.innerHTML = `
+            <div class="inner">
+                <div class="front">${index + 1}</div>
+                <div class="back"><img src="${src}" alt="hinh"></div>
+            </div>
+        `;
+        card.onclick = () => flipCard(card);
+        board.appendChild(card);
+    });
 
 }
 
