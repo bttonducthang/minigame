@@ -1041,6 +1041,7 @@ function chooseAnswer(index){
 
 function finishGame(){
   clearInterval(timer);
+  document.getElementById("popup").style.display = "none";
   document.getElementById("finishPopup").style.display="flex";
   let msg = score >= 3 ? 
     `Bạn đạt <b>${score}/5</b> điểm.<br>🎁 Chúc mừng! Bạn đủ điều kiện nhận quà.` : 
