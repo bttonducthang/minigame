@@ -1031,7 +1031,9 @@ function finishGame(){
 
 function restartGame() {
     // Đóng các popup
-    document.getElementById("finishPopup").style.display = "none";
+    document.getElementById("popup").style.display = "none"; 
+  
+    document.getElementById("finishPopup").style.display = "flex";
     
     // Reset trạng thái game nhưng giữ lại usedQuestionTexts
     score = 0;
