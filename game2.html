@@ -34,28 +34,26 @@ background:rgba(0,0,0,0);
 z-index:-1;
 }
 
-.logo {
-  width: 150px; /* Tăng từ 95px lên 150px */
-  margin-top: 20px;
-  margin-bottom: 10px;
-  transition: transform 0.3s ease;
+/* --- LOGO & TIÊU ĐỀ LỚN CHO KIOSK/PC --- */
+.logo{
+width:150px; /* Tăng từ 95px */
+margin-top:20px;
 }
 
-.line1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 60px; /* Tăng từ 40px lên 60px */
-  color: #ff4dff;
-  text-shadow: 0 0 10px #fff, 0 0 25px gold;
-  line-height: 1.2;
+.line1{
+font-family:'Playfair Display',serif;
+font-size:60px; /* Tăng từ 40px */
+color:#ff4dff;
+text-shadow:0 0 5px #fff,0 0 15px gold;
 }
 
-.line2 {
-  font-family: 'Great Vibes', cursive;
-  font-size: 65px; /* Tăng từ 44px lên 65px */
-  color: #ff4dff;
-  text-shadow: 0 0 10px #fff, 0 0 25px gold;
-  margin-bottom: 25px;
-  letter-spacing: 3px;
+.line2{
+font-family:'Great Vibes',cursive;
+font-size:65px; /* Tăng từ 44px */
+color:#ff4dff;
+text-shadow:0 0 5px #fff,0 0 15px gold;
+margin-bottom:25px;
+letter-spacing:2px;
 }
 
 .note{
@@ -98,14 +96,10 @@ cursor:pointer;
 font-size:24px;
 font-weight:bold;
 color:white;
-
 background:linear-gradient(145deg,#00c9ff,#7b2cff);
-
-box-shadow:
-0 0 18px rgba(0,201,255,.8),
-0 0 40px rgba(123,44,255,.6);
-
+box-shadow:0 0 18px rgba(0,201,255,.8), 0 0 40px rgba(123,44,255,.6);
 animation:pulse 1.5s infinite;
+transition:all .25s ease;
 }
 
 @keyframes pulse{
@@ -124,22 +118,12 @@ font-weight:bold;
 color:white;
 cursor:pointer;
 margin-top:10px;
+transition:all .25s ease;
 }
 
-.blue{
-background:linear-gradient(145deg,#42a5f5,#1565c0);
-box-shadow:0 5px 0 #0d47a1;
-}
-
-.orange{
-background:linear-gradient(145deg,#ff7b00,#ff3d00);
-box-shadow:0 5px 0 #a92b00;
-}
-
-.green{
-background:linear-gradient(145deg,#00c853,#00a63f);
-box-shadow:0 5px 0 #00792d;
-}
+.blue{ background:linear-gradient(145deg,#42a5f5,#1565c0); box-shadow:0 5px 0 #0d47a1; }
+.orange{ background:linear-gradient(145deg,#ff7b00,#ff3d00); box-shadow:0 5px 0 #a92b00; }
+.green{ background:linear-gradient(145deg,#00c853,#00a63f); box-shadow:0 5px 0 #00792d; }
 
 .popup{
 position:fixed;
@@ -150,6 +134,12 @@ justify-content:center;
 align-items:center;
 padding:15px;
 z-index:50;
+}
+
+/* --- PHÓNG TO KHUNG GAME NHƯNG GIỮ NGUYÊN MENU --- */
+#gamePopup .box, #finishPopup .box {
+max-width: 700px; /* Tăng từ 440px */
+padding: 30px;
 }
 
 .box{
@@ -169,9 +159,9 @@ to{transform:scale(1);opacity:1;}
 /* led rule */
 .rule-box{
 position:relative;
-padding:25px;
+padding:20px;
 width:100%;
-max-width:550px;
+max-width:550px; /* Tăng nhẹ độ rộng khung luật chơi */
 border-radius:15px;
 border:3px solid transparent;
 background-image:
@@ -181,6 +171,7 @@ background-origin:border-box;
 background-clip:padding-box,border-box;
 background-size:100% 100%,300% 300%;
 animation:led 6s linear infinite;
+font-size: 18px;
 }
 
 @keyframes led{
@@ -188,26 +179,22 @@ animation:led 6s linear infinite;
 100%{background-position:0 0,300% 50%;}
 }
 
-.rule-box ul{
-text-align:left;
-padding-left:18px;
-line-height:1.6;
-}
+.rule-box ul{ text-align:left; padding-left:25px; line-height:1.6; }
+.rule-title{ font-size:26px; font-weight:bold; color:#ffeb3b; margin-bottom:10px; }
 
-.rule-title{
-font-size:28px;
-font-weight:bold;
-color:#ffeb3b;
-margin-bottom:10px;
-}
-
-/* top info */
+/* top info - Phóng to ô điểm và thời gian */
 .top-info{
 display:flex;
-gap:8px;
+gap:12px;
 flex-wrap:wrap;
 justify-content:center;
-margin-bottom:15px;
+margin-bottom:20px;
+}
+
+#gamePopup .info-box {
+padding: 15px 20px;
+font-size: 22px; /* Chữ to hơn */
+min-width: 130px;
 }
 
 .info-box{
@@ -218,20 +205,16 @@ font-weight:bold;
 min-width:105px;
 }
 
-.warning{
-background:#d50000;
-animation:blink .7s infinite;
-}
+.warning{ background:#d50000; animation:blink .7s infinite; }
 
-@keyframes blink{
-50%{opacity:.5;}
-}
+@keyframes blink{ 50%{opacity:.5;} }
 
-/* board */
+/* board - Tăng khoảng cách thẻ */
 .board{
 display:grid;
 grid-template-columns:repeat(4,1fr);
-gap:10px;
+gap:15px;
+margin-bottom: 20px;
 }
 
 .card{
@@ -248,9 +231,7 @@ transform-style:preserve-3d;
 transition:transform .5s;
 }
 
-.card.flip .inner{
-transform:rotateY(180deg);
-}
+.card.flip .inner{ transform:rotateY(180deg); }
 
 .front,.back{
 position:absolute;
@@ -265,39 +246,21 @@ background:linear-gradient(145deg,#1565c0,#42a5f5);
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:28px;
+font-size:35px; /* Số trên mặt thẻ to hơn */
+font-weight: bold;
 }
 
-.back{
-transform:rotateY(180deg);
-background:#fff;
-}
+.back{ transform:rotateY(180deg); background:#fff; }
+.back img{ width:100%; height:100%; object-fit:cover; }
+.hide{ visibility:hidden; pointer-events:none; }
 
-.back img{
-width:100%;
-height:100%;
-object-fit:cover;
-}
+/* popup finish lớn hơn */
+#finishPopup h2 { font-size: 40px; color: #ffeb3b; margin-bottom: 15px; }
+#finishPopup p { font-size: 24px; line-height: 1.5; }
 
-.hide{
-visibility:hidden;
-pointer-events:none;
-}
-
-/* menu popup */
-.menu-grid{
-display:flex;
-gap:20px;
-flex-wrap:wrap;
-justify-content:center;
-margin:15px 0;
-}
-
-.menu-item{
-cursor:pointer;
-font-weight:bold;
-}
-
+/* menu popup - giữ nguyên kích thước cũ */
+.menu-grid{ display:flex; gap:20px; flex-wrap:wrap; justify-content:center; margin:15px 0; }
+.menu-item{ cursor:pointer; font-weight:bold; transition:all .25s ease; }
 .menu-item img{
 width:170px;
 border-radius:14px;
@@ -307,68 +270,24 @@ background-size:400% 400%;
 animation:ledframe 10s linear infinite;
 }
 
-@keyframes ledframe{
-0%{background-position:0% 50%;}
-100%{background-position:400% 50%;}
-}
+@keyframes ledframe{ 0%{background-position:0% 50%;} 100%{background-position:400% 50%;} }
 
+/* Responsive cho điện thoại */
 @media(max-width:768px){
-  .logo { width: 100px; }
-  .line1 { font-size: 35px; }
-  .line2 { font-size: 40px; }
-  .play-btn { width: 120px; height: 120px; font-size: 22px; }
-  .rule-box { max-width: 95%; padding: 15px; }
+.logo { width: 100px; }
+.line1{font-size:30px;}
+.line2{font-size:34px;}
+.play-btn{width:115px;height:115px;font-size:22px;}
+#gamePopup .box { padding: 15px; }
+#gamePopup .info-box { padding: 8px; font-size: 16px; min-width: 90px; }
+.front { font-size: 24px; }
 }
 
-/* hover menu + feed */
-.menu-btn,
-.feed-btn,
-.menu-item{
-transition:all .25s ease;
-}
-
-.menu-btn:hover,
-.feed-btn:hover{
-transform:scale(1.08);
-box-shadow:
-0 0 14px rgba(255,255,255,.95),
-0 0 28px rgba(255,255,255,.55);
-}
-
-.menu-btn:active,
-.feed-btn:active{
-transform:scale(.94);
-}
-
-/* hover mini game */
-.menu-item:hover{
-transform:translateY(-4px) scale(1.04);
-filter:brightness(1.08);
-}
-
-.menu-item:active{
-transform:scale(.97);
-}  
-
-/* ================= HOVER TOÀN BỘ NÚT GAME2 ================= */
-/* hiệu ứng mượt */
-.btn,
-.play-btn{
-transition:all .25s ease;
-}
-
-/* hover chung */
-.btn:hover,
-.play-btn:hover{
-transform:translateY(-3px) scale(1.05);
-filter:brightness(1.08);
-}
-
-/* nhấn xuống */
-.btn:active,
-.play-btn:active{
-transform:scale(.95);
-}
+/* Hover effects */
+.menu-btn:hover, .feed-btn:hover { transform:scale(1.08); box-shadow: 0 0 14px rgba(255,255,255,.95), 0 0 28px rgba(255,255,255,.55); }
+.menu-item:hover{ transform:translateY(-4px) scale(1.04); filter:brightness(1.08); }
+.btn:hover, .play-btn:hover{ transform:translateY(-3px) scale(1.05); filter:brightness(1.08); }
+.btn:active, .play-btn:active, .menu-btn:active, .feed-btn:active, .menu-item:active{ transform:scale(.95); }
 </style>
 </head>
 
@@ -390,10 +309,8 @@ onclick="window.open('https://bttonducthang.github.io/feedback-baotangtonducthan
 <div class="line1">Trò Chơi</div>
 <div class="line2">Tìm hình giống nhau</div>
   
-<!-- Luật chơi -->
 <div class="rule-box">
 <div class="rule-title">📜 Luật chơi</div>
-
 <ul>
 <li>Bấm CHƠI để bắt đầu.</li>
 <li>Bạn có 1 phút để tìm các cặp hình giống nhau.</li>
@@ -402,7 +319,6 @@ onclick="window.open('https://bttonducthang.github.io/feedback-baotangtonducthan
 <li>Mỗi cặp đúng được 1 điểm.</li>
 <li>Đủ 5 điểm trở lên sẽ nhận quà.</li>
 </ul>
-
 <div class="note">✨ Chúc bạn may mắn ✨</div>
 </div>
   
@@ -417,18 +333,14 @@ CHƠI <br>🎮
 <!-- popup game -->
 <div class="popup" id="gamePopup">
 <div class="box">
-
 <div class="top-info">
 <div class="info-box">⭐ <span id="score">0</span></div>
 <div class="info-box" id="timeBox">⏰ <span id="time">01:00</span></div>
 <div class="info-box">📚 <span id="remain">8</span></div>
 </div>
-
 <div class="board" id="board"></div>
-
 <button class="btn orange" onclick="restartGame()">CHƠI LẠI 🔄</button>
 <button class="btn green" onclick="closeGame()">ĐÓNG ❌</button>
-
 </div>
 </div>
 
@@ -442,31 +354,24 @@ CHƠI <br>🎮
 </div>
 </div>
 
-
 <!-- menu -->
 <div class="popup" id="menuPopup">
 <div class="box">
 <h2>🎮 Chọn Trò Chơi</h2>
-
 <div class="menu-grid">
-
 <div class="menu-item" onclick="window.location.href='game0.html'">
 <img src="assets/minigame_0.png">
 <p>Dấu ấn thời gian</p>
 </div>
-
 <div class="menu-item" onclick="window.location.href='game1.html'">
 <img src="assets/minigame_1.png">
 <p>Vòng quay lịch sử</p>
 </div>
-
 </div>
-
 <button class="btn orange" onclick="closeMenuPopup()">Đóng ❌</button>
 </div>
 </div>
   
-<!-- Biến âm thanh -->
 <audio id="bgMusic" preload="auto" loop src="assets/game2/bg.mp3"></audio>
 <audio id="correctSound" preload="auto" src="assets/game2/correct.mp3"></audio>
 <audio id="wrongSound" preload="auto" src="assets/game2/wrong.mp3"></audio>
@@ -480,9 +385,6 @@ let score=0;
 let remain=8;
 let timeLeft=60;
 let timer=null;
-  
-/* ================= ÂM THANH ================= */
-/* đặt đầu script, sau các biến let */
 
 const bgMusic = document.getElementById("bgMusic");
 const correctSound = document.getElementById("correctSound");
@@ -492,26 +394,11 @@ bgMusic.volume = 0.45;
 correctSound.volume = 0.9;
 wrongSound.volume = 0.9;
 
-function playBG(){
-bgMusic.play().catch(()=>{});
-}
+function playBG(){ bgMusic.play().catch(()=>{}); }
+function stopBG(){ bgMusic.pause(); bgMusic.currentTime = 0; }
+function playCorrect(){ correctSound.currentTime = 0; correctSound.play().catch(()=>{}); }
+function playWrong(){ wrongSound.currentTime = 0; wrongSound.play().catch(()=>{}); }
 
-function stopBG(){
-bgMusic.pause();
-bgMusic.currentTime = 0;
-}
-
-function playCorrect(){
-correctSound.currentTime = 0;
-correctSound.play().catch(()=>{});
-}
-
-function playWrong(){
-wrongSound.currentTime = 0;
-wrongSound.play().catch(()=>{});
-}
-  
-/* ================================== */
 function shuffle(arr){
 for(let i=arr.length-1;i>0;i--){
 let j=Math.floor(Math.random()*(i+1));
@@ -523,8 +410,7 @@ function loadImages(){
 images=[];
 for(let i=1;i<=8;i++){
 let p=`images/minigame_2/game2_${i}.jpg`;
-images.push(p);
-images.push(p);
+images.push(p); images.push(p);
 }
 shuffle(images);
 }
@@ -539,179 +425,87 @@ function restartGame(){
 clearInterval(timer);
 stopBG();
 playBG();
-  
-score=0;
-remain=8;
-timeLeft=60;
-first=null;
-second=null;
-lock=false;
-
-timer = null; // ⭐
-  
+score=0; remain=8; timeLeft=60;
+first=null; second=null; lock=false; timer = null;
 document.getElementById("score").innerText=0;
 document.getElementById("remain").innerText=8;
 document.getElementById("finishPopup").style.display="none";
 document.getElementById("gamePopup").style.display="flex";
-
 loadImages();
 renderBoard();
 updateTime();
-
 }
 
 function renderBoard(){
-
 let board = document.getElementById("board");
 board.innerHTML = "";
-
 images.forEach((src,index)=>{
-
 let card = document.createElement("div");
 card.className = "card";
 card.dataset.img = src;
-
-card.innerHTML = `
-<div class="inner">
-    <div class="front">${index + 1}</div>
-    <div class="back"><img src="${src}"></div>
-</div>
-`;
-
+card.innerHTML = `<div class="inner"><div class="front">${index + 1}</div><div class="back"><img src="${src}"></div></div>`;
 card.onclick = ()=>flipCard(card);
-
 board.appendChild(card);
-
 });
-
 }
 
 function flipCard(card){
-
-if(lock) return;
-if(card.classList.contains("flip")) return;
-if(card.classList.contains("hide")) return;
-
-/* bắt đầu đếm giờ khi chạm hình đầu tiên */
-if(!timer){
-startTimer();
-}
-
+if(lock || card.classList.contains("flip") || card.classList.contains("hide")) return;
+if(!timer) startTimer();
 card.classList.add("flip");
-
-if(!first){
-first = card;
-return;
-}
-
+if(!first){ first = card; return; }
 second = card;
 lock = true;
-
 if(first.dataset.img === second.dataset.img){
 playCorrect();
-score++;
-remain--;
-
+score++; remain--;
 document.getElementById("score").innerText = score;
 document.getElementById("remain").innerText = remain;
-
 setTimeout(()=>{
-first.classList.add("hide");
-second.classList.add("hide");
-
+first.classList.add("hide"); second.classList.add("hide");
 resetTurn();
-
-if(remain === 0){
-finishGame();
-}
-
+if(remain === 0) finishGame();
 },500);
-
 }else{
 playWrong();
-setTimeout(()=>{
-first.classList.remove("flip");
-second.classList.remove("flip");
-resetTurn();
-},800);
-
+setTimeout(()=>{ first.classList.remove("flip"); second.classList.remove("flip"); resetTurn(); },800);
 }
 }
 
-function resetTurn(){
-first=null;
-second=null;
-lock=false;
-}
+function resetTurn(){ first=null; second=null; lock=false; }
 
 function startTimer(){
-clearInterval(timer); // đảm bảo không bị duplicate
-
+clearInterval(timer);
 timer=setInterval(()=>{
-timeLeft--;
-updateTime();
-
-if(timeLeft<=0){
-finishGame();
-}
+timeLeft--; updateTime();
+if(timeLeft<=0) finishGame();
 },1000);
 }
 
 function updateTime(){
 let min=String(Math.floor(timeLeft/60)).padStart(2,"0");
 let sec=String(timeLeft%60).padStart(2,"0");
-
 document.getElementById("time").innerText=`${min}:${sec}`;
-
-if(timeLeft<=10){
-document.getElementById("timeBox").classList.add("warning");
-}else{
-document.getElementById("timeBox").classList.remove("warning");
-}
+if(timeLeft<=10) document.getElementById("timeBox").classList.add("warning");
+else document.getElementById("timeBox").classList.remove("warning");
 }
 
 function finishGame(){
 clearInterval(timer);
 stopBG();
 document.getElementById("gamePopup").style.display="none";
-
-let msg="";
-
-if(score>=5){
-msg=`Bạn đạt <b>${score}/8</b> điểm.<br>🎁 Chúc mừng! Bạn đủ điều kiện nhận quà.`;
-}else{
-msg=`Bạn đạt <b>${score}/8</b> điểm.<br>💪 Chưa đủ 5 điểm. Hãy thử lại nhé!`;
-}
-
+let msg = score>=5 ? `Bạn đạt <b>${score}/8</b> điểm.<br>🎁 Chúc mừng! Bạn đủ điều kiện nhận quà.` : `Bạn đạt <b>${score}/8</b> điểm.<br>💪 Chưa đủ 5 điểm. Hãy thử lại nhé!`;
 document.getElementById("finalText").innerHTML=msg;
 document.getElementById("finishPopup").style.display="flex";
 }
 
-function closeGame(){
-clearInterval(timer);
-stopBG();
-document.getElementById("gamePopup").style.display="none";
+function closeGame(){ clearInterval(timer); stopBG(); document.getElementById("gamePopup").style.display="none"; }
+function openMenuPopup(){ 
+const popup = document.getElementById("menuPopup");
+popup.style.display = popup.style.display === "flex" ? "none" : "flex"; 
 }
-
-function openMenuPopup(){
-
-  const popup = document.getElementById("menuPopup");
-
-  if(popup.style.display === "flex"){
-    popup.style.display = "none";
-  }else{
-    popup.style.display = "flex";
-  }
-}
-  
-function closeMenuPopup(){
-document.getElementById("menuPopup").style.display="none";
-}
-  
-function goMenu(){
-window.location.href = "index.html";
-}
+function closeMenuPopup(){ document.getElementById("menuPopup").style.display="none"; }
+function goMenu(){ window.location.href = "index.html"; }
 </script>
-  
 </body>
 </html>
