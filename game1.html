@@ -35,13 +35,18 @@ body::before{
   z-index:-1;
 }
 
-.logo{
-  width:95px;
-  margin-top:10px;
+.logo {
+  width: 150px; /* Tăng từ 95px lên 150px cho rõ nét */
+  height: auto;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
 }
 
 .title{
-  margin-top:8px;
+  margin-top: 15px;
+  margin-bottom: 20px;
 }
 
 .line1 {
@@ -107,19 +112,16 @@ body::before{
 }
 .pointer {
   position: absolute;
-  /* Đưa kim lên trên cùng */
-  top: -20px; 
+  top: -25px; /* Đẩy lên một chút để không đè quá sâu vào vòng quay */
   left: 50%;
-  /* Dùng transform để căn giữa chính xác theo chiều ngang */
-  transform: translateX(-50%); 
+  transform: translateX(-50%);
   width: 0;
   height: 0;
-  /* Tăng kích thước kim cho cân đối với vòng quay 450px */
   border-left: 25px solid transparent;
   border-right: 25px solid transparent;
-  border-top: 50px solid #ff3333;
-  z-index: 15; /* Đảm bảo nằm trên cùng */
-  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
+  border-top: 55px solid #ff3333; /* Làm kim to và dài hơn một chút */
+  z-index: 15;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
 }
 
 #wheel {
