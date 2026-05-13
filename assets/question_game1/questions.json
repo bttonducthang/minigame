@@ -73,5 +73,50 @@
     "q": "Bác Tôn từ nhà tù Côn Đảo trở về đất liền vào tháng, năm nào?",
     "answers": ["Tháng 4/1945","Tháng 6/1945","Tháng 9/1945","Tháng 12/1945"],
     "correct": 2
-  }
+  },
+  {
+    "q": "Bạn hãy cho biết ngôi nhà sàn nơi Bác Tôn sinh ra được xây dựng vào năm nào, tại đâu?",
+    "answers": ["1884, tại làng An Hòa, Long Xuyên, An Giang","1885, tại làng Mỹ Hội, Long Xuyên, An Giang","1886, tại làng Hưng Châu, Long Xuyên, An Giang","1887, tại xã Mỹ Hòa Hưng, Long Xuyên, An Giang"],
+    "correct": 3
+  },
+  {
+    "q": "Bạn hãy cho biết từ năm 1927, hội viên của Công hội bí mật gia nhập vào tổ chức nào để đánh dấu một bước chuyển biến quan trọng của phong trào công nhân Sài Gòn - Chợ Lớn?",
+    "answers": ["Công hội Đỏ","Hội Ái hữu","Hội Việt Nam Cách mạng Thanh niên","Hội Tương tế"],
+    "correct": 2
+  },
+    {
+    "q": "Bạn hãy cho biết đồng chí Nguyễn Ái Quốc đã cử hai học trò là Phan Trọng Bình và Nguyễn Văn Lợi về Sài Gòn bắt liên lạc với Bác Tôn để xây dựng cơ sở cho Hội Việt Nam Cách mạng Thanh niên vào năm nào?",
+    "answers": ["1925","1926","1927","1928"],
+    "correct": 2
+  },
+  {
+    "q": "Bạn hãy cho biết số tù khi Bác Tôn bị tuyên án tại toàn đại hình vào năm 1929?",
+    "answers": ["5289. 20TF","5398. 20TF","5389. 20TF","5298.20TF"],
+    "correct": 0
+  },
+  {
+    "q": "Bạn hãy cho biết tại nhà tù Côn Đảo, nơi được gọi là “Khu Trừng Giới” đáng sợ nhất đối với người tù là gì?",
+    "answers": ["Xà lim","Hầm Xay Lúa","Chuồng Cọp","Sở tù"],
+    "correct": 1
+  },
+  {
+    "q": "Bạn hãy cho biết Chi bộ nhà tù Côn Đảo được thành lập năm nào do đồng chí nào làm Bí thư?",
+    "answers": ["Năm 1931, do đồng chí Nguyễn Văn Linh làm Bí thư","Năm 1932, do đồng chí Nguyễn Hới làm Bí thư","Năm 1933, do đồng chí Tôn Đức Thắng làm Bí thư","Năm 1934, do đồng chí Phạm Hùng làm Bí thư"],
+    "correct": 1
+  },
+  {
+    "q": "Bạn hãy cho biết, thực hiện phong trào “Thi đua ái quốc” do Bác Hồ khởi xướng, Bác Tôn đã đảm nhận vai trò gì?",
+    "answers": ["Trưởng Ban thi đua ái quốc Trung ương","Phó Trưởng Ban thi đua ái quốc Trung ương","Thành viên Ban thi đua ái quốc Trung ương","Tất cả đều sai"],
+    "correct": 0
+  },
+  {
+    "q": "Năm 1951, Chủ tịch Tôn Đức Thắng được bầu làm Chủ tịch của tổ chức Mặt trận nào?",
+    "answers": ["Mặt trận Việt Minh","Mặt trận Liên Việt","Hội Phản đế Đồng minh","Hội Phản đế Liên minh"],
+    "correct": 1
+  },
+   {
+    "q": "Bạn hãy cho biết Bảo tàng Tôn Đức Thắng tọa lạc tại đâu?",
+    "answers": ["Số 6, đường Tôn Đức Thắng, phường Bến Thành, Thành phố Hồ Chí Minh","Số 6, đường Tôn Đức Thắng, phường Cầu Ông Lãnh, Thành phố Hồ Chí Minh","Số 5, đường Tôn Đức Thắng, phường Bến Nghé, Thành phố Hồ Chí Minh","Số 5, đường Tôn Đức Thắng, phường Sài Gòn, Thành phố Hồ Chí Minh"],
+    "correct": 
+  },
 ]
