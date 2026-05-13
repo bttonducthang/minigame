@@ -114,6 +114,12 @@
     "answers": ["Mặt trận Việt Minh","Mặt trận Liên Việt","Hội Phản đế Đồng minh","Hội Phản đế Liên minh"],
     "correct": 1
   },
+  { 
+  "q": "Bạn hãy cho biết sự kiện gì qua bức ảnh này?", 
+  "answers": ["Bác Tôn phát biểu khi được bầu làm Chủ tịch nước Việt Nam Dân Chủ Cộng Hòa năm 1969","Bác Tôn phát biểu tại kỳ họp thứ nhất (Quốc hội khóa VI) Quốc hội quyết định đổi tên nước là nước Cộng hòa xã hội chủ nghĩa Việt Nam năm 1976","Bác Tôn phát biểu khi về thăm lại nhà máy Ba Son, ngày 19/11/1975","Bác Tôn đọc diễn văn mừng chiến thắng tại Dinh Độc Lập vào ngày 15/5/1975"], 
+  "correct": 3,
+  "img": "assets/question_game1/cau1.png" // Câu này có hình
+  },
    {
     "q": "Bạn hãy cho biết Bảo tàng Tôn Đức Thắng tọa lạc tại đâu?",
     "answers": ["Số 6, đường Tôn Đức Thắng, phường Bến Thành, Thành phố Hồ Chí Minh","Số 6, đường Tôn Đức Thắng, phường Cầu Ông Lãnh, Thành phố Hồ Chí Minh","Số 5, đường Tôn Đức Thắng, phường Bến Nghé, Thành phố Hồ Chí Minh","Số 5, đường Tôn Đức Thắng, phường Sài Gòn, Thành phố Hồ Chí Minh"],
