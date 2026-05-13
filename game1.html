@@ -97,27 +97,38 @@ body::before{
 }
 /* wheel */
 .wheel-wrap {
-  margin-top: 30px;
+  margin-top: 40px; /* Tăng khoảng cách với header một chút */
   position: relative;
-  /* Tăng kích thước khung chứa */
   width: 450px; 
   height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .pointer {
-  top: -15px;
+  position: absolute;
+  /* Đưa kim lên trên cùng */
+  top: -20px; 
+  left: 50%;
+  /* Dùng transform để căn giữa chính xác theo chiều ngang */
+  transform: translateX(-50%); 
+  width: 0;
+  height: 0;
+  /* Tăng kích thước kim cho cân đối với vòng quay 450px */
   border-left: 25px solid transparent;
   border-right: 25px solid transparent;
   border-top: 50px solid #ff3333;
+  z-index: 15; /* Đảm bảo nằm trên cùng */
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 }
 
-#wheel{
-  width:100%;
-  height:100%;
-  display:block;
-  border-radius:50%;
-  background:transparent;
-
-  transition:transform 4s cubic-bezier(.17,.67,.15,1);
+#wheel {
+  /* Đảm bảo canvas luôn khít với khung */
+  width: 434px; /* 450px - (8px padding * 2) */
+  height: 434px;
+  display: block;
+  border-radius: 50%;
+  transition: transform 4s cubic-bezier(.17,.67,.15,1);
 }
 
 /* --- CSS MỚI: Hiệu ứng khi vòng quay bị khóa hoàn toàn --- */
@@ -126,27 +137,18 @@ body::before{
   pointer-events: none;
 }
 
-.wheel-border{
- position: absolute;
+.wheel-border {
+  position: absolute;
   inset: 0;
-  padding: 8px; /* Tăng độ dày viền LED */
+  padding: 8px; 
   border-radius: 50%;
-
-  background:linear-gradient(
-    45deg,
-    red,orange,yellow,green,cyan,blue,violet,red
-  );
-
-  background-size:400% 400%;
-  animation:spinLED 10s linear infinite;
-
-  box-shadow:
-    0 0 15px rgba(255,255,255,.8),
-    0 0 28px rgba(255,255,255,.5);
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  background: linear-gradient(45deg, red, orange, yellow, green, cyan, blue, violet, red);
+  background-size: 400% 400%;
+  animation: spinLED 10s linear infinite;
+  box-shadow: 0 0 20px rgba(255,255,255,.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @keyframes spinLED{
