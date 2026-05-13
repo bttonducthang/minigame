@@ -278,6 +278,46 @@ body::before{
     inset 0 0 8px rgba(0,255,255,.18);
 }
 
+/* Điều chỉnh riêng cho Popup Câu hỏi */
+#popup .box {
+  max-width: 650px; /* Tăng chiều rộng từ 430px lên 650px */
+  padding: 30px;    /* Tăng khoảng cách đệm bên trong */
+}
+
+#popup h2 {
+  font-size: 32px;  /* Chữ "CÂU HỎI" to hơn */
+  margin-bottom: 20px;
+}
+
+#popup #questionText {
+  font-size: 26px;  /* Nội dung câu hỏi to rõ */
+  font-weight: bold;
+  margin-bottom: 25px;
+  line-height: 1.4;
+}
+
+#popup .answer {
+  padding: 18px;    /* Nút đáp án cao hơn */
+  font-size: 20px;  /* Chữ trong đáp án to hơn */
+  margin: 10px 0;   /* Khoảng cách giữa các đáp án thưa ra */
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Điều chỉnh cho mobile để không bị tràn màn hình */
+@media(max-width: 768px) {
+  #popup .box {
+    max-width: 95%;
+    padding: 20px;
+  }
+  #popup #questionText {
+    font-size: 20px;
+  }
+  #popup .answer {
+    font-size: 16px;
+    padding: 12px;
+  }
+}
+
 @keyframes zoomIn{
   from{transform:scale(.8);opacity:0;}
   to{transform:scale(1);opacity:1;}
