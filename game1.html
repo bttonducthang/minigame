@@ -303,6 +303,12 @@ body::before{
   border: 1px solid rgba(255,255,255,0.2);
 }
 
+#questionImg {
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
 /* Điều chỉnh cho mobile để không bị tràn màn hình */
 @media(max-width: 768px) {
   #popup .box {
@@ -715,6 +721,7 @@ QUAY<br>🎡
 <div class="popup" id="popup">
 <div class="box">
 <h2>CÂU HỎI</h2>
+<img id="questionImg" src="" style="width:100%; max-height:250px; object-fit:contain; margin-bottom:15px; display:none; border-radius:8px;">
 <div class="question" id="questionText"></div>
 
 <button class="answer" onclick="chooseAnswer(0)" id="a0"></button>
@@ -971,11 +978,23 @@ function spinWheel(){
 }
 
 function showQuestion(){
-  document.getElementById("popup").style.display="flex";
+  document.getElementById("popup").style.display = "flex";
   document.getElementById("questionText").innerText = currentQuestion.q;
+  
+  const qImg = document.getElementById("questionImg");
+  
+  // Kiểm tra nếu câu hỏi có thuộc tính img và img không rỗng
+  if (currentQuestion.img) {
+    qImg.src = currentQuestion.img;
+    qImg.style.display = "block"; // Hiện ảnh
+  } else {
+    qImg.src = "";
+    qImg.style.display = "none";  // Ẩn ảnh nếu không có dữ liệu
+  }
+
   currentQuestion.answers.forEach((ans, i) => {
-    const btn = document.getElementById("a"+i);
-    btn.innerText = String.fromCharCode(65+i) + ". " + ans;
+    const btn = document.getElementById("a" + i);
+    btn.innerText = String.fromCharCode(65 + i) + ". " + ans;
     btn.className = "answer";
     btn.disabled = false;
   });
