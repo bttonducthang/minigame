@@ -117,27 +117,96 @@ body::before{
     0 0 12px rgba(255,235,59,.5);
 }
 
-/* Grid game */
+/* ===== SLIDER ===== */
+
+.slider-container{
+  position:relative;
+  width:100%;
+  overflow:hidden;
+  padding:20px 0;
+}
+
 .game-grid{
   display:flex;
-  justify-content:center;
   gap:28px;
-  flex-wrap:wrap;
+  transition:transform .5s ease;
+  justify-content:center;
+  align-items:center;
 }
 
-/* Item */
 .game-item{
   cursor:pointer;
-  transition:.25s;
-  width:260px;
+  transition:.45s;
+  width:240px;
+
+  opacity:.45;
+  transform:scale(.82);
+  filter:blur(1px);
 }
 
+/* Game đang focus */
+.game-item.active{
+  opacity:1;
+  transform:scale(1.08);
+  filter:none;
+  z-index:5;
+}
+
+/* Hover */
 .game-item:hover{
-  transform:translateY(-6px) scale(1.03);
+  transform:scale(1.12);
 }
 
+/* Click */
 .game-item:active{
   transform:scale(.96);
+}
+
+/* Nút slider */
+.slider-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+
+  width:54px;
+  height:54px;
+
+  border:none;
+  border-radius:50%;
+
+  background:rgba(0,0,0,.45);
+
+  color:white;
+  font-size:28px;
+  font-weight:bold;
+
+  cursor:pointer;
+  z-index:20;
+
+  backdrop-filter:blur(5px);
+
+  box-shadow:
+    0 0 10px rgba(255,255,255,.35),
+    0 0 20px rgba(102,255,255,.3);
+
+  transition:.25s;
+}
+
+.slider-btn:hover{
+  transform:translateY(-50%) scale(1.12);
+  background:rgba(0,0,0,.7);
+}
+
+.slider-btn:active{
+  transform:translateY(-50%) scale(.92);
+}
+
+.slider-btn.prev{
+  left:0;
+}
+
+.slider-btn.next{
+  right:0;
 }
 
 /* Khung LED ảnh */
@@ -282,6 +351,16 @@ body::before{
     font-size:clamp(24px,7vw,42px);
     letter-spacing:.5px;
   }
+  
+  .slider-btn{
+  width:46px;
+  height:46px;
+  font-size:24px;
+}
+
+.game-item{
+  width:220px;
+  }
 }
 </style>
 </head>
@@ -305,8 +384,14 @@ body::before{
   <div class="panel-title">
     🎮 Chọn trò chơi
   </div>
+  
+//== Nút lướt ==//
+<div class="game-grid"><div class="slider-container">
 
-  <div class="game-grid">
+<button class="slider-btn prev" onclick="moveSlide(-1)">
+  ❮
+</button>
+<div class="game-grid" id="gameGrid">
 
     <!-- GAME 0 -->
     <div class="game-item"
@@ -322,7 +407,7 @@ body::before{
     </div>
 
     <!-- GAME 1 -->
-    <div class="game-item"
+    <div class="game-item active"
       onclick="window.location.href='game1.html'">
 
       <div class="img-wrapper">
@@ -346,7 +431,14 @@ body::before{
         [Tìm hình giống nhau]
       </div>
     </div>
+  
+</div>
 
+<button class="slider-btn next" onclick="moveSlide(1)">
+  ❯
+</button>
+
+</div>
   </div>
 </div>
 
@@ -356,5 +448,53 @@ onclick="window.open('https://bttonducthang.github.io/feedback-baotangtonducthan
   <img src="assets/feedback.png">
 </button>
 
+  
+<script>
+
+const grid = document.getElementById("gameGrid");
+const items = document.querySelectorAll(".game-item");
+
+let current = 1;
+
+function updateSlider(){
+
+  items.forEach(item=>{
+    item.classList.remove("active");
+  });
+
+  items[current].classList.add("active");
+
+  const offset =
+    (items[current].offsetLeft +
+    items[current].clientWidth/2) -
+    (grid.clientWidth/2);
+
+  grid.style.transform = `translateX(${-offset}px)`;
+}
+
+function moveSlide(dir){
+
+  current += dir;
+
+  if(current < 0){
+    current = items.length - 1;
+  }
+
+  if(current >= items.length){
+    current = 0;
+  }
+
+  updateSlider();
+}
+
+window.addEventListener("load",()=>{
+  updateSlider();
+});
+
+window.addEventListener("resize",()=>{
+  updateSlider();
+});
+
+</script>
 </body>
 </html>
