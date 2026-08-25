@@ -370,6 +370,40 @@ body::before{
     letter-spacing:.5px;
   }
 }
+
+/* ===== TỐI ƯU MÀN HÌNH KIOSK / MÀN HÌNH LỚN (>= 1200px) ===== */
+@media (min-width: 1200px) {
+  .game-panel {
+    max-width: 1150px; /* Nới rộng khung chứa chính */
+  }
+
+  .carousel-container {
+    height: 440px; /* Tăng chiều cao vùng chứa slider */
+  }
+
+  .game-item {
+    width: 290px; /* Tăng kích thước khung game */
+  }
+
+  /* Điều chỉnh khoảng cách đẩy 2 item bên cạnh */
+  .game-item.prev {
+    transform: translateX(-240px) scale(0.8);
+  }
+
+  .game-item.next {
+    transform: translateX(240px) scale(0.8);
+  }
+
+  .game-name {
+    font-size: 24px; /* Phóng to chữ tên game */
+  }
+
+  .nav-arrow {
+    width: 56px;
+    height: 56px;
+    font-size: 32px;
+  }
+}
 </style>
 </head>
 
