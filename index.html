@@ -32,6 +32,7 @@ body{
   text-align:center;
 
   padding:20px 15px;
+  overflow-x:hidden;
 }
 
 body::before{
@@ -96,20 +97,11 @@ body::before{
     0 0 20px rgba(0,0,0,.45);
 }
 
-@keyframes ledBorder{
-  0%{
-    background-position:0% 0%,0% 50%;
-  }
-  100%{
-    background-position:0% 0%,300% 50%;
-  }
-}
-
 /* Tiêu đề panel */
 .panel-title{
   font-size:clamp(24px,5vw,34px);
   font-weight:bold;
-  margin-bottom:25px;
+  margin-bottom:15px;
   color:#ffeb3b;
 
   text-shadow:
@@ -117,27 +109,69 @@ body::before{
     0 0 12px rgba(255,235,59,.5);
 }
 
-/* Grid game */
-.game-grid{
-  display:flex;
-  justify-content:center;
-  gap:28px;
-  flex-wrap:wrap;
+/* CAROUSEL WRAPPER */
+.carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 10px;
 }
 
-/* Item */
-.game-item{
-  cursor:pointer;
-  transition:.25s;
-  width:260px;
+.carousel-container {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
 }
 
-.game-item:hover{
-  transform:translateY(-6px) scale(1.03);
+/* Item Slider */
+.game-item {
+  position: absolute;
+  width: 250px;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease, filter 0.4s ease;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
 }
 
-.game-item:active{
-  transform:scale(.96);
+/* Trò chơi đang được chọn (Active) */
+.game-item.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0) scale(1.15);
+  z-index: 10;
+}
+
+.game-item.active:hover {
+  transform: translateX(0) scale(1.2);
+}
+
+.game-item.active:active {
+  transform: translateX(0) scale(1.1);
+}
+
+/* Trò chơi bên trái */
+.game-item.prev {
+  opacity: 0.55;
+  transform: translateX(-190px) scale(0.8);
+  filter: blur(1px) grayscale(30%);
+  z-index: 5;
+}
+
+/* Trò chơi bên phải */
+.game-item.next {
+  opacity: 0.55;
+  transform: translateX(190px) scale(0.8);
+  filter: blur(1px) grayscale(30%);
+  z-index: 5;
 }
 
 /* Khung LED ảnh */
@@ -189,6 +223,46 @@ body::before{
 
   text-shadow:
     0 0 8px rgba(0,0,0,.6);
+}
+
+/* Nút Mũi Tên Navigation */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(20, 93, 160, 0.85);
+  border: 2px solid #66ffff;
+  color: #ffeb3b;
+  font-size: 28px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+  box-shadow: 0 0 10px #66ffff;
+}
+
+.nav-arrow:hover {
+  background: #66ffff;
+  color: #145da0;
+  transform: translateY(-50%) scale(1.15);
+  box-shadow: 0 0 15px #66ffff;
+}
+
+.nav-arrow:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.nav-arrow.left {
+  left: 5px;
+}
+
+.nav-arrow.right {
+  right: 5px;
 }
 
 /* Feedback button */
@@ -252,20 +326,33 @@ body::before{
   }
 
   .game-panel{
-    padding:18px 14px;
+    padding:18px 10px;
   }
 
-  .game-grid{
-    gap:22px;
+  .carousel-container {
+    height: 320px;
   }
 
-  .game-item{
-    width:100%;
-    max-width:260px;
+  .game-item {
+    width: 200px;
+  }
+
+  .game-item.prev {
+    transform: translateX(-120px) scale(0.75);
+  }
+
+  .game-item.next {
+    transform: translateX(120px) scale(0.75);
   }
 
   .game-name{
-    font-size:18px;
+    font-size:16px;
+  }
+
+  .nav-arrow {
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
   }
 
   .feed-btn{
@@ -306,48 +393,55 @@ body::before{
     🎮 Chọn trò chơi
   </div>
 
-  <div class="game-grid">
+  <div class="carousel-wrapper" id="carouselWrapper">
+    <button class="nav-arrow left" id="prevBtn">&#10094;</button>
 
-    <!-- GAME 0 -->
-    <div class="game-item"
-      onclick="window.location.href='game0.html'">
+    <div class="carousel-container" id="carouselContainer">
 
-      <div class="img-wrapper">
-        <img src="assets/minigame_0.png">
+      <!-- GAME 0 -->
+      <div class="game-item" data-url="game0.html">
+        <div class="img-wrapper">
+          <img src="assets/minigame_0.png" alt="Game 0">
+        </div>
+        <div class="game-name">
+          [Dấu ấn thời gian]
+        </div>
       </div>
 
-      <div class="game-name">
-        [Dấu ấn thời gian]
+      <!-- GAME 1 -->
+      <div class="game-item" data-url="game1.html">
+        <div class="img-wrapper">
+          <img src="assets/minigame_1.png" alt="Game 1">
+        </div>
+        <div class="game-name">
+          [Vòng quay lịch sử]
+        </div>
+      </div>
+
+      <!-- GAME 2 -->
+      <div class="game-item" data-url="game2.html">
+        <div class="img-wrapper">
+          <img src="assets/minigame_2.png" alt="Game 2">
+        </div>
+        <div class="game-name">
+          [Tìm hình giống nhau]
+        </div>
+      </div>
+	  
+	<!-- GAME 3 -->
+      <div class="game-item" data-url="">
+        <div class="img-wrapper">
+          <img src="assets/minigame_3.png" alt="Game 3">
+        </div>
+        <div class="game-name">
+          [Coming soon]
+        </div>
       </div>
     </div>
 
-    <!-- GAME 1 -->
-    <div class="game-item"
-      onclick="window.location.href='game1.html'">
-
-      <div class="img-wrapper">
-        <img src="assets/minigame_1.png">
-      </div>
-
-      <div class="game-name">
-        [Vòng quay lịch sử]
-      </div>
-    </div>
-
-    <!-- GAME 2 -->
-    <div class="game-item"
-      onclick="window.location.href='game2.html'">
-
-      <div class="img-wrapper">
-        <img src="assets/minigame_2.png">
-      </div>
-
-      <div class="game-name">
-        [Tìm hình giống nhau]
-      </div>
-    </div>
-
+    <button class="nav-arrow right" id="nextBtn">&#10095;</button>
   </div>
+
 </div>
 
 <!-- Feedback -->
@@ -355,6 +449,127 @@ body::before{
 onclick="window.open('https://bttonducthang.github.io/feedback-baotangtonducthang/')">
   <img src="assets/feedback.png">
 </button>
+
+<script>
+  const items = document.querySelectorAll('.game-item');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const container = document.getElementById('carouselContainer');
+  const wrapper = document.getElementById('carouselWrapper');
+
+  let currentIndex = 0;
+  const totalItems = items.length;
+  let autoPlayTimer = null;
+  const AUTO_PLAY_INTERVAL = 10000; // 100000ms = 10 giây
+
+  function updateCarousel() {
+    items.forEach((item, index) => {
+      item.classList.remove('active', 'prev', 'next');
+      item.onclick = null;
+
+      if (index === currentIndex) {
+        item.classList.add('active');
+        item.onclick = () => {
+          const url = item.getAttribute('data-url');
+          if (url) window.location.href = url;
+        };
+      } else if (index === (currentIndex - 1 + totalItems) % totalItems) {
+        item.classList.add('prev');
+      } else if (index === (currentIndex + 1) % totalItems) {
+        item.classList.add('next');
+      }
+    });
+  }
+
+  function nextSlide() {
+    currentIndex = (currentIndex + 1) % totalItems;
+    updateCarousel();
+  }
+
+  function prevSlide() {
+    currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+    updateCarousel();
+  }
+
+  // Quản lý Tự động chạy (Auto-play)
+  function startAutoPlay() {
+    stopAutoPlay();
+    autoPlayTimer = setInterval(nextSlide, AUTO_PLAY_INTERVAL);
+  }
+
+  function stopAutoPlay() {
+    if (autoPlayTimer) {
+      clearInterval(autoPlayTimer);
+      autoPlayTimer = null;
+    }
+  }
+
+  function resetAutoPlay() {
+    startAutoPlay();
+  }
+
+  // Sự kiện nút điều khiển
+  nextBtn.addEventListener('click', () => {
+    nextSlide();
+    resetAutoPlay();
+  });
+
+  prevBtn.addEventListener('click', () => {
+    prevSlide();
+    resetAutoPlay();
+  });
+
+  // Tạm dừng tự động chạy khi di chuột vào / Chạy lại khi rê chuột ra ngoài
+  wrapper.addEventListener('mouseenter', stopAutoPlay);
+  wrapper.addEventListener('mouseleave', startAutoPlay);
+
+  // Xử lý Vuốt Chạm (Swipe) & Kéo Chuột (Drag)
+  let startX = 0;
+  let isDragging = false;
+
+  container.addEventListener('touchstart', (e) => {
+    stopAutoPlay();
+    startX = e.touches[0].clientX;
+  }, { passive: true });
+
+  container.addEventListener('touchend', (e) => {
+    let endX = e.changedTouches[0].clientX;
+    handleSwipe(startX, endX);
+    startAutoPlay();
+  }, { passive: true });
+
+  container.addEventListener('mousedown', (e) => {
+    stopAutoPlay();
+    isDragging = true;
+    startX = e.clientX;
+  });
+
+  container.addEventListener('mouseup', (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+    handleSwipe(startX, e.clientX);
+    startAutoPlay();
+  });
+
+  container.addEventListener('mouseleave', () => {
+    isDragging = false;
+  });
+
+  function handleSwipe(start, end) {
+    const diff = start - end;
+    if (Math.abs(diff) > 40) { // Ngưỡng vuốt tối thiểu 40px
+      if (diff > 0) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+    }
+  }
+
+  // Khởi tạo trạng thái ban đầu và bắt đầu tự động cuộn
+  updateCarousel();
+  startAutoPlay();
+</script>
 
 </body>
 </html>
